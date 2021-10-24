@@ -78,7 +78,7 @@ const updateProd = async (req, res) => {
     })
 }
 const fetchProd = async (req, res) => {
-    await Db.query(`SELECT p.*,c.categ_name,i.img_name,i.img_path FROM product p LEFT JOIN product_category c ON c.categ_id=p.pro_category LEFT JOIN image_path i ON i.pro_id=p.pro_id WHERE p.pro_id=${pro_id}`, (er, re) => {
+    await Db.query(`SELECT p.*,c.categ_name,i.img_name,i.img_path FROM product p LEFT JOIN product_category c ON c.categ_id=p.pro_category LEFT JOIN image_path i ON i.pro_id=p.pro_id`, (er, re) => {
         if (er) return res.send('SQL ' + er)
         res.send(re)
     })
