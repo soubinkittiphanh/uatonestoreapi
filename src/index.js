@@ -6,6 +6,8 @@ const startApp=async()=>{
     const app = await buildApp();
     
     app.listen(env.port || 4000,()=>{
+
+        console.log("app is runing: "+env.port || 4000);
         console.log("app is runing");
     })
 

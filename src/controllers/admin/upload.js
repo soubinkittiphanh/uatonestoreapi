@@ -1,7 +1,9 @@
 const Helper = require('../../helper/');
 const fs = require('fs');
 const path = require('path');
-const axios = require('axios').create({ baseURL: 'http://localhost:4000' });
+// const { env } = require('process');
+const env=require('../../config');
+const axios = require('axios').create({ baseURL: `http://localhost:${env.port}` });
 
 const single = async (req, res) => {
     console.log('=>   Upload/');
