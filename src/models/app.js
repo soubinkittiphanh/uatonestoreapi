@@ -22,6 +22,7 @@ const buildApp = async () => {
     Router.login(app);
     Router.upload(app);
     Router.authenticate(app);
+    Router.userorder(app);
     return app;
 }
 

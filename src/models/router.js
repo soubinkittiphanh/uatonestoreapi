@@ -12,6 +12,7 @@ const jwt = require('jsonwebtoken');
 const Token = require('../config');
 const Upload = require('../controllers/admin/upload')
 const Auth = require('../controllers/admin/authen')
+const OrderUser=require('../controllers/client/userOrder')
 const multer = require('multer')
 
 const fileFilter = (req, file, cb) => {
@@ -83,6 +84,9 @@ const authenticate = async (app) => {
 const login = async (app) => {
     app.get('/login', Login.login)
 }
+const userorder=async (app)=>{
+    app.post('/order_i',OrderUser.createOrder)
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -110,5 +114,5 @@ module.exports = {
     txn,
     txnHis,
     authenticate,
-
+    userorder,
 }
