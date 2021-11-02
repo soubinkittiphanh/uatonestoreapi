@@ -16,7 +16,7 @@ const createOrder=async(req,res)=>{
     await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;',(er,re)=>{
         if(er) return res.send("Error: "+er)
         let genOrderId=res[0]['order_id'];
-        console.log("Order_id: "+genOrderId);
+        console.log("order_id: "+genOrderId);
         if(genOrderId=0) genOrderId=10000;
         else genOrderId=parseInt(genOrderId)+1;
         cart_data.forEach(el=>{
