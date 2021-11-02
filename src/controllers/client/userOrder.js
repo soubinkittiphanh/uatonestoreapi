@@ -7,10 +7,14 @@ const createOrder=async(req,res)=>{
     const product_amout=body.product_amount;
     const product_price =body.product_price;
     const order_price_total =body.order_price_total;
-    const dataBody=[];
+    const cart_data=body.cart_data;
     console.log("data: "+req.body.cart_data);
     console.log("data usr_id: "+req.body.user_id);
-    return
+    // 'pro_id': proId,
+    // 'pro_amount': qty,
+    // 'pro_price': price,
+    // 'cart_price_total': priceTotal,
+    // return
     let i=0;
     let sqlCom=`INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total) VALUES `;
     //Get last order_id
@@ -20,13 +24,13 @@ const createOrder=async(req,res)=>{
         console.log("Order_id: "+genOrderId);
         if(genOrderId=0) genOrderId=10000;
         else genOrderId=parseInt(genOrderId)+1;
-        dataBody.forEach(el=>{
+        cart_data.forEach(el=>{
             i=i++;
-            if(i==dataBody.length-1){
+            if(i==cart_data.length-1){
                 //Last row
-                sqlCom=sqlCom+`(${genOrderId},${user_id},${product_id},${product_amout},${product_price},${order_price_total});`;
+                sqlCom=sqlCom+`(${genOrderId},${el.user_id},${el.product_id},${el.product_amout},${el.product_price},${el.order_price_total});`;
             }else{
-                sqlCom=sqlCom+`(${genOrderId},${user_id},${product_id},${product_amout},${product_price},${order_price_total}),`;
+                sqlCom=sqlCom+`(${genOrderId},${el.user_id},${el.product_id},${el.product_amout},${el.product_price},${el.order_price_total}),`;
             }
     
         });
