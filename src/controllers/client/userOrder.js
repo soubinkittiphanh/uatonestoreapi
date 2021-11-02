@@ -22,13 +22,13 @@ const createOrder=async(req,res)=>{
         if(genOrderId=0) genOrderId=10000;
         else genOrderId=parseInt(genOrderId)+1;
         cart_data.forEach(el=>{
-            i=i++;
             if(i==cart_data.length-1){
                 //Last row
-                sqlCom=sqlCom+`(${genOrderId},${el.user_id},${el.product_id},${el.product_amout},${el.product_price},${el.order_price_total});`;
+                sqlCom=sqlCom+`(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total});`;
             }else{
-                sqlCom=sqlCom+`(${genOrderId},${el.user_id},${el.product_id},${el.product_amout},${el.product_price},${el.order_price_total}),`;
+                sqlCom=sqlCom+`(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
+            i=i++;
     
         });
         console.log("SQL: "+sqlCom);
