@@ -10,15 +10,10 @@ const createOrder=async(req,res)=>{
     const cart_data=body.cart_data;
     console.log("data: "+req.body.cart_data);
     console.log("data usr_id: "+req.body.user_id);
-    // 'pro_id': proId,
-    // 'pro_amount': qty,
-    // 'pro_price': price,
-    // 'cart_price_total': priceTotal,
-    // return
     let i=0;
     let sqlCom=`INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total) VALUES `;
     //Get last order_id
-    await Db.query('SELECT IFNULL(MAX(order_id),0) FROM user_order;',(er,re)=>{
+    await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;',(er,re)=>{
         if(er) return res.send("Error: "+er)
         let genOrderId=res[0]['order_id'];
         console.log("Order_id: "+genOrderId);
