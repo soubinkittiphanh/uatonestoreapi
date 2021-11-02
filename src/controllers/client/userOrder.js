@@ -27,6 +27,7 @@ const createOrder=async(req,res)=>{
             }
     
         });
+        console.log("SQL: "+sqlCom);
         Db.query(sqlCom,(er,re)=>{
             if(er)return res.send("Error: "+er);
             res.send("Transaction completed");
