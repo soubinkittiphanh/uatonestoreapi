@@ -1,4 +1,4 @@
-const Db = require('../../config/dbconAsync')
+const Db = require('../../config/dbcon')
 
 const createOrder=async(req,res)=>{
     const body =req.body;
