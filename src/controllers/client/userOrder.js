@@ -30,7 +30,7 @@ const createOrder=async(req,res)=>{
             }else{
                 sqlCom=sqlCom+`(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
-            i+=i;
+            i=i+1;
     
         });
         console.log("SQL: "+sqlCom);
