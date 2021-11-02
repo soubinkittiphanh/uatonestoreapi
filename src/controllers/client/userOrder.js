@@ -8,6 +8,9 @@ const createOrder=async(req,res)=>{
     const product_price =body.product_price;
     const order_price_total =body.order_price_total;
     const dataBody=[];
+    console.log("data: "+req.body.cart_data);
+    console.log("data usr_id: "+req.body.user_id);
+    return
     let i=0;
     let sqlCom=`INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total) VALUES `;
     //Get last order_id
