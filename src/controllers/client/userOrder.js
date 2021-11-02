@@ -19,7 +19,7 @@ const createOrder=async(req,res)=>{
         console.log("pass error:"+re[0]);
         let genOrderId=re[0]['order_id'];
         console.log("order_id: "+genOrderId);
-        if(genOrderId=0) genOrderId=10000;
+        if(genOrderId==0) genOrderId=10000;
         else genOrderId=parseInt(genOrderId)+1;
         console.log("len: "+cart_data.length);
         cart_data.forEach(el=>{
