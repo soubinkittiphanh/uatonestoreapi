@@ -21,7 +21,9 @@ const createOrder=async(req,res)=>{
         console.log("order_id: "+genOrderId);
         if(genOrderId=0) genOrderId=10000;
         else genOrderId=parseInt(genOrderId)+1;
+        console.log("len: "+cart_data.length);
         cart_data.forEach(el=>{
+            console.log("start i "+i);
             if(i==cart_data.length-1){
                 //Last row
                 sqlCom=sqlCom+`(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total});`;
