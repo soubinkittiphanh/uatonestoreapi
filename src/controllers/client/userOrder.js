@@ -47,6 +47,10 @@ const updateOrder=async(req,res)=>{
 const fetchOrder=async(req,res)=>{
     const body=req.body;
     const memId=body.mem_id;
+    const memIdParam=req.param.mem_id;
+    const memIdParams=req.params.mem_id;
+    console.log("mem_id: "+memIdParam);
+    console.log("mem_ids: "+memIdParams);
     Db.query(`SELECT * FROM user_order WHERE user_id ='${memId}'`,(er,re)=>{
         if(er) return res.send("Error: "+er)
         res.send(re);
