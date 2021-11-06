@@ -47,7 +47,7 @@ const updateOrder=async(req,res)=>{
 const fetchOrder=async(req,res)=>{
     const body=req.body;
     const memId=body.mem_id;
-    const memIdParam=req.param.mem_id;
+    const memIdParam=req.query.mem_id;
     const memIdParams=req.params.mem_id;
     console.log("mem_id: "+memIdParam);
     console.log("mem_ids: "+memIdParams);
