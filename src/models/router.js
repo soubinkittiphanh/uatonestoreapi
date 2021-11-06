@@ -86,6 +86,7 @@ const login = async (app) => {
 }
 const userorder=async (app)=>{
     app.post('/order_i',OrderUser.createOrder)
+    app.get('/order_f',OrderUser.fetchOrder)
 }
 function authentication(req, res, next) {
     console.log("Middleware");

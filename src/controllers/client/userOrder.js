@@ -45,6 +45,13 @@ const updateOrder=async(req,res)=>{
 
 }
 const fetchOrder=async(req,res)=>{
+    const body=req.body;
+    const memId=body.mem_id;
+    Db.query(`SELECT * FROM user_order WHERE user_id ='${memId}'`,(er,re)=>{
+        if(er) return res.send("Error: "+er)
+        res.send(re);
+    })
+
 
 }
 const fetchOrderById=async(req,res)=>{
@@ -53,4 +60,5 @@ const fetchOrderById=async(req,res)=>{
 
 module.exports={
     createOrder,
+    fetchOrder,
 }
