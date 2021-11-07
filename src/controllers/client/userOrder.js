@@ -47,7 +47,7 @@ const updateOrder=async(req,res)=>{
 const fetchOrder=async(req,res)=>{
     const memId=req.query.mem_id;
     console.log("mem_id: "+memId);
-    await Db.query(`SELECT * FROM user_order WHERE user_id ='${memId}'`,(er,re)=>{
+    await Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}'`,(er,re)=>{
         if(er) return res.send("Error: "+er)
         res.send(re);
     })
