@@ -91,9 +91,9 @@ const userorder=async (app)=>{
 }
 const updateUserInfo=async (app)=>{
     app.post('/username_e',UserInfo.updateUserName)
-    app.get('/usertel_e',UserInfo.updateTel)
-    app.get('/userpass_e',UserInfo.updatePassword)
-    app.get('/useremail_e',UserInfo.updateEmail)
+    app.post('/usertel_e',UserInfo.updateTel)
+    app.post('/userpass_e',UserInfo.updatePassword)
+    app.post('/useremail_e',UserInfo.updateEmail)
 }
 function authentication(req, res, next) {
     console.log("Middleware");
