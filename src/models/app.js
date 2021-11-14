@@ -23,6 +23,7 @@ const buildApp = async () => {
     Router.upload(app);
     Router.authenticate(app);
     Router.userorder(app);
+    Router.updateUserInfo(app);
     return app;
 }
 

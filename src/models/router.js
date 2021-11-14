@@ -13,6 +13,7 @@ const Token = require('../config');
 const Upload = require('../controllers/admin/upload')
 const Auth = require('../controllers/admin/authen')
 const OrderUser=require('../controllers/client/userOrder')
+const UserInfo=require('../controllers/mobile/userInfo')
 const multer = require('multer')
 
 const fileFilter = (req, file, cb) => {
@@ -88,6 +89,12 @@ const userorder=async (app)=>{
     app.post('/order_i',OrderUser.createOrder)
     app.get('/order_f',OrderUser.fetchOrder)
 }
+const updateUserInfo=async (app)=>{
+    app.post('/username_e',UserInfo.updateUserName)
+    app.get('/usertel_e',UserInfo.updateTel)
+    app.get('/userpass_e',UserInfo.updatePassword)
+    app.get('/useremail_e',UserInfo.updateEmail)
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -116,4 +123,5 @@ module.exports = {
     txnHis,
     authenticate,
     userorder,
+    updateUserInfo,
 }
