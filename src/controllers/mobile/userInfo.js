@@ -6,7 +6,7 @@ const updateUserName = async (req, res) => {
     const body = req.body
     const userId = body.user_id;
     const userName = body.user_name;
-    await Db.query(`UPDATE CUSTOMER SET cus_name='${userName}' WHERE cus_id='${userId}'`, (er, re) => {
+    await Db.query(`UPDATE customer SET cus_name='${userName}' WHERE cus_id='${userId}'`, (er, re) => {
         if (er) {
             console.log("Error:  ");
             return res.send("Error: " + er.message);
@@ -20,7 +20,7 @@ const updateTel = async (req, res) => {
     const body = req.body
     const userId = body.user_id;
     const userPhoneNumber = body.user_phone;
-    await Db.query(`UPDATE CUSTOMER SET cus_tel='${userPhoneNumber}' WHERE cus_id='${userId}'`, (er, re) => {
+    await Db.query(`UPDATE customer SET cus_tel='${userPhoneNumber}' WHERE cus_id='${userId}'`, (er, re) => {
         if (er) return res.send("Error: " + er.message);
         res.send("Transaction completed");
     })
@@ -30,7 +30,7 @@ const updateEmail = async (req, res) => {
     const body = req.body
     const userId = body.user_id;
     const userEmail = body.user_email;
-    await Db.query(`UPDATE CUSTOMER SET cus_email='${userEmail}' WHERE cus_id='${userId}'`, (er, re) => {
+    await Db.query(`UPDATE customer SET cus_email='${userEmail}' WHERE cus_id='${userId}'`, (er, re) => {
         if (er) return res.send("Error: " + er.message);
         res.send("Transaction completed");
     })
@@ -40,7 +40,7 @@ const updatePassword = async (req, res) => {
     const body = req.body
     const userId = body.user_id;
     const userPass = body.user_password;
-    await Db.query(`UPDATE CUSTOMER SET cus_pass='${userPass}' WHERE cus_id='${userId}'`, (er, re) => {
+    await Db.query(`UPDATE customer SET cus_pass='${userPass}' WHERE cus_id='${userId}'`, (er, re) => {
         if (er) return res.send("Error: " + er.message);
         res.send("Transaction completed");
     })
