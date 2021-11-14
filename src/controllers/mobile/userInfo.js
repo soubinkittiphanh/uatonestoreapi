@@ -8,6 +8,7 @@ const updateUserName=async(req,res)=>{
     const userName=body.user_name;
    await Db.query(`UPDATE CUSTOMER SET cus_name='${userName}' WHERE cus_id='${userId}'`,(er,re)=>{
         if(er)return res.send("Error: "+er.message);
+        console.log("Transaction completed");
         res.send("Transaction completed");
     })
 }
