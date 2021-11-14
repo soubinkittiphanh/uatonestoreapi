@@ -19,7 +19,7 @@ const Authcustomer = async (req, res) => {
         if (er) return res.send("Error: " + er)
         console.log(re);
         // console.log(re[0].cus_name);
-        re.length > 0 ? res.send(Login.login(re[0]['cus_name']))
+        re.length > 0 ? res.send(Login.login(re[0]['cus_name'],re[0]['cus_id']))
             : res.send({"accessToken":"","error":"ລະຫັດຜ່ານ ຫລື ໄອດີບໍ່ຖືກຕ້ອງ"})
 
     })
