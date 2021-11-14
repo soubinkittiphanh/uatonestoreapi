@@ -5,7 +5,7 @@ const updateUserName=(req,res)=>{
     const body=req.body
     const userId=body.user_id;
     const userName=body.user_name;
-    Db.query(`UPDATE CUSTOMER SET CUS_NAME='${userName}' WHERE cus_id='${userId}'`,(er,re)=>{
+    Db.query(`UPDATE CUSTOMER SET cus_name='${userName}' WHERE cus_id='${userId}'`,(er,re)=>{
         if(er)return res.send("Error: "+er.message);
         res.send("Transaction completed");
     })
