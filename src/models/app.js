@@ -24,6 +24,7 @@ const buildApp = async () => {
     Router.authenticate(app);
     Router.userorder(app);
     Router.updateUserInfo(app);
+    Router.fetchStockCategory(app);
     return app;
 }
 

@@ -14,6 +14,7 @@ const Upload = require('../controllers/admin/upload')
 const Auth = require('../controllers/admin/authen')
 const OrderUser=require('../controllers/client/userOrder')
 const UserInfo=require('../controllers/mobile/userInfo')
+const StockCate=require('../controllers/admin/stockCategory')
 const multer = require('multer')
 
 const fileFilter = (req, file, cb) => {
@@ -95,6 +96,10 @@ const updateUserInfo=async (app)=>{
     app.post('/userpass_e',UserInfo.updatePassword)
     app.post('/useremail_e',UserInfo.updateEmail)
 }
+const fetchStockCategory=async (app)=>{
+    app.get('/stockcate_f',StockCate.fetchStockCategory)
+
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -124,4 +129,5 @@ module.exports = {
     authenticate,
     userorder,
     updateUserInfo,
+    fetchStockCategory,
 }
