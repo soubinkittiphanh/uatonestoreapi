@@ -2,6 +2,8 @@ const Db = require('../../config/dbcon');
 
 const createStockTransaction=async(req,res)=>{
     const body=req.body;
+    console.log("=====> create transaction");
+    console.log(body);
     const inputter=body.inputter_id;
     const tranastion_data=body.tranastion_data;
     const card_type=body.card_type;
