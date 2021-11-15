@@ -8,9 +8,10 @@ const createStockTransaction=async(req,res)=>{
     const tranastion_data=body.tranastion_data;
     const card_type=body.card_type;
     let sqlCom=`INSERT INTO card(card_type_code, card_number, card_isused, inputter) VALUES `;
+    let i=0;
     tranastion_data.forEach(el=>{
         console.log("start i "+i);
-        if(i==cart_data.length-1){
+        if(i==tranastion_data.length-1){
             //Last row
             sqlCom=sqlCom+`(${card_type},${el.card_number},0,${inputter});`;
         }else{
