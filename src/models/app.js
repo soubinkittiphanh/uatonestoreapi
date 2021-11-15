@@ -25,6 +25,7 @@ const buildApp = async () => {
     Router.userorder(app);
     Router.updateUserInfo(app);
     Router.fetchStockCategory(app);
+    Router.stockAction(app);
     return app;
 }
 
