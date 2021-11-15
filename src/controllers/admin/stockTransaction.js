@@ -13,9 +13,9 @@ const createStockTransaction=async(req,res)=>{
         console.log("start i "+i);
         if(i==tranastion_data.length-1){
             //Last row
-            sqlCom=sqlCom+`(${card_type},${el.card_number},0,${inputter});`;
+            sqlCom=sqlCom+`(${card_type},${el},0,${inputter});`;
         }else{
-            sqlCom=sqlCom+`(${card_type},${el.card_number},0,${inputter}),`;
+            sqlCom=sqlCom+`(${card_type},${el},0,${inputter}),`;
         }
         i=i+1;
 
