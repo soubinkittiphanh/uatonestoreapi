@@ -21,6 +21,7 @@ const createStockTransaction=async(req,res)=>{
 
     });
     await Db.query(sqlCom,(er,re)=>{
+        console.log(er);
         if (er)return res.send("Error: "+er)
         res.send("Transaction completed");
     })
