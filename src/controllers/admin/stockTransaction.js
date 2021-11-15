@@ -7,15 +7,16 @@ const createStockTransaction=async(req,res)=>{
     const inputter=body.inputter_id;
     const tranastion_data=body.tranastion_data;
     const card_type=body.card_type;
-    let sqlCom=`INSERT INTO card(card_type_code, card_number, card_isused, inputter) VALUES `;
+    const product_id=body.product_id;
+    let sqlCom=`INSERT INTO card(card_type_code, card_number, card_isused, inputter,product_id) VALUES `;
     let i=0;
     tranastion_data.forEach(el=>{
         console.log("start i "+i);
         if(i==tranastion_data.length-1){
             //Last row
-            sqlCom=sqlCom+`(${card_type},${el},0,${inputter});`;
+            sqlCom=sqlCom+`(${card_type},${el},0,${inputter},'${product_id}');`;
         }else{
-            sqlCom=sqlCom+`(${card_type},${el},0,${inputter}),`;
+            sqlCom=sqlCom+`(${card_type},${el},0,${inputter},'${product_id}'),`;
         }
         i=i+1;
 
