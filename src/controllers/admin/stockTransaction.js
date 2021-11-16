@@ -16,10 +16,10 @@ const createStockTransaction=async(req,res)=>{
         if(i==tranastion_data.length-1){
             //Last row
             sqlSurveyElement=sqlSurveyElement+`'${el}'`
-            sqlCom=sqlCom+`(${card_type},${el},0,${inputter},'${product_id}');`;
+            sqlCom=sqlCom+`(${card_type},'${el}',0,${inputter},'${product_id}');`;
         }else{
             sqlSurveyElement=sqlSurveyElement+`'${el}',`
-            sqlCom=sqlCom+`(${card_type},${el},0,${inputter},'${product_id}'),`;
+            sqlCom=sqlCom+`(${card_type},'${el}',0,${inputter},'${product_id}'),`;
         }
         i=i+1;
         
