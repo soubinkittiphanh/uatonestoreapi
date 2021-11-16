@@ -9,20 +9,23 @@ const createStockTransaction=async(req,res)=>{
     const card_type=body.card_type;
     const product_id=body.product_id;
     let sqlCom=`INSERT INTO card(card_type_code, card_number, card_isused, inputter,product_id) VALUES `;
+    let sqlSurveyElement;
     let i=0;
     tranastion_data.forEach(el=>{
         console.log("start i "+i);
         if(i==tranastion_data.length-1){
+            sqlSurveyElement=sqlSurveyElement+`'${el}',`
             //Last row
             sqlCom=sqlCom+`(${card_type},${el},0,${inputter},'${product_id}');`;
         }else{
+            sqlSurveyElement=sqlSurveyElement+`'${el}'`
             sqlCom=sqlCom+`(${card_type},${el},0,${inputter},'${product_id}'),`;
         }
         i=i+1;
-
+        
     });
-    const sqlSurvey=`SELECT COUNT(c.card_number) as exist_count FROM card c WHERE c.card_number IN (${tranastion_data})`
-    console.log("Survey sql: "+tranastion_data.toString());
+    const sqlSurvey=`SELECT COUNT(c.card_number) as exist_count FROM card c WHERE c.card_number IN (${sqlSurveyElement})`
+    console.log("Survey sql: "+sqlSurvey);
     await Db.query(sqlSurvey,(er,re)=>{
         if(er)return res.send("Error: "+er);
         const exist_count=re[0]["exist_count"]
