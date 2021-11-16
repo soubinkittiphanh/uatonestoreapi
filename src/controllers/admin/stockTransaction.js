@@ -14,11 +14,11 @@ const createStockTransaction=async(req,res)=>{
     tranastion_data.forEach(el=>{
         console.log("start i "+i);
         if(i==tranastion_data.length-1){
-            sqlSurveyElement=sqlSurveyElement+`'${el}',`
             //Last row
+            sqlSurveyElement=sqlSurveyElement+`'${el}'`
             sqlCom=sqlCom+`(${card_type},${el},0,${inputter},'${product_id}');`;
         }else{
-            sqlSurveyElement=sqlSurveyElement+`'${el}'`
+            sqlSurveyElement=sqlSurveyElement+`'${el}',`
             sqlCom=sqlCom+`(${card_type},${el},0,${inputter},'${product_id}'),`;
         }
         i=i+1;
