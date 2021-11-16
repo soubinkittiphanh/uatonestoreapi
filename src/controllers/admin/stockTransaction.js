@@ -9,7 +9,7 @@ const createStockTransaction=async(req,res)=>{
     const card_type=body.card_type;
     const product_id=body.product_id;
     let sqlCom=`INSERT INTO card(card_type_code, card_number, card_isused, inputter,product_id) VALUES `;
-    let sqlSurveyElement;
+    let sqlSurveyElement='';
     let i=0;
     tranastion_data.forEach(el=>{
         console.log("start i "+i);
