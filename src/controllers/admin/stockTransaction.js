@@ -21,7 +21,7 @@ const createStockTransaction=async(req,res)=>{
         i=i+1;
 
     });
-    await Db.query("SELECT COUNT(c.card_number) as exist_count FROM card c WHERE c.card_number IN ('4256862194263776')",(er,re)=>{
+    await Db.query(`SELECT COUNT(c.card_number) as exist_count FROM card c WHERE c.card_number IN (${tranastion_data})`,(er,re)=>{
         if(er)return res.send("Error: "+er);
         const exist_count=re[0]["exist_count"]
         if(exist_count>0) return res.send("ລາຍການຊ້ຳ ເລກບັດຊ້ຳ ຈຳນວນ: "+exist_count);
