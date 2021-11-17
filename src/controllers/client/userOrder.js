@@ -57,7 +57,7 @@ const createOrder = async (req, res) => {
                             console.log("********Insert in to card_sale**********");
                             if (er) return res.send("Error: " + er)
                             
-                            let count_stock = checkStockAvailability("10015", "2");
+                            let count_stock = await checkStockAvailability("10015", "2");
                             console.log("====> "+count_stock);
                             res.send("Transaction completed");
                         })
