@@ -19,7 +19,7 @@ const createOrder = async (req, res) => {
         if (genOrderId == 0) genOrderId = 10000;
         else genOrderId = parseInt(genOrderId) + 1;
         console.log("len: " + cart_data.length);
-        let count_stock = checkStockAvailability(el.product_id, el.product_amount);
+        let count_stock = checkStockAvailability(10015, 2);
         cart_data.forEach(el => {
             // Check the weather the product is available in stok or not
             if (count_stock != 200) {
@@ -63,23 +63,6 @@ const createOrder = async (req, res) => {
 
     });
 }
-const updateOrder = async (req, res) => {
-
-}
-const fetchOrder = async (req, res) => {
-    const memId = req.query.mem_id;
-
-    console.log("mem_id: " + memId);
-    await Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' ORDER BY o.order_id DESC`, (er, re) => {
-        if (er) return res.send("Error: " + er)
-        res.send(re);
-    })
-
-
-}
-const fetchOrderById = async (req, res) => {
-
-}
 const checkStockAvailability = async (product_id, order_qty) => {
 
     // 200 = no error available
@@ -104,6 +87,24 @@ const checkStockAvailability = async (product_id, order_qty) => {
 
     })
 }
+const updateOrder = async (req, res) => {
+
+}
+const fetchOrder = async (req, res) => {
+    const memId = req.query.mem_id;
+
+    console.log("mem_id: " + memId);
+    await Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' ORDER BY o.order_id DESC`, (er, re) => {
+        if (er) return res.send("Error: " + er)
+        res.send(re);
+    })
+
+
+}
+const fetchOrderById = async (req, res) => {
+
+}
+
 module.exports = {
     createOrder,
     fetchOrder,
