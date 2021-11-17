@@ -23,54 +23,56 @@ const createOrder = async (req, res) => {
             // Check the weather the product is available in stok or not
             // let count_stock = checkStockAvailability("10015", "2");
             // if (count_stock != 200) {
-            //     console.log("STOCK STATUS CODE: " + count_stock);
-            //     return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
-            // }
-            // console.log("count_stock first: " + count_stock);
-            console.log("start i " + i);
-            if (i == cart_data.length - 1) {
-                //Last row
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total});`;
-            } else {
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
-            }
-            i = i + 1;
-
-        });
-        let sqlComCardSale = "";
-        console.log("SQL: " + sqlCom);
-        Db.query(sqlCom, (er, re) => {
-            if (er) return res.send("Error: " + er);
-            // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
-            // let j=0;
-            console.log("Ready to insert to card_sale");
-            cart_data.forEach(el => {
-                // console.log("start i "+j);
-                // if(j==cart_data.length-1){
-                sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id) 
-                SELECT c.card_number,'${genOrderId}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
-                // }else{
-
+                //     console.log("STOCK STATUS CODE: " + count_stock);
+                //     return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
                 // }
-            })
-            Db.query(sqlComCardSale, (er, re) => {
-                console.log("********Insert in to card_sale**********");
-                if (er) return res.send("Error: " + er)
-
-                res.send("Transaction completed");
-            })
-        })
-
-    });
-}
-const checkStockAvailability = async (product_id, order_qty) => {
-
-    // 200 = no error available
-    // 500 = SQL ERROR
-    // 503 = Product stock not suffient
-console.log("Product: "+product_id);
-console.log("Product qty: "+order_qty);
-return 200;
+                // console.log("count_stock first: " + count_stock);
+                console.log("start i " + i);
+                if (i == cart_data.length - 1) {
+                    //Last row
+                    sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total});`;
+                } else {
+                    sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
+                }
+                i = i + 1;
+                
+            });
+            let sqlComCardSale = "";
+            console.log("SQL: " + sqlCom);
+            Db.query(sqlCom, (er, re) => {
+                if (er) return res.send("Error: " + er);
+                // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
+                // let j=0;
+                console.log("Ready to insert to card_sale");
+                cart_data.forEach(el => {
+                    // console.log("start i "+j);
+                    // if(j==cart_data.length-1){
+                        sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id) 
+                        SELECT c.card_number,'${genOrderId}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+                        // }else{
+                            
+                            // }
+                        })
+                        Db.query(sqlComCardSale, (er, re) => {
+                            console.log("********Insert in to card_sale**********");
+                            if (er) return res.send("Error: " + er)
+                            
+                            let count_stock = checkStockAvailability("10015", "2");
+                            console.log("====> "+count_stock);
+                            res.send("Transaction completed");
+                        })
+                    })
+                    
+                });
+            }
+            const checkStockAvailability = async (product_id, order_qty) => {
+                
+                // 200 = no error available
+                // 500 = SQL ERROR
+                // 503 = Product stock not suffient
+                console.log("Product: "+product_id);
+                console.log("Product qty: "+order_qty);
+                return 200;
     // const sqlCom = `SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d
     // LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.product_id ='${product_id}'
     // GROUP BY d.product_id`;
