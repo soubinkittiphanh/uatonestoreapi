@@ -19,9 +19,9 @@ const createOrder = async (req, res) => {
         if (genOrderId == 0) genOrderId = 10000;
         else genOrderId = parseInt(genOrderId) + 1;
         console.log("len: " + cart_data.length);
+        let count_stock = checkStockAvailability(el.product_id, el.product_amount);
         cart_data.forEach(el => {
             // Check the weather the product is available in stok or not
-            let count_stock = checkStockAvailability(el.product_id, el.product_amount);
             if (count_stock != 200) {
                 console.log("STOCK STATUS CODE: " + count_stock);
                 return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
