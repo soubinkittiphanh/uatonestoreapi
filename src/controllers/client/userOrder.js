@@ -19,13 +19,13 @@ const createOrder = async (req, res) => {
         if (genOrderId == 0) genOrderId = 10000;
         else genOrderId = parseInt(genOrderId) + 1;
         console.log("len: " + cart_data.length);
-        let count_stock = checkStockAvailability("10015", "2");
         cart_data.forEach(el => {
             // Check the weather the product is available in stok or not
-            if (count_stock != 200) {
-                console.log("STOCK STATUS CODE: " + count_stock);
-                return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
-            }
+            // let count_stock = checkStockAvailability("10015", "2");
+            // if (count_stock != 200) {
+            //     console.log("STOCK STATUS CODE: " + count_stock);
+            //     return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
+            // }
             console.log("count_stock first: " + count_stock);
             console.log("start i " + i);
             if (i == cart_data.length - 1) {
