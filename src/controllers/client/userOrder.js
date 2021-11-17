@@ -1,15 +1,12 @@
 const Db = require('../../config/dbcon')
-
+const OrderHelper=require('../../helper/mobile/orderHelper')
 const createOrder=async(req,res)=>{
     const body =req.body;
     const user_id=body.user_id;
-    const product_id=body.product_id;
-    const product_amout=body.product_amount;
-    const product_price =body.product_price;
-    const order_price_total =body.order_price_total;
     const cart_data=body.cart_data;
     console.log("data: "+req.body.cart_data);
     console.log("data usr_id: "+req.body.user_id);
+    
     let i=0;
     let sqlCom=`INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total) VALUES `;
     //Get last order_id
@@ -23,6 +20,12 @@ const createOrder=async(req,res)=>{
         else genOrderId=parseInt(genOrderId)+1;
         console.log("len: "+cart_data.length);
         cart_data.forEach(el=>{
+            let count_stock=await OrderHelper.checkStockAvailability(el.product_id,el.product_amount);
+            if(count_stock!=200){
+
+                return res.send(count_stock==503?"ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ":"Connection Error");
+            }
+            console.log("count_stock first: "+count_stock);
             console.log("start i "+i);
             if(i==cart_data.length-1){
                 //Last row
