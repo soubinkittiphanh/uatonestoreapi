@@ -13,7 +13,9 @@ const checkStockAvailability = async (product_id,order_qty) => {
     GROUP BY d.product_id`;
     let stockCount = 0;
     await Db.query(sqlCom, (er, re) => {
-        if (er) return 500
+        if (er) {
+            console.log("Stock check Error: "+er);
+            return 500}
         stockCount = re[0]["card_count"];
         if (stockCount-order_qty<0) {
             return 503
