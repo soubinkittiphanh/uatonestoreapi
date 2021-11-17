@@ -20,9 +20,10 @@ const createOrder=async(req,res)=>{
         else genOrderId=parseInt(genOrderId)+1;
         console.log("len: "+cart_data.length);
         cart_data.forEach(el=>{
+            // Check the weather the product is available in stok or not
             let count_stock=await OrderHelper.checkStockAvailability(el.product_id,el.product_amount);
             if(count_stock!=200){
-
+                
                 return res.send(count_stock==503?"ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ":"Connection Error");
             }
             console.log("count_stock first: "+count_stock);
@@ -34,18 +35,36 @@ const createOrder=async(req,res)=>{
                 sqlCom=sqlCom+`(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
             i=i+1;
-    
+            
         });
+        let sqlComCardSale="";
         console.log("SQL: "+sqlCom);
         Db.query(sqlCom,(er,re)=>{
             if(er)return res.send("Error: "+er);
-            res.send("Transaction completed");
-        })
+            // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
+            // let j=0;
+            console.log("Ready to insert to card_sale");
+            cart_data.forEach(el=>{
+                // console.log("start i "+j);
+                // if(j==cart_data.length-1){
+                sqlComCardSale=sqlComCardSale+`INSERT INTO card_sale(card_code,card_order_id) 
+                SELECT c.card_number,'${genOrderId}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+                // }else{
 
+                // }
+            })
+            Db.query(sqlComCardSale,(er,re)=>{
+                console.log("********Insert in to card_sale**********");
+                if(er)return res.send("Error: "+er)
+
+                res.send("Transaction completed");
+            })
+        })
+        
     });
 }
 const updateOrder=async(req,res)=>{
-
+    
 }
 const fetchOrder=async(req,res)=>{
     const memId=req.query.mem_id;
