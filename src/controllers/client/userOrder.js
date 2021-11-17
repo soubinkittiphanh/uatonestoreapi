@@ -26,7 +26,7 @@ const createOrder = async (req, res) => {
             //     console.log("STOCK STATUS CODE: " + count_stock);
             //     return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
             // }
-            console.log("count_stock first: " + count_stock);
+            // console.log("count_stock first: " + count_stock);
             console.log("start i " + i);
             if (i == cart_data.length - 1) {
                 //Last row
