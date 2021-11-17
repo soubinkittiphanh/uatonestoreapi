@@ -21,7 +21,7 @@ const createOrder=async(req,res)=>{
         console.log("len: "+cart_data.length);
         cart_data.forEach(el=>{
             // Check the weather the product is available in stok or not
-            let count_stock=await OrderHelper.checkStockAvailability(el.product_id,el.product_amount);
+            let count_stock= OrderHelper.checkStockAvailability(el.product_id,el.product_amount);
             if(count_stock!=200){
                 
                 return res.send(count_stock==503?"ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ":"Connection Error");
