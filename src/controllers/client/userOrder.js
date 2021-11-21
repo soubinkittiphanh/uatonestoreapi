@@ -88,23 +88,23 @@ const checkStockAvailability = async (product_id, order_qty) => {
     // 503 = Product stock not suffient
     console.log("Product: " + product_id);
     console.log("Product qty: " + order_qty);
-    return 200;
-    // const sqlCom = `SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d
-    // LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.product_id ='${product_id}'
-    // GROUP BY d.product_id`;
-    // let stockCount = 0;
-    // await Db.query(sqlCom, (er, re) => {
-    //     if (er) {
-    //         console.log("Stock check Error: " + er);
-    //         return 500
-    //     }
-    //     stockCount = re[0]["card_count"];
-    //     if (stockCount - order_qty < 0) {
-    //         return 503
-    //     }
-    //     return 200
+    // return 200;
+    const sqlCom = `SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d
+    LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.product_id ='${product_id}'
+    GROUP BY d.product_id`;
+    let stockCount = 0;
+    await Db.query(sqlCom, (er, re) => {
+        if (er) {
+            console.log("Stock check Error: " + er);
+            return 500
+        }
+        stockCount = re[0]["card_count"];
+        if (stockCount - order_qty < 0) {
+            return 503
+        }
+        return 200
 
-    // })
+    })
 }
 const updateOrder = async (req, res) => {
 
