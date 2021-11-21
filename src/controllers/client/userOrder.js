@@ -38,16 +38,16 @@ const createOrder = async (req, res) => {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
             sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id) SELECT c.card_number,'${genOrderId}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
-                
-            
+
+
         }
 
-        
+
         console.log("SQL: " + sqlCom);
         Db.query(sqlCom, (er, re) => {
             if (er) {
                 console.log("SQL: " + sqlCom);
-                console.log("Error: "+er);
+                console.log("Error: " + er);
                 return res.send("Error: " + er);
             }
             // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
@@ -55,11 +55,12 @@ const createOrder = async (req, res) => {
 
             Db.query(sqlComCardSale, (er, re) => {
                 console.log("********Insert in to card_sale**********");
-                console.log("SQL IN "+sqlComCardSale);
+                console.log("SQL IN " + sqlComCardSale);
                 if (er) {
-                    console.log("SQL: "+sqlComCardSale);
-                    console.log("Error: "+er);
-                    return res.send("Error: " + er)}
+                    console.log("SQL: " + sqlComCardSale);
+                    console.log("Error: " + er);
+                    return res.send("Error: " + er)
+                }
                 res.send("Transaction completed");
             })
         })
@@ -79,9 +80,9 @@ const checkStockAvailability = async (product_id, order_qty) => {
     let stockCount = 0;
     let statusCode = 0;
     try {
-
         const response = await dbAsync.query(sqlCom);
         stockCount = response[0]["card_count"];
+        console.log("Stock count: "+stockCount);
         if (stockCount - order_qty < 0) {
             statusCode = 503
             console.log("Statuscode: " + statusCode);
@@ -93,10 +94,10 @@ const checkStockAvailability = async (product_id, order_qty) => {
             // return 200
         }
     } catch (error) {
-        console.log(("Error: "+error));
+        console.log(("Error: " + error));
 
     }
-    console.log("Status: "+ statusCode);
+    console.log("Status: " + statusCode);
     return statusCode;
 }
 const updateOrder = async (req, res) => {
