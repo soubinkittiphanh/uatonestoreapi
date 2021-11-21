@@ -21,27 +21,9 @@ const createOrder = async (req, res) => {
         else genOrderId = parseInt(genOrderId) + 1;
         console.log("len: " + cart_data.length);
 
-        for (let i = 0; i < cart_data.length; i++) {
-            const el = cart_data[i];
-            const count_stock = await checkStockAvailability("1005", "2");
-            if (count_stock != 200) {
-                console.log("STOCK STATUS CODE: " + count_stock);
-                return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
-            }
-            console.log("count_stock first: " + count_stock);
-            console.log("start i " + i);
-            if (i == cart_data.length - 1) {
-                //Last row
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total});`;
-            } else {
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
-            }
-
-        }
-
-        // cart_data.forEach(el => {
-        //     // Check the weather the product is available in stok or not
-        //     const count_stock = checkStockAvailability("10015", "2");
+        // for (let i = 0; i < cart_data.length; i++) {
+        //     const el = cart_data[i];
+        //     const count_stock = await checkStockAvailability("1005", "2");
         //     if (count_stock != 200) {
         //         console.log("STOCK STATUS CODE: " + count_stock);
         //         return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
@@ -54,9 +36,27 @@ const createOrder = async (req, res) => {
         //     } else {
         //         sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
         //     }
-        //     i = i + 1;
 
-        // });
+        // }
+
+        cart_data.forEach(el => {
+            // Check the weather the product is available in stok or not
+            const count_stock = await checkStockAvailability(el.product_id, el.product_amount);
+            if (count_stock != 200) {
+                console.log("STOCK STATUS CODE: " + count_stock);
+                return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
+            }
+            console.log("count_stock first: " + count_stock);
+            console.log("start i " + i);
+            if (i == cart_data.length - 1) {
+                //Last row
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total});`;
+            } else {
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
+            }
+            i = i + 1;
+
+        });
         let sqlComCardSale = "";
         console.log("SQL: " + sqlCom);
         Db.query(sqlCom, (er, re) => {
