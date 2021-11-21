@@ -10,6 +10,7 @@ const createOrder = async (req, res) => {
 
     let i = 0;
     let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total) VALUES `;
+    let sqlComCardSale = "";
     //Get last order_id
     await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
         if (er) return res.send("Error: " + er)
@@ -36,10 +37,13 @@ const createOrder = async (req, res) => {
             } else {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
+            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id) 
+                        SELECT c.card_number,'${genOrderId}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+                
             
         }
 
-        let sqlComCardSale = "";
+        
         console.log("SQL: " + sqlCom);
         Db.query(sqlCom, (er, re) => {
             if (er) {
@@ -48,17 +52,8 @@ const createOrder = async (req, res) => {
                 return res.send("Error: " + er);
             }
             // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
-            // let j=0;
             console.log("Ready to insert to card_sale");
-            cart_data.forEach(el => {
-                // console.log("start i "+j);
-                // if(j==cart_data.length-1){
-                sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id) 
-                        SELECT c.card_number,'${genOrderId}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
-                // }else{
 
-                // }
-            })
             Db.query(sqlComCardSale, (er, re) => {
                 console.log("********Insert in to card_sale**********");
                 console.log("SQL IN "+sqlComCardSale);
