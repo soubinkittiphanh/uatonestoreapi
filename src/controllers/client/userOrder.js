@@ -39,7 +39,7 @@ const createOrder = async (req, res) => {
 
         // }
 
-        cart_data.forEach(el => {
+        cart_data.forEach(async(el) => {
             // Check the weather the product is available in stok or not
             const count_stock = await checkStockAvailability(el.product_id, el.product_amount);
             if (count_stock != 200) {
