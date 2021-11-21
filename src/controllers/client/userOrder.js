@@ -93,7 +93,7 @@ const checkStockAvailability = async (product_id, order_qty) => {
     LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.product_id ='${product_id}'
     GROUP BY d.product_id`;
     let stockCount = 0;
-    await Db.query(sqlCom, (er, re) => {
+    const status=await Db.query(sqlCom, (er, re) => {
         if (er) {
             console.log("Stock check Error: " + er);
             return 500
@@ -105,6 +105,7 @@ const checkStockAvailability = async (product_id, order_qty) => {
         return 200
 
     })
+    return status;
 }
 const updateOrder = async (req, res) => {
 
