@@ -37,8 +37,7 @@ const createOrder = async (req, res) => {
             } else {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
-            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id) 
-                        SELECT c.card_number,'${genOrderId}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id) SELECT c.card_number,'${genOrderId}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
                 
             
         }
