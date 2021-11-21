@@ -10,7 +10,7 @@ const createOrder = async (req, res) => {
     let i = 0;
     let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total) VALUES `;
     //Get last order_id
-    await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', (er, re) => {
+    await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async(er, re) => {
         if (er) return res.send("Error: " + er)
         console.log("pass error:");
         console.log("pass error:" + re[0]);
