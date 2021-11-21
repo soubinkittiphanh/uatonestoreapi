@@ -53,7 +53,7 @@ const createOrder = async (req, res) => {
             // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
             console.log("Ready to insert to card_sale");
 
-            Db.query("INSERT INTO card_sale(card_code,card_order_id) SELECT c.card_number,'10022' FROM card c WHERE c.card_isused =0 AND c.product_id='1005' LIMIT 1;SELECT * FROM card_sale", (er, re) => {
+            Db.query("INSERT INTO card_sale(card_code,card_order_id) SELECT c.card_number,'10022' FROM card c WHERE c.card_isused =0 AND c.product_id='1005' LIMIT 1;", (er, re) => {
                 console.log("********Insert in to card_sale**********");
                 console.log("SQL IN "+sqlComCardSale);
                 if (er) {
