@@ -114,6 +114,7 @@ const checkStockAvailability = async (product_id, order_qty) => {
         }
 
     })
+    console.log("Status: "+status.values);
     return statusCode;
 }
 const updateOrder = async (req, res) => {
