@@ -1,4 +1,5 @@
 const Db = require('../../config/dbcon')
+const dbAsync = require('../../config/dbconAsync')
 const OrderHelper = require('../../helper/mobile/orderHelper')
 const createOrder = async (req, res) => {
     const body = req.body;
@@ -10,7 +11,7 @@ const createOrder = async (req, res) => {
     let i = 0;
     let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total) VALUES `;
     //Get last order_id
-    await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async(er, re) => {
+    await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
         if (er) return res.send("Error: " + er)
         console.log("pass error:");
         console.log("pass error:" + re[0]);
@@ -22,7 +23,7 @@ const createOrder = async (req, res) => {
 
         for (let i = 0; i < cart_data.length; i++) {
             const el = cart_data[i];
-            const count_stock =  await checkStockAvailability("1005", "2");
+            const count_stock = await checkStockAvailability("1005", "2");
             if (count_stock != 200) {
                 console.log("STOCK STATUS CODE: " + count_stock);
                 return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
@@ -35,7 +36,7 @@ const createOrder = async (req, res) => {
             } else {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
-            
+
         }
 
         // cart_data.forEach(el => {
@@ -93,28 +94,47 @@ const checkStockAvailability = async (product_id, order_qty) => {
     LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.product_id ='${product_id}'
     GROUP BY d.product_id`;
     let stockCount = 0;
-    let statusCode=0;
-    const status=await Db.query(sqlCom, (er, re) => {
-        if (er) {
-            console.log("Stock check Error: " + er);
-            statusCode=500
-            console.log("Statuscode: "+statusCode);
-            return 500
-        }
-        stockCount = re[0]["card_count"];
+    let statusCode = 0;
+    try {
+
+        const response = await dbAsync.query(sqlCom);
+        const re = response[0];
+        stockCount = response[0]["card_count"];
         if (stockCount - order_qty < 0) {
-            statusCode=503
-            console.log("Statuscode: "+statusCode);
-            return 503
-        }else{
-            statusCode=200;
-            console.log("Statuscode: "+statusCode);
+            statusCode = 503
+            console.log("Statuscode: " + statusCode);
+            // return 503
+        } else {
+            statusCode = 200;
+            console.log("Statuscode: " + statusCode);
 
-            return 200
+            // return 200
         }
+    } catch (error) {
+        console.log(("Error: "+error));
 
-    })
-    console.log("Status: "+status.values);
+    }
+    // const status = await Db.query(sqlCom, (er, re) => {
+    //     if (er) {
+    //         console.log("Stock check Error: " + er);
+    //         statusCode = 500
+    //         console.log("Statuscode: " + statusCode);
+    //         return 500
+    //     }
+    //     stockCount = re[0]["card_count"];
+    //     if (stockCount - order_qty < 0) {
+    //         statusCode = 503
+    //         console.log("Statuscode: " + statusCode);
+    //         return 503
+    //     } else {
+    //         statusCode = 200;
+    //         console.log("Statuscode: " + statusCode);
+
+    //         return 200
+    //     }
+
+    // })
+    console.log("Status: "+ statusCode);
     return statusCode;
 }
 const updateOrder = async (req, res) => {
