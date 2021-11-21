@@ -75,7 +75,10 @@ const createOrder = async (req, res) => {
             })
             Db.query(sqlComCardSale, (er, re) => {
                 console.log("********Insert in to card_sale**********");
-                if (er) return res.send("Error: " + er)
+                if (er) {
+                    console.log("SQL: "+sqlComCardSale);
+                    console.log("Error: "+er);
+                    return res.send("Error: " + er)}
                 res.send("Transaction completed");
             })
         })
@@ -89,7 +92,6 @@ const checkStockAvailability = async (product_id, order_qty) => {
     // 503 = Product stock not suffient
     console.log("Product: " + product_id);
     console.log("Product qty: " + order_qty);
-    // return 200;
     const sqlCom = `SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d
     LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.product_id ='${product_id}'
     GROUP BY d.product_id`;
@@ -98,7 +100,6 @@ const checkStockAvailability = async (product_id, order_qty) => {
     try {
 
         const response = await dbAsync.query(sqlCom);
-        const re = response[0];
         stockCount = response[0]["card_count"];
         if (stockCount - order_qty < 0) {
             statusCode = 503
@@ -114,26 +115,6 @@ const checkStockAvailability = async (product_id, order_qty) => {
         console.log(("Error: "+error));
 
     }
-    // const status = await Db.query(sqlCom, (er, re) => {
-    //     if (er) {
-    //         console.log("Stock check Error: " + er);
-    //         statusCode = 500
-    //         console.log("Statuscode: " + statusCode);
-    //         return 500
-    //     }
-    //     stockCount = re[0]["card_count"];
-    //     if (stockCount - order_qty < 0) {
-    //         statusCode = 503
-    //         console.log("Statuscode: " + statusCode);
-    //         return 503
-    //     } else {
-    //         statusCode = 200;
-    //         console.log("Statuscode: " + statusCode);
-
-    //         return 200
-    //     }
-
-    // })
     console.log("Status: "+ statusCode);
     return statusCode;
 }
