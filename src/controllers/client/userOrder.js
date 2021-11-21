@@ -39,24 +39,6 @@ const createOrder = async (req, res) => {
             
         }
 
-        // await cart_data.forEach(async(el) => {
-        //     // Check the weather the product is available in stok or not
-        //     const count_stock = await checkStockAvailability(el.product_id, el.product_amount);
-        //     if (count_stock != 200) {
-        //         console.log("STOCK STATUS CODE: " + count_stock);
-        //         return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
-        //     }
-        //     console.log("count_stock first: " + count_stock);
-        //     console.log("start i " + i);
-        //     if (i == cart_data.length - 1) {
-        //         //Last row
-        //         sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total});`;
-        //     } else {
-        //         sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
-        //     }
-        //     i = i + 1;
-
-        // });
         let sqlComCardSale = "";
         console.log("SQL: " + sqlCom);
         Db.query(sqlCom, (er, re) => {
@@ -79,6 +61,7 @@ const createOrder = async (req, res) => {
             })
             Db.query(sqlComCardSale, (er, re) => {
                 console.log("********Insert in to card_sale**********");
+                console.log("SQL IN "+sqlComCardSale);
                 if (er) {
                     console.log("SQL: "+sqlComCardSale);
                     console.log("Error: "+er);
