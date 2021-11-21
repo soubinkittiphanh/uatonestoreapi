@@ -74,24 +74,20 @@ const checkStockAvailability = async (product_id, order_qty) => {
     // 503 = Product stock not suffient
     console.log("Product: " + product_id);
     console.log("Product qty: " + order_qty);
-    const sqlCom = `SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d
-    LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.product_id ='${product_id}'
-    GROUP BY d.product_id`;
+    const sqlCom = `SELECT p.pro_id,IFNULL(s.card_count,0) AS card_count FROM product p LEFT JOIN (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.product_id ='${product_id}' GROUP BY d.product_id) s ON s.card_pro_id = p.pro_id WHERE p.pro_id='${product_id}'`;
     let stockCount = 0;
     let statusCode = 0;
     try {
         const response = await dbAsync.query(sqlCom);
         stockCount = response[0]["card_count"];
-        console.log("Stock count: "+stockCount);
+        const productId = response[0]["pro_id"];
+        console.log("Stock count: "+stockCount+', Product: '+productId);
         if (stockCount - order_qty < 0) {
             statusCode = 503
             console.log("Statuscode: " + statusCode);
-            // return 503
         } else {
             statusCode = 200;
             console.log("Statuscode: " + statusCode);
-
-            // return 200
         }
     } catch (error) {
         console.log(("Error: " + error));
