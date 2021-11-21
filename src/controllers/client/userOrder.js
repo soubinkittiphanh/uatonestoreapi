@@ -27,7 +27,7 @@ const createOrder = async (req, res) => {
             const count_stock = await checkStockAvailability(el.product_id, el.product_amount);
             if (count_stock != 200) {
                 console.log("STOCK STATUS CODE: " + count_stock);
-                return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
+                return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າ "+el.product_id+" ບໍ່ພຽງພໍ" : "Connection Error");
             }
             console.log("count_stock first: " + count_stock);
             console.log("start i " + i);
