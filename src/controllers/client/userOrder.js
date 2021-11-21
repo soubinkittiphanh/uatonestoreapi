@@ -22,7 +22,7 @@ const createOrder = async (req, res) => {
 
         for (let i = 0; i < cart_data.length; i++) {
             const el = cart_data[i];
-            const count_stock =  checkStockAvailability("10015", "2");
+            const count_stock =  checkStockAvailability("1005", "2");
             if (count_stock != 200) {
                 console.log("STOCK STATUS CODE: " + count_stock);
                 return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າບໍ່ພຽງພໍ" : "Connection Error");
