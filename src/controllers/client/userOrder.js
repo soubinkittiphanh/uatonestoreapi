@@ -79,8 +79,8 @@ const checkStockAvailability = async (product_id, order_qty) => {
     let statusCode = 0;
     try {
         const response = await dbAsync.query(sqlCom);
-        stockCount = response[0]["card_count"];
-        const productId = response[0]["pro_id"];
+        stockCount = response[0][0]["card_count"];
+        const productId = response[0][0]["pro_id"];
         console.log("Stock count: "+stockCount+', Product: '+productId);
         if (stockCount - order_qty < 0) {
             statusCode = 503
