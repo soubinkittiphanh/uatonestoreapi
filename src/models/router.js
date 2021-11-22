@@ -108,6 +108,7 @@ const stockAction=async (app)=>{
 }
 const userIbox=async (app)=>{
     app.get('/user_inbox_f',UserInbox.fetchInbox)
+    app.post('/user_inbox_markreaded_u',UserInbox.markReaded)
 
 }
 function authentication(req, res, next) {
