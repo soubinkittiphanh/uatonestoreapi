@@ -12,6 +12,7 @@ const fetchInbox=async(req,res)=>{
 const markReaded=async(req,res)=>{
     const body =req.body;
     const card_number=body.card_number;
+    console.log("===>> "+card_number);
     await Db.query(`UPDATE card_sale SET mark_readed=1 WHERE card_code=${card_number}'`,(er,re)=>{
         if(er) return res.send("Error: "+er);
         res.send("Transaction completed");
