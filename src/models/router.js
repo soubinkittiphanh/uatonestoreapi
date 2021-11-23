@@ -17,6 +17,7 @@ const UserInfo=require('../controllers/mobile/userInfo')
 const StockCate=require('../controllers/admin/stockCategory')
 const StockMethod=require('../controllers/admin/stockTransaction')
 const UserInbox=require('../controllers/client/userInbox')
+const RegisterCustomer=require('../controllers/client/register')
 const multer = require('multer')
 
 const fileFilter = (req, file, cb) => {
@@ -111,6 +112,11 @@ const userIbox=async (app)=>{
     app.post('/user_inbox_markreaded_u',UserInbox.markReaded)
 
 }
+const registerCus=async (app)=>{
+
+    app.post('/register_i',RegisterCustomer.createCustomer)
+
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -143,4 +149,5 @@ module.exports = {
     fetchStockCategory,
     stockAction,
     userIbox,
+    registerCus,
 }

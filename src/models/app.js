@@ -27,6 +27,7 @@ const buildApp = async () => {
     Router.fetchStockCategory(app);
     Router.stockAction(app);
     Router.userIbox(app);
+    Router.registerCus(app);
     return app;
 }
 
