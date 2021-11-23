@@ -10,7 +10,7 @@ const createCustomer=async(req,res)=>{
 
     console.log("...Register customer...");
     console.log("Info data: "+body);
-    const sqlCom =`INSERT INTO customer(cus_id, cus_pass, cus_name, cus_tel, cus_email, cus_active) VALUES ((SELECT IFNULL(MAX(c.cus_id),1000)+1 FROM customer c),'${cus_pass}','${cus_name}','${cus_phone}','${cus_email},1)`
+    const sqlCom =`INSERT INTO customer(cus_id, cus_pass, cus_name, cus_tel, cus_email, cus_active) VALUES ((SELECT IFNULL(MAX(c.cus_id),1000)+1 FROM customer c),'${cus_pass}','${cus_name}','${cus_phone}','${cus_email}',1)`
     await Db.query(sqlCom,(er,re)=>{
         if(er)return res.send("Error: "+er);
         res.send("Transaction completed");
