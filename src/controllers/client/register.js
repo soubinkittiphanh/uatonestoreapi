@@ -7,7 +7,7 @@ const createCustomer=async(req,res)=>{
     const cus_phone=body.cust_phone;
     const cus_email=body.cust_email;
     const cus_gameId=body.cust_gameId;
-    const login_id=cus_email?cus_phone:cus_email;
+    const login_id=cus_email===''?cus_phone:cus_email;
 
     console.log("...Register customer...");
     console.log("Info data: "+body);
