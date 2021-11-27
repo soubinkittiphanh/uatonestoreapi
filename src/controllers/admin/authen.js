@@ -4,7 +4,7 @@ const Authmember = async (req, res) => {
     const body = req.body;
     const u_id = body.mem_id;
     const u_pw = body.mem_pwd;
-    await Db.query(`SELECT * FROM user_account where user_id='${u_id}' AND user_pass='${u_pw}'`, (er, re) => {
+    await Db.query(`SELECT * FROM user_account where login_id='${u_id}' AND user_pass='${u_pw}'`, (er, re) => {
         if (er) return res.send("Error: " + er)
 
     })
@@ -15,7 +15,7 @@ const Authcustomer = async (req, res) => {
     const u_id = body.cus_id;
     const u_pw = body.cus_pwd;
 
-    await Db.query(`SELECT * FROM customer where cus_id='${u_id}' AND cus_pass='${u_pw}'`, (er, re) => {
+    await Db.query(`SELECT * FROM customer where login_id='${u_id}' AND cus_pass='${u_pw}'`, (er, re) => {
         if (er) return res.send("Error: " + er)
         console.log(re);
         // console.log(re[0].cus_name);
