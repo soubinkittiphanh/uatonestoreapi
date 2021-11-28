@@ -78,7 +78,7 @@ const updateProd = async (req, res) => {
     })
 }
 const fetchProd = async (req, res) => {
-    await Db.query(`SELECT p.*,c.categ_name,IFNULL(i.img_name,'No image'),i.img_path,IFNULL(d.card_count,0) AS card_count FROM product p 
+    await Db.query(`SELECT p.*,c.categ_name,IFNULL(i.img_name,'No image') AS img_name,i.img_path,IFNULL(d.card_count,0) AS card_count FROM product p 
     LEFT JOIN product_category c ON c.categ_id=p.pro_category 
     LEFT JOIN image_path i ON i.pro_id=p.pro_id
     LEFT JOIN (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d
