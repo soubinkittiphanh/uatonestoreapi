@@ -15,7 +15,17 @@ const Authcustomer = async (req, res) => {
     const u_id = body.cus_id;
     const u_pw = body.cus_pwd;
 
-    await Db.query(`SELECT * FROM customer where login_id='${u_id}' AND cus_pass='${u_pw}'`, (er, re) => {
+    const sqlCom=`SELECT c.*,b.DEBIT+b.ORDER_TOTAL AS debit, b.CREDIT AS credit FROM customer c 
+    LEFT JOIN(SELECT c.cus_id,c.cus_name,h.txn_his_amount,h.user_id,h.txn_his_date,t.txn_id,t.txn_name,t.txn_code,d.txn_code_id,d.txn_code_name,d.txn_sign,SUM(IF(d.txn_sign='DR',h.txn_his_amount,0)) AS DEBIT,SUM(IF(d.txn_sign='CR',h.txn_his_amount,0))AS CREDIT,o.ORDER_TOTAL FROM customer c
+        LEFT JOIN transaction_history h ON h.user_id=c.cus_id
+        LEFT JOIN transaction t ON t.txn_id=h.txn_id
+        LEFT JOIN transaction_code d ON d.txn_code_id=t.txn_code
+        LEFT JOIN (SELECT o.user_id,SUM(o.order_price_total) AS ORDER_TOTAL FROM user_order o WHERE o.user_id=(SELECT cus_id FROM customer WHERE login_id='2077150008')) o ON o.user_id=c.cus_id
+        WHERE c.cus_id=(SELECT cus_id FROM customer WHERE login_id='${u_id}')) b ON b.cus_id =c.cus_id 
+        WHERE c.login_id='${u_id}' AND c.cus_pass='${u_pw}'`;
+       // const sqlCom=`SELECT * FROM customer where login_id='${u_id}' AND cus_pass='${u_pw}'`;
+
+    await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er)
         console.log(re);
         // console.log(re[0].cus_name);
