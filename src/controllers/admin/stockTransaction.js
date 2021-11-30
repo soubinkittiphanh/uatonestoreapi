@@ -13,18 +13,18 @@ const createStockTransaction=async(req,res)=>{
     let i=0;
     tranastion_data.forEach(el=>{
         console.log("start i "+i);
-        let cardText=el.replaceAll("\\","|");
+        // let cardText=el.replaceAll("\\","|");
         // let cardText=el.replaceAll(" ","|");
-        console.log("===>: "+cardText);
+        // console.log("===>: "+cardText);
         if(i==tranastion_data.length-1){
             //Last row
             // sqlSurveyElement=sqlSurveyElement+`'${el}'`
-            sqlSurveyElement=sqlSurveyElement+`'${cardText}'`
-            sqlCom=sqlCom+`(${card_type},'${cardText}',0,${inputter},'${product_id}');`;
+            sqlSurveyElement=sqlSurveyElement+`'${el}'`
+            sqlCom=sqlCom+`(${card_type},'${el}',0,${inputter},'${product_id}');`;
         }else{
             // sqlSurveyElement=sqlSurveyElement+`'${el}',`
-            sqlSurveyElement=sqlSurveyElement+`'${cardText}',`
-            sqlCom=sqlCom+`(${card_type},'${cardText}',0,${inputter},'${product_id}'),`;
+            sqlSurveyElement=sqlSurveyElement+`'${el}',`
+            sqlCom=sqlCom+`(${card_type},'${el}',0,${inputter},'${product_id}'),`;
         }
         i=i+1;
         
