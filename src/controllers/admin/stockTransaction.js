@@ -14,6 +14,8 @@ const createStockTransaction=async(req,res)=>{
     tranastion_data.forEach(el=>{
         console.log("start i "+i);
         let cardText=el.replaceAll(" ","|");
+        // let cardText=el.replaceAll(" ","|");
+        console.log("===>: "+cardText);
         if(i==tranastion_data.length-1){
             //Last row
             // sqlSurveyElement=sqlSurveyElement+`'${el}'`
