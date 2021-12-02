@@ -61,7 +61,7 @@ const balanceInquiry = async (req, res) => {
         if (er) return res.send("Error: " + er.message);
         let bal=re[0]['balance']
         console.log(bal);
-        res.send(re);
+        res.json({"bal":bal});
     })
 }
 module.exports = {
