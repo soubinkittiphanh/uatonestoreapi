@@ -45,9 +45,27 @@ const updatePassword = async (req, res) => {
         res.send("Transaction completed");
     })
 }
+const balanceInquiry = async (req, res) => {
+    console.log(req.body);
+    const body = req.body
+    const userId = body.user_id;
+    const sqlCom=`SELECT c.cus_id,((b.DEBIT+b.ORDER_TOTAL)-b.CREDIT) AS balance, b.CREDIT AS credit FROM customer c 
+    LEFT JOIN(SELECT c.cus_id,c.cus_name,h.txn_his_amount,h.user_id,h.txn_his_date,t.txn_id,t.txn_name,t.txn_code,d.txn_code_id,d.txn_code_name,d.txn_sign,SUM(IF(d.txn_sign='DR',h.txn_his_amount,0)) AS DEBIT,SUM(IF(d.txn_sign='CR',h.txn_his_amount,0))AS CREDIT,o.ORDER_TOTAL FROM customer c
+        LEFT JOIN transaction_history h ON h.user_id=c.cus_id
+        LEFT JOIN transaction t ON t.txn_id=h.txn_id
+        LEFT JOIN transaction_code d ON d.txn_code_id=t.txn_code
+        LEFT JOIN (SELECT o.user_id,SUM(o.order_price_total) AS ORDER_TOTAL FROM user_order o WHERE o.user_id=(SELECT cus_id FROM customer WHERE cus_id='${userId}')) o ON o.user_id=c.cus_id
+        WHERE c.cus_id=(SELECT cus_id FROM customer WHERE cus_id='${userId}')) b ON b.cus_id =c.cus_id 
+        WHERE c.cus_id='${userId}'`
+    await Db.query(sqlCom, (er, re) => {
+        if (er) return res.send("Error: " + er.message);
+        res.send(re);
+    })
+}
 module.exports = {
     updateUserName,
     updateTel,
     updateEmail,
     updatePassword,
+    balanceInquiry,
 }
