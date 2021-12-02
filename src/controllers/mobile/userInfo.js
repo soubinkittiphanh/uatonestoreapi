@@ -59,7 +59,8 @@ const balanceInquiry = async (req, res) => {
         WHERE c.cus_id='${userId}'`
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er.message);
-        res.send(re[0]["balance"]);
+        let bal=re[0]['balance']
+        res.send(bal);
     })
 }
 module.exports = {
