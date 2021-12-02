@@ -63,7 +63,7 @@ const balanceInquiry = async (req, res) => {
         let credit=re[0]['credit']
         let debit=re[0]['debit']
         console.log(bal);
-        res.json({"bal":bal,"credit":credit,"debit":debit});
+        res.json(re);
     })
 }
 module.exports = {
