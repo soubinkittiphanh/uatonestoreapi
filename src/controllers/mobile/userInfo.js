@@ -60,6 +60,7 @@ const balanceInquiry = async (req, res) => {
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er.message);
         let bal=re[0]['balance']
+        console.log(bal);
         res.send(re);
     })
 }
