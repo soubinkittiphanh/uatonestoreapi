@@ -99,6 +99,7 @@ const updateUserInfo=async (app)=>{
     app.post('/userpass_e',UserInfo.updatePassword)
     app.post('/useremail_e',UserInfo.updateEmail)
     app.post('/userbalance_f',UserInfo.balanceInquiry)
+    app.post('/resetpassword_e',UserInfo.resetPasswordByPhone)
 }
 const fetchStockCategory=async (app)=>{
     app.get('/stockcate_f',StockCate.fetchStockCategory)

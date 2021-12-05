@@ -66,10 +66,24 @@ const balanceInquiry = async (req, res) => {
         res.json(re);
     })
 }
+const resetPasswordByPhone = async (req, res) => {
+    console.log(req.body);
+    const body = req.body
+    const userPhone = body.user_phone.substring(body.user_phone.length-8);
+
+    const userPass = body.password;
+    console.log("PHONE: "+userPhone);
+    const sqlCom=`UPDATE customer SET cus_pass='${userPass}' WHERE cus_tel LIKE '%${userPhone}'`
+    await Db.query(sqlCom, (er, re) => {
+        if (er) return res.send("Error: " + er.message);
+        res.send("Transaction completed");
+    })
+}
 module.exports = {
     updateUserName,
     updateTel,
     updateEmail,
     updatePassword,
     balanceInquiry,
+    resetPasswordByPhone
 }
