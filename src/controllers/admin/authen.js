@@ -4,6 +4,8 @@ const Authmember = async (req, res) => {
     const body = req.body;
     const u_id = body.mem_id;
     const u_pw = body.mem_pwd;
+    console.log("mem_id: "+u_id);
+    console.log("mem_password: "+u_pw);
     console.log("login credential: "+body);
     await Db.query(`SELECT * FROM user_account where user_id='${u_id}' AND user_pass='${u_pw}'`, (er, re) => {
         if (er) return res.send("Error: " + er)
