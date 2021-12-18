@@ -81,11 +81,20 @@ const fetchOrder = async (req, res) => {
 
 
 }
-const fetchOrderById = async (req, res) => {
+const fetchOrderByDate = async (req, res) => {
+    const body = req.body;
+    const selectedDate=body.date
+    console.log("************* LOAD ORDER BY DATE *****************");
+    console.log(`*************Payload: ${selectedDate} *****************`);
 
+    await Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.txn_date ='${selectedDate}' ORDER BY o.order_id DESC`, (er, re) => {
+        if (er) return res.send("Error: " + er)
+        res.send(re);
+    })
 }
 
 module.exports = {
     createOrder,
     fetchOrder,
+    fetchOrderByDate
 }

@@ -93,6 +93,7 @@ const login = async (app) => {
 const userorder=async (app)=>{
     app.post('/order_i',OrderUser.createOrder)
     app.get('/order_f',OrderUser.fetchOrder)
+    app.get('/order_date_f',OrderUser.fetchOrderByDate)
 }
 const updateUserInfo=async (app)=>{
     app.post('/username_e',UserInfo.updateUserName)
