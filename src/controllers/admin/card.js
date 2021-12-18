@@ -11,9 +11,10 @@ const deleteCard = async (req, res) => {
 }
 
 const fetchCard=async(req,res)=>{
+    const proId=req.query.pro_id
     console.log("************* LOAD CARD *****************");
-    console.log(`*************Payload: NULL *****************`);
-    await Db.query("SELECT * FROM card",(er,re)=>{
+    console.log(`*************Payload: ${proId} *****************`);
+    await Db.query(`SELECT * FROM card WHERE product_id='${proId}'`,(er,re)=>{
         if (er) return res.send("Error: "+er)
         res.send(re);
     })
