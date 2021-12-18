@@ -16,6 +16,7 @@ const OrderUser=require('../controllers/client/userOrder')
 const UserInfo=require('../controllers/mobile/userInfo')
 const StockCate=require('../controllers/admin/stockCategory')
 const StockMethod=require('../controllers/admin/stockTransaction')
+const Card=require('../controllers/admin/card')
 const UserInbox=require('../controllers/client/userInbox')
 const RegisterCustomer=require('../controllers/client/register')
 const multer = require('multer')
@@ -119,6 +120,12 @@ const registerCus=async (app)=>{
     app.post('/register_i',RegisterCustomer.createCustomer)
 
 }
+const card=async (app)=>{
+
+    app.post('/card_x',Card.deleteCard)
+    app.post('/card_f',Card.fetchCard)
+
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -152,4 +159,5 @@ module.exports = {
     stockAction,
     userIbox,
     registerCus,
+    card,
 }
