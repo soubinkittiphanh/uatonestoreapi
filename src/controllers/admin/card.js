@@ -3,7 +3,7 @@ const deleteCard = async (req, res) => {
     const card_id = req.body.card_id;
  console.log("************* CARD DELETE *****************");
  console.log(`*************Payload: ${card_id} *****************`);
-    await Db.query(`DELETE FROM CARD WHERE id = '${card_id}'`, (er, re) => {
+    await Db.query(`DELETE FROM card WHERE id = '${card_id}'`, (er, re) => {
         if (er) res.send("Error: " + er);
         return res.send("Transaction completed")
     })
