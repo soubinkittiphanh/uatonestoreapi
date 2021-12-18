@@ -3,10 +3,15 @@ const deleteCard = async (req, res) => {
     const card_id = req.body.card_id;
  console.log("************* CARD DELETE *****************");
  console.log(`*************Payload: ${card_id} *****************`);
-    await Db.query(`DELETE FROM card WHERE id = '${card_id}'`, (er, re) => {
+ const sqlCom=`INSERT INTO card_his( card_type_code, product_id, card_number, card_isused, inputter) SELECT card_type_code, product_id, card_number, card_isused, inputter card WHERE card.id = '${card_id}'`
+await Db.query(sqlCom,(er,re)=>{
+    if(er) return res.send("Error: "+e)
+    Db.query(`DELETE FROM card WHERE id = '${card_id}'`, (er, re) => {
         if (er) res.send("Error: " + er);
         return res.send("Transaction completed")
     })
+ })
+    
     
 }
 
