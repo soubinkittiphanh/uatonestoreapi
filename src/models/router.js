@@ -123,7 +123,7 @@ const registerCus=async (app)=>{
 const card=async (app)=>{
 
     app.post('/card_x',Card.deleteCard)
-    app.post('/card_f',Card.fetchCard)
+    app.get('/card_f',Card.fetchCard)
 
 }
 function authentication(req, res, next) {
