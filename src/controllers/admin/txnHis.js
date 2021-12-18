@@ -1,8 +1,11 @@
 const Db = require('../../config/dbcon');
 
 const createTxnHis = async (req, res) => {
-    console.log(req.body);
+
     const body = req.body
+    console.log("************* CREATE TXN_HISTORY *****************");
+    console.log(`*************Payload: ${body.txn_his_inputter} *****************`);
+    console.log(req.body);
     let txn_his_id = body.txn_his_id;
     const txn_id = body.txn_id;
     const txn_his_amount = body.txn_his_amount;
