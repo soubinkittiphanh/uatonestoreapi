@@ -83,7 +83,7 @@ const fetchOrder = async (req, res) => {
 }
 const fetchOrderByDate = async (req, res) => {
     const body = req.body;
-    const selectedDate=body.date
+    const selectedDate=req.query.date
     console.log("************* LOAD ORDER BY DATE *****************");
     console.log(`*************Payload: ${selectedDate} *****************`);
 
