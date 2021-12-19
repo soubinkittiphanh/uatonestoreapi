@@ -69,7 +69,7 @@ const createOrder = async (req, res) => {
 }
 const generateQR = () => {
     let QRCode = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 16; i++) {
         const subQR = getRandomInt(10)
         QRCode.push(subQR);
 
