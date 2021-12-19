@@ -2,6 +2,9 @@ const Db = require('../../config/dbcon')
 const OrderHelper = require('../../helper/mobile/orderHelper')
 const createOrder = async (req, res) => {
     const body = req.body;
+
+    console.log("************* CREATE ORDER *****************");
+    console.log(`*************Payload: ${body} *****************`);
     const user_id = body.user_id;
     const cart_data = body.cart_data;
     console.log("data: " + req.body.cart_data);
@@ -37,6 +40,7 @@ const createOrder = async (req, res) => {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
             const QRCode =generateQR()
+            console.log("QRCode: "+ QRCode);
             sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price,qrcode) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
         }
         //update order table
