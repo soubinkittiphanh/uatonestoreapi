@@ -26,7 +26,7 @@ const createOrder = async (req, res) => {
             const count_stock = await OrderHelper.checkStockAvailability(el.product_id, el.product_amount);
             if (count_stock != 200) {
                 console.log("STOCK STATUS CODE: " + count_stock);
-                return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າ "+el.product_id+" ບໍ່ພຽງພໍ" : "Connection Error");
+                return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າ " + el.product_id + " ບໍ່ພຽງພໍ" : "Connection Error");
             }
             console.log("count_stock first: " + count_stock);
             console.log("start i " + i);
@@ -36,7 +36,8 @@ const createOrder = async (req, res) => {
             } else {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price},${el.order_price_total}),`;
             }
-            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price) SELECT c.card_number,'${genOrderId}','${el.product_price}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+            const QRCode =generateQR()
+            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price,qrcode) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
         }
         //update order table
         Db.query(sqlCom, (er, re) => {
@@ -57,8 +58,8 @@ const createOrder = async (req, res) => {
                     return res.send("Error: " + er)
                 }
                 //update stock value
-                Db.query("UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)",(er,re)=>{
-                    if(er)return res.send("Error: Cannot update stock "+er)
+                Db.query("UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)", (er, re) => {
+                    if (er) return res.send("Error: Cannot update stock " + er)
                     res.send("Transaction completed");
                 })
             })
@@ -66,7 +67,24 @@ const createOrder = async (req, res) => {
 
     });
 }
+const generateQR = () => {
+    let QRCode = [];
+    for (let i = 0; i < 15; i++) {
+        const subQR = getRandomInt(10)
+        QRCode.push(subQR);
 
+    }
+    let QRCodeStr = '';
+    for (let i = 0; i < QRCode.length; i++) {
+        const element = QRCode[i];
+        QRCodeStr += element
+
+    }
+    return QRCodeStr;
+}
+const getRandomInt = (max) => {
+    return Math.floor(Math.random() * max);
+}
 const updateOrder = async (req, res) => {
 
 }
@@ -83,7 +101,7 @@ const fetchOrder = async (req, res) => {
 }
 const fetchOrderByDate = async (req, res) => {
     const body = req.body;
-    const selectedDate=req.query.date
+    const selectedDate = req.query.date
     console.log("************* LOAD ORDER BY DATE *****************");
     console.log(`*************Payload: ${selectedDate} *****************`);
 
