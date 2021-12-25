@@ -41,7 +41,7 @@ const createOrder = async (req, res) => {
             }
             const QRCode =generateQR()
             console.log("QRCode: "+ QRCode);
-            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price,qrcode) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
         }
         //update order table
         Db.query(sqlCom, (er, re) => {
