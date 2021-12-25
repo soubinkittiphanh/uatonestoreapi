@@ -3,9 +3,7 @@ const Db = require('../../config/dbcon')
 const fetchInbox=async(req,res)=>{
     const body =req.query;
     const custId=body.cust_id;
-    const sqlCom=`SELECT s.*,p.pro_category FROM card_sale s WHERE s.card_order_id IN (SELECT order_id FROM user_order WHERE user_id='${custId}') 
-    LEFT JOIN product p ON p.pro_id=s.pro_id
-    ORDER BY s.id DESC`
+    const sqlCom=`SELECT s.*,p.pro_category FROM card_sale s LEFT JOIN product p ON p.pro_id=s.pro_id WHERE s.card_order_id IN (SELECT order_id FROM user_order WHERE user_id='${custId}') ORDER BY s.id DESC`
     await Db.query(sqlCom,(er,re)=>{
         if(er) return res.send("Error: "+er)
         res.send(re);
