@@ -49,7 +49,7 @@ const balanceInquiry = async (req, res) => {
     console.log(req.body);
     const body = req.body
     const userId = body.user_id;
-    const sqlCom=`SELECT c.cus_id,b.DEBIT+b.ORDER_TOTAL AS debit,b.CREDIT AS credit,(b.CREDIT-(b.DEBIT+b.ORDER_TOTAL)) AS balance FROM customer c 
+    const sqlCom=`SELECT c.cus_id,IFNULL(b.DEBIT+b.ORDER_TOTAL,0) AS debit,IFNULL(b.CREDIT,0) AS credit,IFNULL((b.CREDIT-(b.DEBIT+b.ORDER_TOTAL)),0) AS balance FROM customer c 
     LEFT JOIN(SELECT c.cus_id,c.cus_name,h.txn_his_amount,h.user_id,h.txn_his_date,t.txn_id,t.txn_name,t.txn_code,d.txn_code_id,d.txn_code_name,d.txn_sign,SUM(IF(d.txn_sign='DR',h.txn_his_amount,0)) AS DEBIT,SUM(IF(d.txn_sign='CR',h.txn_his_amount,0))AS CREDIT,o.ORDER_TOTAL FROM customer c
         LEFT JOIN transaction_history h ON h.user_id=c.cus_id
         LEFT JOIN transaction t ON t.txn_id=h.txn_id
