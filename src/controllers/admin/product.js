@@ -78,13 +78,15 @@ const updateProd = async (req, res) => {
     })
 }
 const fetchProd = async (req, res) => {
-    await Db.query(`SELECT p.*,c.categ_name,IFNULL(i.img_name,'No image') AS img_name,i.img_path,IFNULL(d.card_count,0) AS card_count FROM product p 
+    const sqlCom=`SELECT p.*,c.categ_name,IFNULL(i.img_name,'No image') AS img_name,i.img_path,IFNULL(d.card_count,0) AS card_count ,IFNULL(s.cnt,0) AS sale_count FROM product p 
     LEFT JOIN product_category c ON c.categ_id=p.pro_category 
     LEFT JOIN image_path i ON i.pro_id=p.pro_id
+    LEFT JOIN  (SELECT IFNULL(COUNT(pro_id),0) AS cnt,pro_id FROM card_sale GROUP BY pro_id ) s ON s.pro_id=p.pro_id 
     LEFT JOIN (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d
                LEFT JOIN card_sale cs ON cs.card_code=d.card_number
                GROUP BY d.product_id) d 
-    ON d.card_pro_id=p.pro_id;`, (er, re) => {
+    ON d.card_pro_id=p.pro_id;`;
+    await Db.query(sqlCom, (er, re) => {
         if (er) return res.send('SQL ' + er)
         res.send(re)
     })
