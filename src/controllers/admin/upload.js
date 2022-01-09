@@ -29,7 +29,14 @@ const single = async (req, res) => {
     var src = fs.createReadStream(tmp_path);
     var dest = fs.createWriteStream(target_path);
     src.pipe(dest);
-    src.on('end', () => { res.send('Transaction complete'); });
+    src.on('end', async() => { 
+        const sqlCom=`INSERT INTO image_path_ad(img_name,img_path)VALUES('${rndName+ req.file.originalname}','${target_path}')`
+        await Db.query(sqlCom, (er, re) => {
+            if (er) return res.send("Error: " + er);
+            return res.send("Transaction completed");
+        })
+        // res.send('Transaction complete'); 
+    });
     src.on('error', (err) => { res.send('error'); });
 }
 

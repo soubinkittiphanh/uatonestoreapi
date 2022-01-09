@@ -2,8 +2,10 @@ const Db = require('../../config/dbcon');
 const createAd = async (req, res) => {
     const body = req.body
     const img_name = body.img_name;
+    const img_pth=body.img_pth;
     // const img_name=body.img_name;
-    await Db.query('', (er, re) => {
+    const sqlCom=`INSERT INTO image_path_ad(img_name,img_path)VALUES('${img_name}','${img_pth}')`
+    await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er);
         return res.send("Transaction completed");
     })
