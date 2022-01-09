@@ -11,16 +11,25 @@ const single = async (req, res) => {
     console.log('=>   File name: ' + req.file.originalname);
     console.log('=>   File path: ' + req.file.path);
     var tmp_path = req.file.path;
+    const rndName = Date.now();
 
     /** The original name of the uploaded file
      stored in the variable "originalname". **/
-    var target_path = 'uploads/' + req.file.originalname;
+    var target_path = 'uploads/' +rndName+ req.file.originalname;
+    //customize upload 
+    // fs.rename(oldpath, newpath, function (err) {
+    //     if (err) {
+    //         console.log('Error: ' + err);
+    //         return res.send('Error: ' + err)
+    //         // throw err;
+    //     }
+    // });
 
     /** A better way to copy the uploaded file. **/
     var src = fs.createReadStream(tmp_path);
     var dest = fs.createWriteStream(target_path);
     src.pipe(dest);
-    src.on('end', () => { res.send('complete'); });
+    src.on('end', () => { res.send('Transaction complete'); });
     src.on('error', (err) => { res.send('error'); });
 }
 
