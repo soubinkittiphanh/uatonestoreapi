@@ -29,6 +29,7 @@ const buildApp = async () => {
     Router.userIbox(app);
     Router.registerCus(app);
     Router.card(app);
+    Router.advertise(app);
     return app;
 }
 
