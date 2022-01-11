@@ -21,7 +21,7 @@ const markChatAsReaded = async (req, res) => {
 
     console.log("************* MARK CHAT  *****************");
     console.log(`*************Payload: ${body.chat_id} *****************`);
-    const sqlCom = `UPDATE  chat SET chat_isread=1 WHERE id=${chat_id}`
+    const sqlCom = `UPDATE  chat SET chat_isread=1,read_time='' WHERE id=${chat_id}`
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send("Transaction completed");
