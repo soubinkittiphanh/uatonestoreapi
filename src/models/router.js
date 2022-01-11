@@ -140,10 +140,10 @@ const bank=async (app)=>{
     app.post('/bank_acc_c',Bank.createBankAcc)
     app.get('/bank_acc_f_id',Bank.fetchBankAccByID)
     app.get('/bank_acc_f_user_id',Bank.fetchBankAccByUserID)
+    app.get('/bank_acc_u',Bank.updateBankAcc)
     app.get('/bank_com_f',Bank.fetchBanks)
     app.post('/bank_com_c',Bank.createBankID)
-    app.get('/bank_com_f',Bank.updateBankID)
-    app.get('/bank_acc_u',Bank.updateBankAcc)
+    app.get('/bank_com_u',Bank.updateBankID)
 
 
 }
