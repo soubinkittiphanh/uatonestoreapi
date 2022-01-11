@@ -21,6 +21,7 @@ const Adv=require('../controllers/admin/advertise')
 const UserInbox=require('../controllers/client/userInbox')
 const Bank=require('../controllers/client/bank')
 const ChatType=require('../controllers/client/chatType')
+const Chat=require('../controllers/client/chats')
 const RegisterCustomer=require('../controllers/client/register')
 const multer = require('multer')
 
@@ -153,6 +154,11 @@ const chatType=async(app)=>{
     app.post('/chattype_u',ChatType.updateChatType)
     app.post('/chattype_c',ChatType.createChatType)
 }
+const chat=async(app)=>{
+    app.post('/chat_f',Chat.createChat)
+    app.get('/chat_u',Chat.fetchChat)
+    app.post('/chat_c',Chat.fetchChatByID)
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -189,5 +195,6 @@ module.exports = {
     card,
     advertise,
     bank,
-    chatType
+    chatType,
+    chat,
 }

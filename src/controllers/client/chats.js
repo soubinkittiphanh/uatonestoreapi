@@ -18,7 +18,11 @@ const createChat = async (req, res) => {
 const fetchChat = async (req, res) => {
 
     console.log("************* FETCH CHAT *****************");
-    const sqlCom = `SELECT * FROM chat`
+    const sqlCom = `SELECT m.* ,bc.bank_acc_id,bc.bank_acc_name,bc.bank_id,b.bank_name,c.cus_name,c.cus_tel FROM chat m LEFT JOIN customer c ON c.cus_id=m.user_id
+    LEFT JOIN bank_account bc ON bc.user_id=m.user_id
+    LEFT JOIN bank b ON b.code=bc.bank_id
+    
+    `
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er);
         res.send(re);

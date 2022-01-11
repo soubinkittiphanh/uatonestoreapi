@@ -32,6 +32,7 @@ const buildApp = async () => {
     Router.advertise(app);
     Router.bank(app);
     Router.chatType(app);
+    Router.chat(app);
     return app;
 }
 
