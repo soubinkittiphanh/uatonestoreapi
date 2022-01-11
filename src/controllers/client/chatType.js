@@ -34,7 +34,7 @@ const updateChatType=async(req,res)=>{
 const fetchChatType=async(req,res)=>{
     
     console.log("************* FETCH CHAT TYPE *****************");
-    console.log(`*************Payload: ${body.chat_type_id} *****************`);
+    console.log(`*************Payload: NONE *****************`);
     const sqlCom=`SELECT * FROM chat_type`
     await Db.query(sqlCom,(er,re)=>{
         if(er) return res.send("Error: "+er);
