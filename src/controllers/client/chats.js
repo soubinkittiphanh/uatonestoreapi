@@ -21,8 +21,8 @@ const markChatAsReaded = async (req, res) => {
 
     console.log("************* MARK CHAT  *****************");
     console.log(`*************Payload: ${body.chat_id} *****************`);
-    const currentDate=Date.prototype.toMysqlFormat();
-    console.log("Date: "+currentDate.toString());
+    // const currentDate=Date.prototype.toMysqlFormat();
+    // console.log("Date: "+currentDate.toString());
     const sqlCom = `UPDATE  chat SET chat_isread=1 WHERE id=${chat_id}`
     
     await Db.query(sqlCom, (er, re) => {
