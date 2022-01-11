@@ -143,7 +143,7 @@ const bank=async (app)=>{
     app.get('/bank_acc_u',Bank.updateBankAcc)
     app.get('/bank_com_f',Bank.fetchBanks)
     app.post('/bank_com_c',Bank.createBankID)
-    app.get('/bank_com_u',Bank.updateBankID)
+    app.post('/bank_com_u',Bank.updateBankID)
 
 
 }
