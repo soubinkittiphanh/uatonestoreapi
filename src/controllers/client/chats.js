@@ -1,4 +1,5 @@
-const Db = require('../../config/dbcon')
+const Db = require('../../config/dbcon');
+const { chat } = require('../../models/router');
 
 const createChat = async (req, res) => {
     const body = req.body;
@@ -9,6 +10,18 @@ const createChat = async (req, res) => {
     console.log(`*************Payload: ${body.chat_type_id} *****************`);
     const custId = body.cust_id;
     const sqlCom = `INSERT INTO chat( msg_type, chat_message, user_id, chat_isread) VALUES ('${chat_type_id}','${chat_msg}','${chat_user_id}',0)`
+    await Db.query(sqlCom, (er, re) => {
+        if (er) return res.send("Error: " + er)
+        res.send("Transaction completed");
+    })
+}
+const markChatAsReaded = async (req, res) => {
+    const body = req.body;
+    const chat_id = body.chat_id;
+
+    console.log("************* MARK CHAT  *****************");
+    console.log(`*************Payload: ${body.chat_id} *****************`);
+    const sqlCom = `UPDATE  chat SET chat_isread=1 WHERE id=${chat_id})`
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send("Transaction completed");
@@ -42,4 +55,5 @@ module.exports = {
     createChat,
     fetchChat,
     fetchChatByID,
+    markChatAsReaded,
 }
