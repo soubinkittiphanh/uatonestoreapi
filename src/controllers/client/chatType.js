@@ -20,11 +20,11 @@ const updateChatType=async(req,res)=>{
     const chat_type_id=body.chat_type_id;
     const chat_type_code=body.chat_type_code;
     const chat_type_name=body.chat_type_name;
-    const chat_type_remart=body.chat_type_remart;
+    const chat_type_remark=body.chat_type_remark;
     console.log("************* UPDATE CHAT TYPE *****************");
     console.log(`*************Payload: ${body.chat_type_id} *****************`);
     
-    const sqlCom=`UPDATE chat_type SET  name='${chat_type_name}', remark='${chat_type_remart}',code='${chat_type_code}' WHERE id='${chat_type_id}'`
+    const sqlCom=`UPDATE chat_type SET  name='${chat_type_name}', remark='${chat_type_remark}',code='${chat_type_code}' WHERE id='${chat_type_id}'`
     
     await Db.query(sqlCom,(er,re)=>{
         if(er) return res.send("Error: "+er);
