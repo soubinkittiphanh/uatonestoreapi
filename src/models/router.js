@@ -157,7 +157,7 @@ const chatType=async(app)=>{
 const chat=async(app)=>{
     app.post('/chat_c',Chat.createChat)
     app.get('/chat_f',Chat.fetchChat)
-    app.get('/chat_m',Chat.markChatAsReaded)
+    app.post('/chat_m',Chat.markChatAsReaded)
     app.post('/chat_c',Chat.fetchChatByID)
 }
 function authentication(req, res, next) {
