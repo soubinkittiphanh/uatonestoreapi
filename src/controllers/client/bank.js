@@ -22,7 +22,7 @@ const updateBankID = async (req, res) => {
     const bnk_remark = body.bnk_remark;
     console.log("************* UPDATE BANK ID *****************");
     console.log(`*************Payload: ${body} *****************`);
-    const sqlCom = `UPDATE  bank SET code='${bnk_code}', bank_name='${bnk_name}', bank_remark='${bnk_remark}' code='${bnk_code}' WHERE id=${bnk_id}`
+    const sqlCom = `UPDATE  bank SET code='${bnk_code}', bank_name='${bnk_name}', bank_remark='${bnk_remark}', code='${bnk_code}' WHERE id=${bnk_id}`
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er);
         res.send("Transaction completed");
