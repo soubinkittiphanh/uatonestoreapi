@@ -21,7 +21,7 @@ const markChatAsReaded = async (req, res) => {
 
     console.log("************* MARK CHAT  *****************");
     console.log(`*************Payload: ${body.chat_id} *****************`);
-    const currentDate=Date.now;
+    const currentDate=Date.prototype.toMysqlFormat();
     console.log("Date: "+currentDate.toString());
     const sqlCom = `UPDATE  chat SET chat_isread=1 WHERE id=${chat_id}`
     
@@ -30,6 +30,9 @@ const markChatAsReaded = async (req, res) => {
         res.send("Transaction completed");
     })
 }
+Date.prototype.toMysqlFormat = ()=> {
+    return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+};
 
 const fetchChat = async (req, res) => {
 
