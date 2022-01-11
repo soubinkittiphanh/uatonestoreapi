@@ -18,6 +18,7 @@ const updateAd=async(req,res)=>{
     const id=body.id;
     const isactive=body.active;
     const sqlCom=`UPDATE image_path_ad SET isactive='${isactive}' WHERE id=${id}`
+    console.log(sqlCom);
     await Db.query(sqlCom,(er,re)=>{
         if(er)return res.send("Error: "+er)
         res.send("Transaction completed");
