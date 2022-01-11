@@ -11,6 +11,8 @@ const single = async (req, res) => {
     console.log('=>   File: ' + req.file);
     console.log('=>   File name: ' + req.file.originalname);
     console.log('=>   File path: ' + req.file.path);
+    const body=req.FORM;
+    const remark=body.desc;
     var tmp_path = req.file.path;
     const rndName = Date.now();
 
@@ -31,7 +33,7 @@ const single = async (req, res) => {
     var dest = fs.createWriteStream(target_path);
     src.pipe(dest);
     src.on('end', async() => { 
-        const sqlCom=`INSERT INTO image_path_ad(img_name,img_path)VALUES('${rndName+ req.file.originalname}','${target_path}')`
+        const sqlCom=`INSERT INTO image_path_ad(img_name,img_path,remark)VALUES('${rndName+ req.file.originalname}','${target_path}','${remark}')`
         await Db.query(sqlCom, (er, re) => {
             if (er) return res.send("Error: " + er);
             return res.send("Transaction completed");
