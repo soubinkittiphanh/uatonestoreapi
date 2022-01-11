@@ -151,6 +151,7 @@ const bank=async (app)=>{
 const chatType=async(app)=>{
     app.get('/chattype_f',ChatType.fetchChatType)
     app.post('/chattype_u',ChatType.updateChatType)
+    app.post('/chattype_c',ChatType.createChatType)
 }
 function authentication(req, res, next) {
     console.log("Middleware");
