@@ -10,7 +10,21 @@ const fetchAd=async(req,res)=>{
         res.send(re);
     })
 }
+const updateAd=async(req,res)=>{
+
+    console.log("************* TOGGLE ADVERTISE *****************");
+    console.log(`*************Payload: NONE *****************`);
+    const body=req.body;
+    const id=body.id;
+    const isactive=body.active;
+    const sqlCom=`UPDATE image_path_ad SET isactive='${isactive}' WHERE id=${id}`
+    await Db.query(sqlCom,(er,re)=>{
+        if(er)return res.send("Error: "+er)
+        res.send("Transaction completed");
+    })
+}
 
 module.exports={
     fetchAd,
+    updateAd,
 }

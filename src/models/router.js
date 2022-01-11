@@ -131,6 +131,7 @@ const card=async (app)=>{
 const advertise=async (app)=>{
 
     app.get('/ad_f',Adv.fetchAd)
+    app.post('/ad_u',Adv.updateAd)
 
 }
 function authentication(req, res, next) {
