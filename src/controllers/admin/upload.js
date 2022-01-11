@@ -4,6 +4,7 @@ const path = require('path');
 // const { env } = require('process');
 const Db = require('../../config/dbcon')
 const env=require('../../config');
+const { log } = require('console');
 const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4000}` });
 
 const single = async (req, res) => {
@@ -11,7 +12,10 @@ const single = async (req, res) => {
     console.log('=>   File: ' + req.file);
     console.log('=>   File name: ' + req.file.originalname);
     console.log('=>   File path: ' + req.file.path);
-    const remark=body;
+    const remark=req.body;
+    console.log("BODY: "+remark.desc);
+    console.log("BODY: "+remark);
+    console.log("FORM: "+req.FORM);
     var tmp_path = req.file.path;
     const rndName = Date.now();
 
