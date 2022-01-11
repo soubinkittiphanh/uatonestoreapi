@@ -12,9 +12,9 @@ const fetchAd=async(req,res)=>{
 }
 const updateAd=async(req,res)=>{
 
-    console.log("************* TOGGLE ADVERTISE *****************");
-    console.log(`*************Payload: NONE *****************`);
     const body=req.body;
+    console.log("************* TOGGLE ADVERTISE *****************");
+    console.log(`*************Payload: ${body} *****************`);
     const id=body.id;
     const isactive=body.active;
     const sqlCom=`UPDATE image_path_ad SET isactive='${isactive}' WHERE id=${id}`
