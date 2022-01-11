@@ -8,8 +8,8 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 
 const single = async (req, res) => {
     // const body=req.FORM;
-    console.log('=>   Upload/'+req.FORM);
-    console.log('=>   Dataform/'+req.dataForm);
+    console.log('=>   Upload/');
+    console.log('=>   Dataform/'+req.file.form);
     console.log('=>   File: ' + req.file);
     console.log('=>   File name: ' + req.file.originalname);
     console.log('=>   File path: ' + req.file.path);
@@ -19,7 +19,7 @@ const single = async (req, res) => {
 
     /** The original name of the uploaded file
      stored in the variable "originalname". **/
-    var target_path = 'uploads/' +rndName+ req.file.originalname;
+    var target_path = 'uploads/' +rndName+ req.file.file.originalname;
     //customize upload 
     // fs.rename(oldpath, newpath, function (err) {
     //     if (err) {
@@ -34,7 +34,7 @@ const single = async (req, res) => {
     var dest = fs.createWriteStream(target_path);
     src.pipe(dest);
     src.on('end', async() => { 
-        const sqlCom=`INSERT INTO image_path_ad(img_name,img_path,remark)VALUES('${rndName+ req.file.originalname}','${target_path}','${remark}')`
+        const sqlCom=`INSERT INTO image_path_ad(img_name,img_path,remark)VALUES('${rndName+ req.file.file.originalname}','${target_path}','${remark}')`
         await Db.query(sqlCom, (er, re) => {
             if (er) return res.send("Error: " + er);
             return res.send("Transaction completed");
