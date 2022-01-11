@@ -30,6 +30,7 @@ const buildApp = async () => {
     Router.registerCus(app);
     Router.card(app);
     Router.advertise(app);
+    Router.bank(app);
     return app;
 }
 

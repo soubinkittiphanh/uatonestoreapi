@@ -19,6 +19,7 @@ const StockMethod=require('../controllers/admin/stockTransaction')
 const Card=require('../controllers/admin/card')
 const Adv=require('../controllers/admin/advertise')
 const UserInbox=require('../controllers/client/userInbox')
+const Bank=require('../controllers/client/bank')
 const RegisterCustomer=require('../controllers/client/register')
 const multer = require('multer')
 
@@ -134,6 +135,18 @@ const advertise=async (app)=>{
     app.post('/ad_u',Adv.updateAd)
 
 }
+const bank=async (app)=>{
+
+    app.post('/bank_acc_c',Bank.createBankAcc)
+    app.get('/bank_acc_f_id',Bank.fetchBankAccByID)
+    app.get('/bank_acc_f_user_id',Bank.fetchBankAccByUserID)
+    app.get('/bank_com_f',Bank.fetchBanks)
+    app.post('/bank_com_c',Bank.createBankID)
+    app.get('/bank_com_f',Bank.updateBankID)
+    app.get('/bank_acc_u',Bank.updateBankAcc)
+
+
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -169,4 +182,5 @@ module.exports = {
     registerCus,
     card,
     advertise,
+    bank,
 }
