@@ -13,9 +13,9 @@ const single = async (req, res) => {
     console.log('=>   File name: ' + req.file.originalname);
     console.log('=>   File path: ' + req.file.path);
     const remark=req.body;
-    console.log("BODY: "+remark);
-    console.log("BODY: "+remark);
     console.log("FORM: "+req.FORM);
+    console.log("BODY: "+remark);
+    console.log("BODY: "+remark.FORM);
     var tmp_path = req.file.path;
     const rndName = Date.now();
 
