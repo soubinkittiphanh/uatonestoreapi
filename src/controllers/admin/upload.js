@@ -9,7 +9,7 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 const single = async (req, res) => {
     // const body=req.FORM;
     console.log('=>   Upload/');
-    console.log('=>   Dataform/'+req.file.form);
+    console.log('=>   Dataform/'+req.file);
     console.log('=>   File: ' + req.file);
     console.log('=>   File name: ' + req.file.originalname);
     console.log('=>   File path: ' + req.file.path);
