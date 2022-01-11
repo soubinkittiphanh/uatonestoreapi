@@ -5,14 +5,14 @@ const createChatType=async(req,res)=>{
     
     const chat_type_code=body.chat_type_code;
     const chat_type_name=body.chat_type_name;
-    const chat_type_remart=body.chat_type_remart;
+    const chat_type_remark=body.chat_type_remark;
     console.log("************* CREATE CHAT TYPE *****************");
     console.log(`*************Payload: ${body.cust_id} *****************`);
     const custId=body.cust_id;
-    const sqlCom=`INSERT INTO chat_type( code, name, remark) VALUES ('${chat_type_code}','${chat_type_name}','${chat_type_remart}')`
+    const sqlCom=`INSERT INTO chat_type( code, name, remark) VALUES ('${chat_type_code}','${chat_type_name}','${chat_type_remark}')`
     await Db.query(sqlCom,(er,re)=>{
         if(er) return res.send("Error: "+er)
-        res.send(re);
+        res.send("Transaction completed");
     })
 }
 const updateChatType=async(req,res)=>{
