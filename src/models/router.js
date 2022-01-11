@@ -158,7 +158,7 @@ const chat=async(app)=>{
     app.post('/chat_c',Chat.createChat)
     app.get('/chat_f',Chat.fetchChat)
     app.post('/chat_m',Chat.markChatAsReaded)
-    app.post('/chat_c',Chat.fetchChatByID)
+    app.get('/chat_c',Chat.fetchChatByID)
 }
 function authentication(req, res, next) {
     console.log("Middleware");
