@@ -7,12 +7,12 @@ const env=require('../../config');
 const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4000}` });
 
 const single = async (req, res) => {
-    console.log('=>   Upload/');
+    const body=req.FORM;
+    console.log('=>   Upload/'+body);
     console.log('=>   File: ' + req.file);
     console.log('=>   File name: ' + req.file.originalname);
     console.log('=>   File path: ' + req.file.path);
-    const body=req.FORM;
-    const remark=body.desc;
+    const remark=body;
     var tmp_path = req.file.path;
     const rndName = Date.now();
 
