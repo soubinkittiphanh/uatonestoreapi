@@ -33,6 +33,7 @@ const buildApp = async () => {
     Router.bank(app);
     Router.chatType(app);
     Router.chat(app);
+    Router.walletTxn(app);
     return app;
 }
 

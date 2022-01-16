@@ -14,6 +14,7 @@ const Upload = require('../controllers/admin/upload')
 const Auth = require('../controllers/admin/authen')
 const OrderUser=require('../controllers/client/userOrder')
 const UserInfo=require('../controllers/mobile/userInfo')
+const WalletTxn=require('../controllers/mobile/walletTxn')
 const StockCate=require('../controllers/admin/stockCategory')
 const StockMethod=require('../controllers/admin/stockTransaction')
 const Card=require('../controllers/admin/card')
@@ -160,6 +161,9 @@ const chat=async(app)=>{
     app.post('/chat_m',Chat.markChatAsReaded)
     app.get('/chat_f_id',Chat.fetchChatByID)
 }
+const walletTxn=async(app)=>{
+    app.get('/wallettxn_crndr_f',Chat.createChat)
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -198,4 +202,5 @@ module.exports = {
     bank,
     chatType,
     chat,
+    walletTxn,
 }
