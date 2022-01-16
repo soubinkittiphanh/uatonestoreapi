@@ -162,7 +162,7 @@ const chat=async(app)=>{
     app.get('/chat_f_id',Chat.fetchChatByID)
 }
 const walletTxn=async(app)=>{
-    app.get('/wallettxn_crndr_f',Chat.createChat)
+    app.get('/wallettxn_crndr_f',WalletTxn.fetchWaletTxnCRnDR)
 }
 function authentication(req, res, next) {
     console.log("Middleware");
