@@ -14,7 +14,22 @@ const fetchWaletTxnCRnDR = async (req, res) => {
         res.send(re);
     })
 }
+const fetchWalletOrderTxn=async(req,res)=>{
+    console.log("************* FETCH WALLET TXN *****************");
+    console.log(`*************Payload: ${req.query.user_id} *****************`);
+    const userId = req.query.user_id;
+    const sqlCom=`SELECT o.* FROM user_order o WHERE user_id='${userId}' `
+    await Db.query(sqlCom, (er, re) => {
+        if (er) {
+            console.log("Error:  ");
+            return res.send("Error: " + er.message);
+        }
+        console.log("Transaction completed");
+        res.send(re);
+    })
+}
 
 module.exports={
     fetchWaletTxnCRnDR,
+    fetchWalletOrderTxn
 }

@@ -163,6 +163,7 @@ const chat=async(app)=>{
 }
 const walletTxn=async(app)=>{
     app.get('/wallettxn_crndr_f',WalletTxn.fetchWaletTxnCRnDR)
+    app.get('/wallettxn_order_f',WalletTxn.fetchWalletOrderTxn)
 }
 function authentication(req, res, next) {
     console.log("Middleware");
