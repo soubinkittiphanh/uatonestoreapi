@@ -15,7 +15,7 @@ const fetchWaletTxnCRnDR = async (req, res) => {
     })
 }
 const fetchWalletOrderTxn=async(req,res)=>{
-    console.log("************* FETCH WALLET TXN *****************");
+    console.log("************* FETCH WALLET ORDERS TXN *****************");
     console.log(`*************Payload: ${req.query.user_id} *****************`);
     const userId = req.query.user_id;
     const sqlCom=`SELECT o.* FROM user_order o WHERE user_id='${userId}' `
