@@ -9,6 +9,7 @@ const createProd = async (req, res) => {
     const pro_desc = body.pro_desc;
     const pro_status = +body.pro_status;
     const image_path = req.body.imagesObj;
+    const retail_percent = req.body.retail_percent||0.0;
     let sqlComImages = 'INSERT INTO image_path(pro_id, img_name, img_path)VALUES';
 
     //*****************  QUERY LAST PRODUCT ID SQL  *****************//
@@ -26,7 +27,7 @@ const createProd = async (req, res) => {
             else sqlComImages += `(${pro_id},'${i.name}','${i.path}'),`;
 
         });
-        const sqlCom = `INSERT INTO product(pro_category, pro_id, pro_name, pro_price, pro_desc, pro_status)VALUES('${pro_cat}','${pro_id}','${pro_name}','${pro_price}','${pro_desc}','${pro_status}');`
+        const sqlCom = `INSERT INTO product(pro_category, pro_id, pro_name, pro_price, pro_desc, pro_status,retail_cost_percent)VALUES('${pro_cat}','${pro_id}','${pro_name}','${pro_price}','${pro_desc}','${pro_status}','${retail_percent}');`
         //*****************  INSERT PRODUCT SQL  *****************//
         Db.query(sqlCom, (er, re) => {
             console.log("Execute:=>");
@@ -54,8 +55,9 @@ const updateProd = async (req, res) => {
     const pro_desc = body.pro_desc;
     const pro_status = +body.pro_status;
     const image_path = req.body.imagesObj;
+    const retail_percent = req.body.pro_retail_price||0.0;
     let sqlComImages = 'INSERT INTO image_path(pro_id, img_name, img_path)VALUES';
-    const sqlCom = `UPDATE product SET pro_category='${pro_cat}', pro_name='${pro_name}', pro_price='${pro_price}', pro_desc='${pro_desc}', pro_status='${pro_status}' WHERE pro_id='${pro_id}'`
+    const sqlCom = `UPDATE product SET pro_category='${pro_cat}', pro_name='${pro_name}', pro_price='${pro_price}', pro_desc='${pro_desc}', pro_status='${pro_status}',retail_cost_percent='${retail_percent}' WHERE pro_id='${pro_id}'`
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send('Error: ' + er)
 
