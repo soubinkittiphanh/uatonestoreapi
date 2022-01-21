@@ -56,7 +56,7 @@ const updateProd = async (req, res) => {
     const pro_desc = body.pro_desc;
     const pro_status = +body.pro_status;
     const image_path = req.body.imagesObj;
-    const retail_percent = body.pro_retail_price;
+    const retail_percent = body.pro_retail_price||0.0;
     let sqlComImages = 'INSERT INTO image_path(pro_id, img_name, img_path)VALUES';
     const sqlCom = `UPDATE product SET pro_category='${pro_cat}', pro_name='${pro_name}', pro_price='${pro_price}', pro_desc='${pro_desc}', pro_status='${pro_status}',retail_cost_percent='${retail_percent}' WHERE pro_id='${pro_id}'`
     console.log("************* UPDATE PRODUCT *****************");
