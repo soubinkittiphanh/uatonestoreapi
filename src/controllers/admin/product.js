@@ -11,7 +11,8 @@ const createProd = async (req, res) => {
     const image_path = req.body.imagesObj;
     const retail_percent = req.body.retail_percent||0.0;
     let sqlComImages = 'INSERT INTO image_path(pro_id, img_name, img_path)VALUES';
-
+    console.log("************* CREATE PRODUCT *****************");
+    console.log(`*************Payload: ${body} *****************`);
     //*****************  QUERY LAST PRODUCT ID SQL  *****************//
     await Db.query('SELECT MAX(pro_id) AS ID FROM product HAVING MAX(pro_id) IS NOT NULL', (er, re) => {
         console.log("=====> Processing product db");
@@ -55,9 +56,11 @@ const updateProd = async (req, res) => {
     const pro_desc = body.pro_desc;
     const pro_status = +body.pro_status;
     const image_path = req.body.imagesObj;
-    const retail_percent = req.body.pro_retail_price||0.0;
+    const retail_percent = body.pro_retail_price||0.0;
     let sqlComImages = 'INSERT INTO image_path(pro_id, img_name, img_path)VALUES';
     const sqlCom = `UPDATE product SET pro_category='${pro_cat}', pro_name='${pro_name}', pro_price='${pro_price}', pro_desc='${pro_desc}', pro_status='${pro_status}',retail_cost_percent='${retail_percent}' WHERE pro_id='${pro_id}'`
+    console.log("************* UPDATE PRODUCT *****************");
+    console.log(`*************Payload: ${req.body.imagesObj} *****************`);
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send('Error: ' + er)
 
