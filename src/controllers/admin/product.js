@@ -12,7 +12,7 @@ const createProd = async (req, res) => {
     const retail_percent = body.pro_retail_price||0.0;
     let sqlComImages = 'INSERT INTO image_path(pro_id, img_name, img_path)VALUES';
     console.log("************* CREATE PRODUCT *****************");
-    console.log(`*************Payload: ${image_path} *****************`);
+    console.log(`*************Payload: ${image_path} *****************`);/// test upload
     //*****************  QUERY LAST PRODUCT ID SQL  *****************//
     await Db.query('SELECT MAX(pro_id) AS ID FROM product HAVING MAX(pro_id) IS NOT NULL', (er, re) => {
         console.log("=====> Processing product db");
