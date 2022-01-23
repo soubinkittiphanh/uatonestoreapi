@@ -90,7 +90,7 @@ const fetchProd = async (req, res) => {
     LEFT JOIN (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d
                LEFT JOIN card_sale cs ON cs.card_code=d.card_number
                GROUP BY d.product_id) d 
-    ON d.card_pro_id=p.pro_id;`;
+    ON d.card_pro_id=p.pro_id ORDER BY p.pro_price;`;
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send('SQL ' + er)
         res.send(re)
