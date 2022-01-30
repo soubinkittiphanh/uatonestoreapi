@@ -1,5 +1,5 @@
 const Db = require('../../config/dbcon');
-const { chat } = require('../../models/router');
+// const { chat } = require('../../models/router');
 
 const createChat = async (req, res) => {
     const body = req.body;
