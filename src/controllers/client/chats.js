@@ -1,5 +1,4 @@
 const Db = require('../../config/dbcon');
-// const { chat } = require('../../models/router');
 
 const createChat = async (req, res) => {
     const body = req.body;
@@ -30,9 +29,9 @@ const markChatAsReaded = async (req, res) => {
         res.send("Transaction completed");
     })
 }
-Date.prototype.toMysqlFormat = ()=> {
-    return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
-};
+// Date.prototype.toMysqlFormat = ()=> {
+//     return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+// };
 
 const fetchChat = async (req, res) => {
 

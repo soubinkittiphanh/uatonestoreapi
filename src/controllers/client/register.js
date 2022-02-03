@@ -17,6 +17,7 @@ const createCustomer=async(req,res)=>{
         console.log("LEN: "+re.length);
         if(re.length>0){
             //User already exist need to cancle registration
+            console.log("User already existed");
             res.send("Error user is already exist")
         }else{
             Db.query(sqlCom,(er,re)=>{
