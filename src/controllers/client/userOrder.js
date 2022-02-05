@@ -12,7 +12,7 @@ const createOrder = async (req, res) => {
     console.log("data usr_id: " + req.body.user_id);
 
     let i = 0;
-    let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total,product_discount) VALUES `;
+    let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total, product_discount) VALUES `;
     let sqlComCardSale = ``;
     //Get last order_id
     await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
@@ -37,9 +37,9 @@ const createOrder = async (req, res) => {
             if (i == cart_data.length - 1) {
                 //Last row
                 console.log("Discount: "+el.product_discount.toString());
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount,el.product_discount});`;
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount},${el.product_discount});`;
             } else {
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount,el.product_discount}),`;
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount},${el.product_discount}),`;
             }
             const QRCode =generateQR()
             console.log("QRCode: "+ QRCode);
