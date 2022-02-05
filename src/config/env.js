@@ -6,7 +6,7 @@ const config={
     rfTkSecret:'e3848b9bd2e3eee522325953aafc118ed017c811cc93fae99a4b2f5ba3506e0e217636b3b509055900cb1da7',
     db:{
         host:'mariadb-34248-0.cloudclusters.net',
-        user:'root',
+        user:'soubin',
         password:'SDAT@3480',
         database:'online_store_pakse_test',
         port: 34248,
