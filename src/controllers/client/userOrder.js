@@ -5,13 +5,14 @@ const createOrder = async (req, res) => {
 
     console.log("************* CREATE ORDER *****************");
     console.log(`*************Payload: ${body} *****************`);
+    // console.log(`*************Payload : ${body} *****************`);
     const user_id = body.user_id;
     const cart_data = body.cart_data;
     console.log("data: " + req.body.cart_data);
     console.log("data usr_id: " + req.body.user_id);
 
     let i = 0;
-    let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total) VALUES `;
+    let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total,product_discount) VALUES `;
     let sqlComCardSale = ``;
     //Get last order_id
     await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
@@ -35,13 +36,14 @@ const createOrder = async (req, res) => {
             console.log("start i " + i);
             if (i == cart_data.length - 1) {
                 //Last row
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount});`;
+                console.log("Discount: "+el.product_discount.toString());
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount,el.product_discount});`;
             } else {
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount}),`;
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount,el.product_discount}),`;
             }
             const QRCode =generateQR()
             console.log("QRCode: "+ QRCode);
-            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
         }
         //update order table
         Db.query(sqlCom, (er, re) => {
