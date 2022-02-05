@@ -112,7 +112,7 @@ const fetchOrderByDate = async (req, res) => {
     console.log(`*************Payload: ${fromDate} *****************`);
     console.log(`*************Payload: ${toDate} *****************`);
     console.log(`*************Payload: ${userId} *****************`);
-    const extraCondition=userId!=null? ` AND o.user_id=${userId}`:''
+    const extraCondition=userId==''? ` AND o.user_id=${userId}`:''
     const sqlCom=`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.txn_date BETWEEN '${fromDate}' AND '${toDate} 23:59:59' ${extraCondition}  ORDER BY o.order_id DESC`
     console.log("sal com: "+sqlCom);
     await Db.query(sqlCom, (er, re) => {
