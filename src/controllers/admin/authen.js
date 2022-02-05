@@ -1,6 +1,8 @@
 const Db = require('../../config/dbcon')
 const Login = require('../../helper/tokenHelper')
 const Authmember = async (req, res) => {
+    console.log("************* Member auth *****************");
+    console.log(`*************Payload: ${body.mem_id} *****************`);
     const body = req.body;
     const u_id = body.mem_id;
     const u_pw = body.mem_pwd;
@@ -19,7 +21,8 @@ const Authcustomer = async (req, res) => {
     console.log(body);
     const u_id = body.cus_id;
     const u_pw = body.cus_pwd;
-
+    console.log("************* CUSTOMER AUTHEN *****************");
+    console.log(`*************Payload: ${body.cus_id} *****************`);
     const sqlCom=`SELECT c.*,IFNULL(b.DEBIT+b.ORDER_TOTAL,0) AS debit,IFNULL(b.CREDIT,0) AS credit FROM customer c 
     LEFT JOIN(SELECT c.cus_id,c.cus_name,h.txn_his_amount,h.user_id,h.txn_his_date,t.txn_id,t.txn_name,t.txn_code,d.txn_code_id,d.txn_code_name,d.txn_sign,SUM(IF(d.txn_sign='DR',h.txn_his_amount,0)) AS DEBIT,SUM(IF(d.txn_sign='CR',h.txn_his_amount,0))AS CREDIT,o.ORDER_TOTAL FROM customer c
         LEFT JOIN transaction_history h ON h.user_id=c.cus_id
@@ -34,6 +37,7 @@ const Authcustomer = async (req, res) => {
         if (er) return res.send("Error: " + er)
         console.log(re);
         // console.log(re[0].cus_name);
+        console.log("************* AUTH SUCCEED *****************");
         re.length > 0 ? res.send(Login.login(re[0]['cus_name'],re[0]['cus_id'],re[0]['cus_tel'],re[0]['cus_email'],re[0]['debit'],re[0]['credit']))
             : res.send({"accessToken":"","error":"ລະຫັດຜ່ານ ຫລື ໄອດີບໍ່ຖືກຕ້ອງ"})
 
