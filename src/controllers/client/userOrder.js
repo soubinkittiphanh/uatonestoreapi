@@ -96,9 +96,11 @@ const updateOrder = async (req, res) => {
 }
 const fetchOrder = async (req, res) => {
     const memId = req.query.mem_id;
+    const fDate = req.query.f_date;
+    const tDate = req.query.t_date;
 
     console.log("mem_id: " + memId);
-    await Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' ORDER BY o.order_id DESC`, (er, re) => {
+    await Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.txn_date BETWEEN '${fDate}' AND '${tDate} 23:59:59' ORDER BY o.order_id DESC`, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re);
     })
