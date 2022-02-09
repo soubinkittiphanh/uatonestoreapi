@@ -1,9 +1,9 @@
 const Db = require('../../config/dbcon')
 const Login = require('../../helper/tokenHelper')
 const Authmember = async (req, res) => {
+    const body = req.body;
     console.log("************* Member auth *****************");
     console.log(`*************Payload: ${body.mem_id} *****************`);
-    const body = req.body;
     const u_id = body.mem_id;
     const u_pw = body.mem_pwd;
     console.log("mem_id: "+u_id);
