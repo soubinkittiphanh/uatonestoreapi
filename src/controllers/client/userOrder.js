@@ -116,9 +116,9 @@ const fetchOrderByDate = async (req, res) => {
     console.log(`*************Payload: ${fromDate} *****************`);
     console.log(`*************Payload: ${toDate} *****************`);
     console.log(`*************Payload: ${userId} *****************`);
-    let extraCondition = ''
+    let extraCondition;
     if (userId.includes(null)) {
-
+        extraCondition=''
     } else {
         extraCondition = ` AND o.user_id=${userId}`
     }
