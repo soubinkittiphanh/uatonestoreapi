@@ -36,13 +36,13 @@ const createOrder = async (req, res) => {
             console.log("start i " + i);
             if (i == cart_data.length - 1) {
                 //Last row
-                console.log("Discount: "+el.product_discount.toString());
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount},${el.product_discount});`;
+                console.log("Discount: " + el.product_discount.toString());
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount});`;
             } else {
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail*el.product_amount},${el.product_discount}),`;
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount}),`;
             }
-            const QRCode =generateQR()
-            console.log("QRCode: "+ QRCode);
+            const QRCode = generateQR()
+            console.log("QRCode: " + QRCode);
             sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
         }
         //update order table
@@ -116,9 +116,14 @@ const fetchOrderByDate = async (req, res) => {
     console.log(`*************Payload: ${fromDate} *****************`);
     console.log(`*************Payload: ${toDate} *****************`);
     console.log(`*************Payload: ${userId} *****************`);
-    const extraCondition=!userId.includes(null)? ` AND o.user_id=${userId}`:''
-    const sqlCom=`SELECT o.*,p.pro_name,c.cus_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id LEFT JOIN customer c ON c.cus_id=o.user_id WHERE o.txn_date BETWEEN '${fromDate}' AND '${toDate} 23:59:59' ${extraCondition}  ORDER BY o.order_id DESC`
-    console.log("sal com: "+sqlCom);
+    const extraCondition = ''
+    if (userId.includes(null)) {
+
+    } else {
+        extraCondition = ` AND o.user_id=${userId}`
+    }
+    const sqlCom = `SELECT o.*,p.pro_name,c.cus_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id LEFT JOIN customer c ON c.cus_id=o.user_id WHERE o.txn_date BETWEEN '${fromDate}' AND '${toDate} 23:59:59' ${extraCondition}  ORDER BY o.order_id DESC`
+    console.log("sal com: " + sqlCom);
     await Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re);
