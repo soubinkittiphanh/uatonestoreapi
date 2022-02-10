@@ -9,7 +9,7 @@ const singleMaster=async(req,res)=>{
     const body =JSON.stringify(req.body.FORM);
     console.log("Single Master upload AFTER JON STRINGIGY:");
      console.log('=>   File: ' + req.file);
-     console.log('=>   title: ' +  body.title);
+     console.log('=>   title: ' +  body);
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
