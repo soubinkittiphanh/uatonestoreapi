@@ -8,7 +8,7 @@ const singleMaster=async(req,res)=>{
      const body=req.FORM;
     
      console.log('=>   File: ' + req.file);
-     console.log('=>   title: ' +  JSON.stringify(req.body.FORM));
+     console.log('=>   title: ' +  JSON.stringify(req.body.FORM.body));
      console.log('=>   title: .body' +  JSON.stringify(req.body));
      console.log('=>   title: .title' +  body.title);
      console.log('=>   title: .title' +  req.body.title);
