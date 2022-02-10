@@ -8,7 +8,7 @@ const singleMaster=async(req,res)=>{
 
     
      console.log('=>   File: ' + req.file);
-     console.log('=>   title: ' +  req.body);
+     console.log('=>   title: ' +  JSON.parse(req.body));
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
