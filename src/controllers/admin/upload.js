@@ -6,13 +6,15 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 
 const singleMaster=async(req,res)=>{
     console.log("Single Master upload:");
-    const body =JSON.parse(req.body.FORM);
+    const body =JSON.stringify(req.body.FORM);
+    console.log("Single Master upload AFTER JON STRINGIGY:");
      console.log('=>   File: ' + req.file);
      console.log('=>   title: ' +  body.title);
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
      const rndName = Date.now();
+    res.send("Return");
  
     //  var target_path = 'uploads/' +rndName+ req.file.originalname;
     //  var src = fs.createReadStream(tmp_path);
