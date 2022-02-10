@@ -17,13 +17,16 @@ const singleMaster=async(req,res)=>{
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
      const rndName = Date.now();
+     const appId=req.body.app_id;
+     const ref=req.body.ref;
+     const remark=req.body.remark;
  
      var target_path = 'uploads/' +rndName+ req.file.originalname;
      var src = fs.createReadStream(tmp_path);
      var dest = fs.createWriteStream(target_path);
      src.pipe(dest);
      src.on('end', async() => { 
-         const sqlCom=`INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${rndName+ req.file.originalname}','${target_path}','')`
+         const sqlCom=`INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${appId}','${ref}','${target_path}','${rndName+ req.file.originalname}','${remark}')`
          await Db.query(sqlCom, (er, re) => {
              if (er) return res.send("Error: " + er);
              return res.send("Transaction completed");
