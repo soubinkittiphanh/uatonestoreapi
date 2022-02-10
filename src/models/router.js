@@ -27,7 +27,7 @@ const RegisterCustomer=require('../controllers/client/register')
 const multer = require('multer')
 
 const fileFilter = (req, file, cb) => {
-    const allowedTypes = ['image/img', 'image/png', 'image/jpeg', 'image/gif']
+    const allowedTypes = ['image/img', 'image/png', 'image/jpeg', 'image/gif','image/jpg']
     if (!allowedTypes.includes(file.mimetype)) {
         const error = new Error("Wrong file type");
         error.code = "LIMIT_FILE_TYPE"
