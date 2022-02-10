@@ -6,7 +6,7 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 
 const singleMaster=async(req,res)=>{
     console.log("Single Master upload:");
-    const body =JSON.parse(req.body);
+    const body =JSON.parse(req.body.FORM);
      console.log('=>   File: ' + req.file);
      console.log('=>   title: ' +  body.title);
      console.log('=>   File name: ' + req.file.originalname);
