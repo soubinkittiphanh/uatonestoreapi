@@ -5,14 +5,10 @@ const env=require('../../config');
 const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4000}` });
 
 const singleMaster=async(req,res)=>{
-     const body=req.FORM;
+
     
      console.log('=>   File: ' + req.file);
-     console.log('=>   title: ' +  JSON.stringify(req.body.FORM.body));
-     console.log('=>   title: .body' +  JSON.stringify(req.body));
-     console.log('=>   title: .title' +  body.title);
-     console.log('=>   title: .title' +  req.body.title);
-     console.log('=>   title: .title' +  req.body[0].title);
+     console.log('=>   title: ' +  req.body);
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
