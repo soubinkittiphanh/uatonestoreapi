@@ -5,7 +5,7 @@ const env=require('../../config');
 const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4000}` });
 
 const singleMaster=async(req,res)=>{
-
+    console.log("Single Master upload:");
     const body =JSON.parse(req.body);
      console.log('=>   File: ' + req.file);
      console.log('=>   title: ' +  body.title);
