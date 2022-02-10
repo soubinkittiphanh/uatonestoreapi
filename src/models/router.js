@@ -35,7 +35,7 @@ const fileFilter = (req, file, cb) => {
     }
     cb(null, true);
 }
-const uploadModule = multer({ dest: './uploads/', fileFilter, limits: { fileSize: 200000 } })
+const uploadModule = multer({ dest: './uploads/', fileFilter, limits: { fileSize: 200000000 } })
 const upload = async (app) => {
     app.post('/uploadsingle', uploadModule.single('file'), Upload.single)
     app.post('/uploadmulti', uploadModule.array('files'), Upload.multi)
