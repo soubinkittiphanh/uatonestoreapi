@@ -6,7 +6,7 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 
 const singleMaster=async(req,res)=>{
     console.log("Single Master upload:");
-    const body =JSON.stringify(req.body.FORM);
+    const body =JSON.stringify(req.body);
     console.log("Single Master upload AFTER JON STRINGIGY:");
      console.log('=>   File: ' + req.file);
      console.log('=>   title: ' +  body);
