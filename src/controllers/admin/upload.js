@@ -1,10 +1,7 @@
 const Helper = require('../../helper/');
 const fs = require('fs');
-const path = require('path');
-// const { env } = require('process');
 const Db = require('../../config/dbcon')
 const env=require('../../config');
-const { log } = require('console');
 const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4000}` });
 
 const single = async (req, res) => {
