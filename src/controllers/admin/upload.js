@@ -6,33 +6,31 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 
 const singleMaster=async(req,res)=>{
     console.log("Single Master upload:");
-    const body =JSON.stringify(req.body);
-    const body1 = JSON.parse(body);
+    // const body =JSON.stringify(req.body);
+    // const body1 = JSON.parse(body);
     console.log("Single Master upload AFTER JON STRINGIGY:");
      console.log('=>   File: ' + req.file);
-     console.log('=>   title: ' +  body);
-     console.log('=>   title: ' +  req.body.title);
-     console.log('=>   title body1: ' +  body1.title);
-     console.log('=>   sender: ' +  req.body.sender);
+     console.log('=>   remark: ' +  req.body.remark);
+     console.log('=>   ref: ' +  req.body.ref);
+     console.log('=>   app_id: ' +  req.body.app_id);
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
      const rndName = Date.now();
-    res.send("Return");
  
-    //  var target_path = 'uploads/' +rndName+ req.file.originalname;
-    //  var src = fs.createReadStream(tmp_path);
-    //  var dest = fs.createWriteStream(target_path);
-    //  src.pipe(dest);
-    //  src.on('end', async() => { 
-    //      const sqlCom=`INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${rndName+ req.file.originalname}','${target_path}','')`
-    //      await Db.query(sqlCom, (er, re) => {
-    //          if (er) return res.send("Error: " + er);
-    //          return res.send("Transaction completed");
-    //      })
-    //      // res.send('Transaction complete'); 
-    //  });
-    //  src.on('error', (err) => { res.send('error'); });
+     var target_path = 'uploads/' +rndName+ req.file.originalname;
+     var src = fs.createReadStream(tmp_path);
+     var dest = fs.createWriteStream(target_path);
+     src.pipe(dest);
+     src.on('end', async() => { 
+         const sqlCom=`INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${rndName+ req.file.originalname}','${target_path}','')`
+         await Db.query(sqlCom, (er, re) => {
+             if (er) return res.send("Error: " + er);
+             return res.send("Transaction completed");
+         })
+         // res.send('Transaction complete'); 
+     });
+     src.on('error', (err) => { res.send('error'); });
 
 }
 
