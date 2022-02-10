@@ -6,9 +6,9 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 
 const singleMaster=async(req,res)=>{
 
-    
+    const body =JSON.parse(req.body);
      console.log('=>   File: ' + req.file);
-     console.log('=>   title: ' +  JSON.parse(req.body));
+     console.log('=>   title: ' +  body);
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
