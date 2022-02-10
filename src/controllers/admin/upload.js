@@ -4,6 +4,30 @@ const Db = require('../../config/dbcon')
 const env=require('../../config');
 const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4000}` });
 
+const singleMaster=async(req,res)=>{
+     // const body=req.FORM;
+     console.log('=>   File: ' + req.file);
+     console.log('=>   File name: ' + req.file.originalname);
+     console.log('=>   File path: ' + req.file.path);
+     var tmp_path = req.file.path;
+     const rndName = Date.now();
+ 
+    //  var target_path = 'uploads/' +rndName+ req.file.originalname;
+    //  var src = fs.createReadStream(tmp_path);
+    //  var dest = fs.createWriteStream(target_path);
+    //  src.pipe(dest);
+    //  src.on('end', async() => { 
+    //      const sqlCom=`INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${rndName+ req.file.originalname}','${target_path}','')`
+    //      await Db.query(sqlCom, (er, re) => {
+    //          if (er) return res.send("Error: " + er);
+    //          return res.send("Transaction completed");
+    //      })
+    //      // res.send('Transaction complete'); 
+    //  });
+    //  src.on('error', (err) => { res.send('error'); });
+
+}
+
 const single = async (req, res) => {
     // const body=req.FORM;
     console.log('=>   File: ' + req.file);
@@ -149,6 +173,7 @@ const multiUpdate = async (req, res) => {
 }
 
 module.exports = {
+    singleMaster,
     single,
     multi,
     remove_file,
