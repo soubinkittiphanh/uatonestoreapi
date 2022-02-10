@@ -7,10 +7,12 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 const singleMaster=async(req,res)=>{
     console.log("Single Master upload:");
     const body =JSON.stringify(req.body);
+    const body1 = JSON.parse(body);
     console.log("Single Master upload AFTER JON STRINGIGY:");
      console.log('=>   File: ' + req.file);
      console.log('=>   title: ' +  body);
-     console.log('=>   title: ' +  body[0]);
+     console.log('=>   title: ' +  req.body.title);
+     console.log('=>   title body1: ' +  body1.title);
      console.log('=>   sender: ' +  req.body.sender);
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
