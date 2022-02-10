@@ -36,7 +36,7 @@ const createOrder = async (req, res) => {
             console.log("start i " + i);
             if (i == cart_data.length - 1) {
                 //Last row
-                console.log("Discount: " + el.product_discount.toString());
+                console.log("Discount: " + el.product_discount);
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount});`;
             } else {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount}),`;
