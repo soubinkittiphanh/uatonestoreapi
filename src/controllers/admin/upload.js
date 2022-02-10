@@ -7,7 +7,7 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4
 const singleMaster=async(req,res)=>{
      // const body=req.FORM;
      console.log('=>   File: ' + req.file);
-     console.log('=>   title: ' + req.body.title);
+     console.log('=>   title: ' + req.body);
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
