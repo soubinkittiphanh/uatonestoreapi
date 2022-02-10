@@ -9,6 +9,8 @@ const singleMaster=async(req,res)=>{
     
      console.log('=>   File: ' + req.file);
      console.log('=>   title: ' +  JSON.stringify(req.body.FORM));
+     console.log('=>   title: .body' +  JSON.stringify(req.body));
+     console.log('=>   title: .title' +  JSON.stringify(req.body.title));
      console.log('=>   File name: ' + req.file.originalname);
      console.log('=>   File path: ' + req.file.path);
      var tmp_path = req.file.path;
