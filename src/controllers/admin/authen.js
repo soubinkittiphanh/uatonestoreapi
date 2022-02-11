@@ -21,8 +21,8 @@ const Authcustomer = async (req, res) => {
     console.log(body);
     const u_id = body.cus_id;
     const u_pw = body.cus_pwd;
-    console.log("************* CUSTOMER AUTHEN *****************");
-    console.log(`*************Payload: ${body.cus_id} *****************`);
+    console.log("************* CUSTOMER AUTHEN }*****************");
+    console.log(`*************Payload: ${u_id} *****************`);
     // const sqlCom=`SELECT c.*,IFNULL(b.DEBIT+b.ORDER_TOTAL,0) AS debit,IFNULL(b.CREDIT,0) AS credit FROM customer c 
     // LEFT JOIN(SELECT c.cus_id,c.cus_name,h.txn_his_amount,h.user_id,h.txn_his_date,t.txn_id,t.txn_name,t.txn_code,d.txn_code_id,d.txn_code_name,d.txn_sign,SUM(IF(d.txn_sign='DR',h.txn_his_amount,0)) AS DEBIT,SUM(IF(d.txn_sign='CR',h.txn_his_amount,0))AS CREDIT,o.ORDER_TOTAL FROM customer c
     //     LEFT JOIN transaction_history h ON h.user_id=c.cus_id
