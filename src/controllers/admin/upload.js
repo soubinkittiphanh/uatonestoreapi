@@ -8,12 +8,12 @@ const axios = require('axios').create({ baseURL: `http://localhost:${env.port ||
 
 const singleMasterUpdate = async (req, res) => {
     console.log("*************** Single master UPADATE UploadImage ***************");
-    console.log(`*************Payload: ${req.body.cus_id} *****************`);
+    console.log(`*************Payload: ${req.body.ref} *****************`);
     var tmp_path = req.file.path;
     const rndName = Date.now();
     const appId = req.body.app_id;
     const remark = req.body.remark;
-    const cusId = req.body.cus_id;
+    const cusId = req.body.ref;
     var target_path = 'uploads/' + rndName + req.file.originalname;
 
 
