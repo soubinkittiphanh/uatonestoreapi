@@ -1,39 +1,93 @@
 const Helper = require('../../helper/');
 const fs = require('fs');
 const Db = require('../../config/dbcon')
-const env=require('../../config');
-const axios = require('axios').create({ baseURL: `http://localhost:${env.port||4000}` });
+const env = require('../../config');
+const { db } = require('../../config');
+const { log } = require('console');
+const axios = require('axios').create({ baseURL: `http://localhost:${env.port || 4000}` });
 
-const singleMaster=async(req,res)=>{
+const singleMasterUpdate = async (req, res) => {
+    console.log("*************** Single master UPADATE UploadImage ***************");
+    console.log(`*************Payload: ${req.body.cus_id} *****************`);
+    var tmp_path = req.file.path;
+    const rndName = Date.now();
+    const appId = req.body.app_id;
+    const remark = req.body.remark;
+    const cusId = req.body.cus_id;
+    var target_path = 'uploads/' + rndName + req.file.originalname;
+
+
+    const sqlCom = `SELECT login_id from customer WHERE cus_id='${cusId}'`
+    await Db.query(sqlCom, (er, re) => {
+        if (er) return res.send("Error: " + er)
+        if (re.length < 1) return res.send("Error: user id not found")
+        const logInId = re[0]["login_id"]
+        sqlCom = `SELECT img_path FROM image_path_master WHERE app_txn_id ='${logInId}'`
+        db.query(sqlCom, (er, re) => {
+            if (er) return res.send("Error: " + er)
+            var src = fs.createReadStream(tmp_path);
+            var dest = fs.createWriteStream(target_path);
+            if (re.length < 0) {
+                console.log("USER IMAGE IS NEVER UPLOAD YET");
+                src.pipe(dest);
+                src.on('end', async () => {
+                    sqlCom = `INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${appId}','${logInId}','${target_path}','${rndName + req.file.originalname}','${remark}')`
+                    db.query(sqlCom, (er, re) => {
+                        if (er) return res.send("Error: " + er)
+                        res.send("Transaction completed")
+                    })
+                })
+                src.on('error', (err) => { res.send('error'); });
+            } else {
+                console.log("UPDATE USER IMAGE");
+                src.pipe(dest);
+                src.on('end', async () => {
+
+                    sqlCom = `UPDATE image_path_master SET img_path='${target_path}',img_name='${rndName + req.file.originalname}' WHERE app_txn_id ='${logInId}'`
+                    db.query(sqlCom, (er, re) => {
+                        if (er) res.send("Error: " + er)
+                        res.send("Transaction completed");
+                    })
+                })
+                src.on('error', (err) => { res.send('error'); });
+            }
+        })
+
+
+    })
+
+}
+
+const singleMaster = async (req, res) => {
     console.log("Single Master upload:");
     // const body =JSON.stringify(req.body);
     // const body1 = JSON.parse(body);
     console.log("Single Master upload AFTER JON STRINGIGY:");
-     console.log('=>   File: ' + req.file);
-     console.log('=>   remark: ' +  req.body.remark);
-     console.log('=>   ref: ' +  req.body.ref);
-     console.log('=>   app_id: ' +  req.body.app_id);
-     console.log('=>   File name: ' + req.file.originalname);
-     console.log('=>   File path: ' + req.file.path);
-     var tmp_path = req.file.path;
-     const rndName = Date.now();
-     const appId=req.body.app_id;
-     const ref=req.body.ref;
-     const remark=req.body.remark;
- 
-     var target_path = 'uploads/' +rndName+ req.file.originalname;
-     var src = fs.createReadStream(tmp_path);
-     var dest = fs.createWriteStream(target_path);
-     src.pipe(dest);
-     src.on('end', async() => { 
-         const sqlCom=`INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${appId}','${ref}','${target_path}','${rndName+ req.file.originalname}','${remark}')`
-         await Db.query(sqlCom, (er, re) => {
-             if (er) return res.send("Error: " + er);
-             return res.send("Transaction completed");
-         })
-         // res.send('Transaction complete'); 
-     });
-     src.on('error', (err) => { res.send('error'); });
+    console.log('=>   File: ' + req.file);
+    console.log('=>   remark: ' + req.body.remark);
+    console.log('=>   ref: ' + req.body.ref);
+    console.log('=>   app_id: ' + req.body.app_id);
+    console.log('=>   File name: ' + req.file.originalname);
+    console.log('=>   File path: ' + req.file.path);
+    var tmp_path = req.file.path;
+    const rndName = Date.now();
+    const appId = req.body.app_id;
+    const ref = req.body.ref;
+    const remark = req.body.remark;
+
+    var target_path = 'uploads/' + rndName + req.file.originalname;
+    var src = fs.createReadStream(tmp_path);
+    var dest = fs.createWriteStream(target_path);
+    src.pipe(dest);
+    src.on('end', async () => {
+        const sqlCom = `INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${appId}','${ref}','${target_path}','${rndName + req.file.originalname}','${remark}')`
+        await Db.query(sqlCom, (er, re) => {
+            if (er) return res.send("Error: " + er);
+            return res.send("Transaction completed");
+        })
+        // res.send('Transaction complete'); 
+    });
+    src.on('error', (err) => { res.send('error'); });
 
 }
 
@@ -47,7 +101,7 @@ const single = async (req, res) => {
 
     /** The original name of the uploaded file
      stored in the variable "originalname". **/
-    var target_path = 'uploads/' +rndName+ req.file.originalname;
+    var target_path = 'uploads/' + rndName + req.file.originalname;
     //customize upload 
     // fs.rename(oldpath, newpath, function (err) {
     //     if (err) {
@@ -61,8 +115,8 @@ const single = async (req, res) => {
     var src = fs.createReadStream(tmp_path);
     var dest = fs.createWriteStream(target_path);
     src.pipe(dest);
-    src.on('end', async() => { 
-        const sqlCom=`INSERT INTO image_path_ad(img_name,img_path,remark)VALUES('${rndName+ req.file.originalname}','${target_path}','')`
+    src.on('end', async () => {
+        const sqlCom = `INSERT INTO image_path_ad(img_name,img_path,remark)VALUES('${rndName + req.file.originalname}','${target_path}','')`
         await Db.query(sqlCom, (er, re) => {
             if (er) return res.send("Error: " + er);
             return res.send("Transaction completed");
@@ -187,4 +241,5 @@ module.exports = {
     multi,
     remove_file,
     multiUpdate,
+    singleMasterUpdate,
 }
