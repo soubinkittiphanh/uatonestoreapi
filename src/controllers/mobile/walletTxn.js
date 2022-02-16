@@ -18,7 +18,7 @@ const fetchWalletOrderTxn=async(req,res)=>{
     console.log("************* FETCH WALLET ORDERS TXN *****************");
     console.log(`*************Payload: ${req.query.user_id} *****************`);
     const userId = req.query.user_id;
-    const sqlCom=`SELECT o.* FROM user_order o WHERE user_id='${userId}' ORDER BY o.txn_date DESC`
+    const sqlCom=`SELECT o.order_id,SUM(o.order_price_total) AS order_price_total,o.txn_date, FROM user_order o WHERE user_id='${userId}'GROUP BY o.order_id ORDER BY o.txn_date DESC`
     await Db.query(sqlCom, (er, re) => {
         if (er) {
             console.log("Error:  ");
