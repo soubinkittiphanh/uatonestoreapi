@@ -27,7 +27,7 @@ const singleMasterUpdate = async (req, res) => {
             if (er) return res.send("Error: " + er)
             var src = fs.createReadStream(tmp_path);
             var dest = fs.createWriteStream(target_path);
-            if (re.length < 0) {
+            if (re.length < 1) {
                 console.log("USER IMAGE IS NEVER UPLOAD YET");
                 src.pipe(dest);
                 src.on('end', async () => {
