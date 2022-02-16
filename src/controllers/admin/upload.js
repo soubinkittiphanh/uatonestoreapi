@@ -23,7 +23,7 @@ const singleMasterUpdate = async (req, res) => {
         if (re.length < 1) return res.send("Error: user id not found")
         const logInId = re[0]["login_id"]
         sqlCom = `SELECT img_path FROM image_path_master WHERE app_txn_id ='${logInId}'`
-        db.query(sqlCom, (er, re) => {
+        Db.query(sqlCom, (er, re) => {
             if (er) return res.send("Error: " + er)
             var src = fs.createReadStream(tmp_path);
             var dest = fs.createWriteStream(target_path);
@@ -32,7 +32,7 @@ const singleMasterUpdate = async (req, res) => {
                 src.pipe(dest);
                 src.on('end', async () => {
                     sqlCom = `INSERT INTO image_path_master(app_id,app_txn_id,img_path,img_name,img_remark)VALUES('${appId}','${logInId}','${target_path}','${rndName + req.file.originalname}','${remark}')`
-                    db.query(sqlCom, (er, re) => {
+                    Db.query(sqlCom, (er, re) => {
                         if (er) return res.send("Error: " + er)
                         res.send("Transaction completed")
                     })
@@ -44,7 +44,7 @@ const singleMasterUpdate = async (req, res) => {
                 src.on('end', async () => {
 
                     sqlCom = `UPDATE image_path_master SET img_path='${target_path}',img_name='${rndName + req.file.originalname}' WHERE app_txn_id ='${logInId}'`
-                    db.query(sqlCom, (er, re) => {
+                    Db.query(sqlCom, (er, re) => {
                         if (er) res.send("Error: " + er)
                         res.send("Transaction completed");
                     })
