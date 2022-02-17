@@ -26,6 +26,8 @@ const createTxnHis = async (req, res) => {
     })
 }
 const updateTxnHis = async (req, res) => {
+    console.log("*************** UPDATE TXN HIS  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body
     let txn_his_id = body.txn_his_id;
@@ -44,6 +46,8 @@ const updateTxnHis = async (req, res) => {
     })
 }
 const fetchTxnHis = async (req, res) => {
+    console.log("*************** FETCH TXN HIS  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     await Db.query('SELECT * FROM transaction_history', (er, re) => {
         if (er) res.send("Error: " + er)
         res.send(re)

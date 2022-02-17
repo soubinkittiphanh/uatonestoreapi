@@ -1,6 +1,8 @@
 const Db = require('../../config/dbcon');
 
 const createCustomer = async (req, res) => {
+    console.log("*************** CREATE CUSTOMER  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body
     let cus_id = body.cus_id;
@@ -21,6 +23,8 @@ const createCustomer = async (req, res) => {
     })
 }
 const updateCustomer = async (req, res) => {
+    console.log("*************** UPDATE CUSTOMER  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body
     let cus_id = body.cus_id;
@@ -38,6 +42,8 @@ const updateCustomer = async (req, res) => {
     })
 }
 const fetchCustomer = async (req, res) => {
+    console.log("*************** FETCH CUSTOMER  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     const sqlCom=`SELECT c.*,SUM(IFNULL(o.order_price_total,0))AS ORDER_DEBIT,IFNULL(tt.CREDIT,0) AS CREDIT,IFNULL(tt.DEBIT,0) AS DEBIT FROM customer c LEFT JOIN user_order o ON o.user_id=c.cus_id LEFT JOIN (SELECT h.txn_id,h.user_id,SUM(IF(d.txn_sign='DR',h.txn_his_amount,0)) AS DEBIT,SUM(IF(d.txn_sign='CR',h.txn_his_amount,0))AS CREDIT FROM transaction_history h LEFT JOIN transaction t ON t.txn_id=h.txn_id LEFT JOIN transaction_code d ON d.txn_code_id=t.txn_code GROUP BY h.user_id) tt ON tt.user_id=c.cus_id GROUP BY c.cus_id `;
     await Db.query(sqlCom, (er, re) => {
         if (er) res.send("Error: " + er)

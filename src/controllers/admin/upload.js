@@ -60,9 +60,8 @@ const singleMasterUpdate = async (req, res) => {
 
 const singleMaster = async (req, res) => {
     console.log("Single Master upload:");
-    // const body =JSON.stringify(req.body);
-    // const body1 = JSON.parse(body);
-    console.log("Single Master upload AFTER JON STRINGIGY:");
+    console.log("*************** Single master UploadImage ***************");
+    console.log(`*************Payload: ${req.body.ref} *****************`);
     console.log('=>   File: ' + req.file);
     console.log('=>   remark: ' + req.body.remark);
     console.log('=>   ref: ' + req.body.ref);
@@ -98,7 +97,8 @@ const single = async (req, res) => {
     console.log('=>   File path: ' + req.file.path);
     var tmp_path = req.file.path;
     const rndName = Date.now();
-
+    console.log("*************** Single UploadImage ***************");
+    console.log(`*************Payload: ${tmp_path} *****************`);
     /** The original name of the uploaded file
      stored in the variable "originalname". **/
     var target_path = 'uploads/' + rndName + req.file.originalname;
@@ -127,6 +127,8 @@ const single = async (req, res) => {
 }
 
 const multi = async (req, res) => {
+    console.log("*************** Single UploadImage ***************");
+    console.log(`*************Payload: ${req.files}} *****************`);
     const files = req.files;
     console.log('jSON: ' + req.body.FORM);
     console.log('Files: ' + files.length);

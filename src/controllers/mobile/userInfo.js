@@ -1,8 +1,8 @@
 const Db = require('../../config/dbcon');
 
 const updateUserName = async (req, res) => {
-    console.log("update user name=====>");
-    console.log(req.body);
+    console.log("*************** UPDATE USER NAME  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     const body = req.body
     const userId = body.user_id;
     const userName = body.user_name;
@@ -16,7 +16,9 @@ const updateUserName = async (req, res) => {
     })
 }
 const updateTel = async (req, res) => {
-    console.log(req.body);
+    console.log("*************** UPDATE USER TELEPHONE  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
+
     const body = req.body
     const userId = body.user_id;
     const userPhoneNumber = body.user_phone;
@@ -26,7 +28,8 @@ const updateTel = async (req, res) => {
     })
 }
 const updateEmail = async (req, res) => {
-    console.log(req.body);
+    console.log("*************** UPDATE USER EMAIL  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     const body = req.body
     const userId = body.user_id;
     const userEmail = body.user_email;
@@ -36,7 +39,8 @@ const updateEmail = async (req, res) => {
     })
 }
 const updatePassword = async (req, res) => {
-    console.log(req.body);
+    console.log("*************** UPDATE USER PASSWORD  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     const body = req.body
     const userId = body.user_id;
     const userPass = body.user_password;
@@ -46,7 +50,8 @@ const updatePassword = async (req, res) => {
     })
 }
 const balanceInquiry = async (req, res) => {
-    console.log(req.body);
+    console.log("*************** BALANCE INQUIRY  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     const body = req.body
     const userId = body.user_id;
     const sqlCom=`SELECT c.cus_id,IFNULL(b.DEBIT+b.ORDER_TOTAL,0) AS debit,IFNULL(b.CREDIT,0) AS credit,(IFNULL(b.CREDIT,0)-(IFNULL(b.DEBIT,0)+IFNULL(b.ORDER_TOTAL,0))) AS balance FROM customer c 
@@ -67,7 +72,8 @@ const balanceInquiry = async (req, res) => {
     })
 }
 const resetPasswordByPhone = async (req, res) => {
-    console.log(req.body);
+    console.log("*************** RESET PASSWORD BY PHONE  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     const body = req.body
     const userPhone = body.user_phone.substring(body.user_phone.length-8);
 

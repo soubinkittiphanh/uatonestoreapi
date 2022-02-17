@@ -17,6 +17,8 @@ const Authmember = async (req, res) => {
     })
 }
 const Authcustomer = async (req, res) => {
+    console.log("*************** CUSTOMER AUTH  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     const body = req.body;
     console.log(body);
     const u_id = body.cus_id;

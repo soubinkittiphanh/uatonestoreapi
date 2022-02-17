@@ -2,6 +2,8 @@ const Db = require('../../config/dbcon');
 const jwt = require('jsonwebtoken');
 const db = require('../../config/dbcon');
 const createUser = async (req, res) => {
+    console.log("*************** CREATE USER  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body;
     let user_id = body.user_id;
@@ -37,6 +39,8 @@ const createUser = async (req, res) => {
 
 }
 const updateUser = async (req, res) => {
+    console.log("*************** UPDATE USER  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body;
     const user_id = body.user_id;
@@ -59,6 +63,8 @@ const updateUser = async (req, res) => {
     })
 }
 const fetchUser = async (req, res) => {
+    console.log("*************** FETCH USER  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     await Db.query("SELECT * FROM user_account", (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re)

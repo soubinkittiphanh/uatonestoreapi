@@ -1,5 +1,7 @@
 const Db = require('../../config/dbcon');
 const createProd = async (req, res) => {
+    console.log("*************** CREATE PRODUCT  ***************");
+    console.log(`*************Payload: *****************`);
     console.log(req.body.FORM);
     const body = JSON.parse(req.body.FORM);
     const pro_cat = body.pro_category;
@@ -47,6 +49,8 @@ const createProd = async (req, res) => {
 
 }
 const updateProd = async (req, res) => {
+    console.log("*************** UPDATE PRODUCT  ***************");
+    console.log(`*************Payload: *****************`);
     console.log(req.body.FORM);
     const body = JSON.parse(req.body.FORM);
     const pro_cat = body.pro_category;
@@ -83,6 +87,8 @@ const updateProd = async (req, res) => {
     })
 }
 const fetchProd = async (req, res) => {
+    console.log("*************** FETCH PRODUCT ***************");
+    console.log(`*************Payload: *****************`);
     const sqlCom=`SELECT p.*,c.categ_name,IFNULL(i.img_name,'No image') AS img_name,i.img_path,IFNULL(d.card_count,0) AS card_count ,IFNULL(s.cnt,0) AS sale_count FROM product p 
     LEFT JOIN product_category c ON c.categ_id=p.pro_category 
     LEFT JOIN image_path i ON i.pro_id=p.pro_id
@@ -97,6 +103,8 @@ const fetchProd = async (req, res) => {
     })
 }
 const fetchProdId = async (req, res) => {
+    console.log("*************** FETCH PRODUCT BY ID  ***************");
+    console.log(`*************Payload: *****************`);
     const pro_id = req.body.proid;
     await Db.query(`SELECT p.*,i.img_name,i.img_path FROM product p LEFT JOIN image_path i ON i.pro_id=p.pro_id WHERE p.pro_id=${pro_id}`, (er, re) => {
         if (er) return res.send('SQL ' + er)

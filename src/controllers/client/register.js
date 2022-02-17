@@ -1,6 +1,8 @@
 const Db = require('../../config/dbcon')
 
 const createCustomer=async(req,res)=>{
+    console.log("*************** CREATE CUSTOMER ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     const body=req.body;
     const cus_name=body.cust_name;
     const cus_pass=body.cust_pass;

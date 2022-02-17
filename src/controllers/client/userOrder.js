@@ -2,7 +2,6 @@ const Db = require('../../config/dbcon')
 const OrderHelper = require('../../helper/mobile/orderHelper')
 const createOrder = async (req, res) => {
     const body = req.body;
-
     console.log("************* CREATE ORDER *****************");
     console.log(`*************Payload: ${body} *****************`);
     // console.log(`*************Payload : ${body} *****************`);
@@ -74,6 +73,8 @@ const createOrder = async (req, res) => {
     });
 }
 const generateQR = () => {
+    console.log("*************** GENERATE QR  ***************");
+
     let QRCode = [];
     for (let i = 0; i < 16; i++) {
         const subQR = getRandomInt(10)
@@ -89,12 +90,14 @@ const generateQR = () => {
     return QRCodeStr;
 }
 const getRandomInt = (max) => {
+    console.log("*************** GET RANDOM INT  ***************");
+
     return Math.floor(Math.random() * max);
 }
-const updateOrder = async (req, res) => {
 
-}
 const fetchOrder = async (req, res) => {
+    console.log("*************** FETCH ORDER  ***************");
+
     const memId = req.query.mem_id;
     const fDate = req.query.f_date;
     const tDate = req.query.t_date;
@@ -109,6 +112,8 @@ const fetchOrder = async (req, res) => {
 }
 const fetchOrderByDate = async (req, res) => {
     const body = req.body;
+    console.log("*************** FETCH ORDER BY DATE  ***************");
+    console.log(`*************Payload: ${body} *****************`);
     const fromDate = req.query.fromDate
     const toDate = req.query.toDate
     const userId = req.query.userId

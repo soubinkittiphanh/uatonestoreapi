@@ -66,7 +66,6 @@ const sale = async (app) => {
 }
 const user = async (app) => {
     app.post('/user_i', User.createUser)
-    // app.put('/user_e', authentication, User.updateUser) //authenticate first
     app.put('/user_e', User.updateUser)
     app.get('/user_f', User.fetchUser)
 }

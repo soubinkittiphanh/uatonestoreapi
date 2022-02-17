@@ -1,6 +1,8 @@
 const Db = require('../../config/dbcon');
 
 const createTxn = async (req, res) => {
+    console.log("*************** CREATE TXN  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body
     let txn_id = body.txn_id;
@@ -23,6 +25,8 @@ const createTxn = async (req, res) => {
     })
 }
 const updateTxn = async (req, res) => {
+    console.log("*************** UPDATE TXN  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body
     let txn_id = body.txn_id;
@@ -41,6 +45,8 @@ const updateTxn = async (req, res) => {
     })
 }
 const fetchTxn = async (req, res) => {
+    console.log("*************** FETCH TXN  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     await Db.query('SELECT * FROM transaction', (er, re) => {
         if (er) res.send("Error: " + er)
         res.send(re)

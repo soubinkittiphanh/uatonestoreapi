@@ -1,6 +1,8 @@
 const Db = require('../../config/dbcon');
 
 const createTxnType = async (req, res) => {
+    console.log("*************** CREATE TXN TYPE  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body
     let txn_type_id = body.txn_type_id;
@@ -19,6 +21,8 @@ const createTxnType = async (req, res) => {
     })
 }
 const updateTxnType = async (req, res) => {
+    console.log("*************** UPDATE TXN TYPE  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     console.log(req.body);
     const body = req.body
     let txn_type_id = body.txn_type_id;
@@ -34,6 +38,8 @@ const updateTxnType = async (req, res) => {
     })
 }
 const fetchTxnType = async (req, res) => {
+    console.log("*************** FETCH TXN TYPE  ***************");
+    console.log(`*************Payload: ${req.body} *****************`);
     await Db.query('SELECT * FROM transaction_code', (er, re) => {
         if (er) res.send("Error: " + er)
         res.send(re)

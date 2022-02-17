@@ -1,6 +1,8 @@
 const Db = require('../../config/dbcon')
 const createCate = async (req, res) => {
     const cat_id = req.body.cat_id;
+    console.log("*************** CREATE CATE ***************");
+    console.log(`*************Payload: ${cat_id} *****************`);
     const cat_name = req.body.cat_name;
     const cat_desc = req.body.cat_desc;
     console.log(req.body.cat_id);
@@ -26,7 +28,9 @@ const createCate = async (req, res) => {
     
 }
 const updateCate = async (req, res) => {
+    console.log("*************** UPDATE CATEG ***************");
     const cat_id = req.body.cat_id;
+    console.log(`*************Payload: ${cat_id} *****************`);
     const cat_name = req.body.cat_name;
     const cat_desc = req.body.cat_desc;
     console.log(req.body);
@@ -41,6 +45,8 @@ const updateCate = async (req, res) => {
     })
 }
 const fetchCate=async(req,res)=>{
+    console.log("*************** FETCH CATEG ***************");
+    console.log(`*************Payload:*****************`);
     await Db.query("SELECT categ_id, categ_name,categ_desc FROM product_category",(er,re)=>{
         if (er) return res.send("Error: "+er)
         res.send(re);
@@ -48,6 +54,8 @@ const fetchCate=async(req,res)=>{
 }
 // ******* FUNCTION BELOW IS NOT USED ||PROBLEM WITH A WAIT IS NOT AWAIT******
 const generateId = async () => {
+    console.log("*************** GENERATE ID CATEG  ***************");
+    console.log(`*************Payload: *****************`);
     await Db.query("SELECT MAX(categ_id) AS ID FROM product_category HAVING MAX(categ_id) IS NOT null", (er, re) => {
         if (er) return console.log("Error: " + er);
         if (re.length < 1) { return 1000 }

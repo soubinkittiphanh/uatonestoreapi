@@ -1,5 +1,7 @@
 const Db= require('../../config/dbcon');
 const createSale=async(req,res)=>{
+    console.log("*************** CREATE SALE  ***************");
+    console.log(`*************Payload: ${req.body}*****************`);
     console.log(req.body);
     const body=req.body
     const sale_id=body.sale_id;
@@ -25,6 +27,8 @@ const createSale=async(req,res)=>{
     
 }
 const updateSale=async(req,res)=>{
+    console.log("*************** UPDATE SALE  ***************");
+    console.log(`*************Payload: *****************`);
     console.log(req.body);
     const body=req.body;
     const sale_id=body.sale_id;
