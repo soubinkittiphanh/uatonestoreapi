@@ -34,6 +34,7 @@ const buildApp = async () => {
     Router.chatType(app);
     Router.chat(app);
     Router.walletTxn(app);
+    Router.report(app);
     return app;
 }
 

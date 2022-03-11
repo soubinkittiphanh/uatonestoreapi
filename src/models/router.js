@@ -24,6 +24,7 @@ const Bank=require('../controllers/client/bank')
 const ChatType=require('../controllers/client/chatType')
 const Chat=require('../controllers/client/chats')
 const RegisterCustomer=require('../controllers/client/register')
+const Report=require("../controllers/admin/report")
 const multer = require('multer')
 
 const fileFilter = (req, file, cb) => {
@@ -166,6 +167,9 @@ const walletTxn=async(app)=>{
     app.get('/wallettxn_crndr_f',WalletTxn.fetchWaletTxnCRnDR)
     app.get('/wallettxn_order_f',WalletTxn.fetchWalletOrderTxn)
 }
+const report=async(app)=>{
+    app.get('/report_txn',Report.txnReport);
+}
 function authentication(req, res, next) {
     console.log("Middleware");
     const authHeader = req.headers['authorization']
@@ -205,4 +209,5 @@ module.exports = {
     chatType,
     chat,
     walletTxn,
+    report,
 }
