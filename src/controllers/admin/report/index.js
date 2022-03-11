@@ -3,8 +3,8 @@ const Db=require("../../../config/dbcon");
 const txnReport=async(req,res)=>{
     console.log("**************** REPORT **************");
     console.log( "*************Payload: NONE *****************");
-    const {fromDate,toDate,userId}=req.query;
-
+    const {fromDate,toDate}=req.query;
+    const userId = req.query.userId
     let extraCondition;
     if (userId.includes(null)||userId=='') {
         extraCondition=''
