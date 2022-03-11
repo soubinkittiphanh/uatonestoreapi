@@ -2,7 +2,7 @@ const Db=require("../../../config/dbcon");
 
 const txnReport=async(req,res)=>{
     console.log("**************** REPORT **************");
-    console.log( "*************Payload: NONE *****************");
+    console.log( "*************Payload: NONE *****************d");
     const {fromDate,toDate}=req.query;
     const userId = req.query.userId
     let extraCondition;
