@@ -20,7 +20,7 @@ const fetchCard = async (req, res) => {
     const proId = req.query.pro_id
     console.log("************* LOAD CARD *****************");
     console.log(`*************Payload: ${proId} *****************`);
-    await Db.query(`SELECT * FROM card WHERE product_id='${proId}' and card_isused = 0`, (er, re) => {
+    await Db.query(`SELECT c.*,u.user_name FROM card c LEFT JOIN user_account u ON u.user_id = c.inputter WHERE c.product_id='${proId}'  ORDER BY c.card_input_date DESC`, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re);
     })
