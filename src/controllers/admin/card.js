@@ -28,7 +28,7 @@ const fetchCard = async (req, res) => {
     console.log("************* LOAD CARD *****************");
     console.log(`*************Payload: ${proId} *****************`);
     let sqlComCon=''
-    if(fdate&&tdate){
+    if(fDate&&tDate){
         sqlComCon=`AND card_input_date BETWEEN '${fDate} 00:00:00' AND '${tDate} 23:59:59' `
     }
     console.log("SQL Con: "+sqlComCon);
