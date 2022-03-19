@@ -24,14 +24,17 @@ const deleteCard = async (req, res) => {
 
 const fetchCard = async (req, res) => {
     const proId = req.query.pro_id
-    const { fDate,tDate }=req.body;
+    const { fDate,tDate,userId }=req.query;
     console.log("************* LOAD CARD *****************");
     console.log(`*************Payload: ${proId} *****************`);
     let sqlComCon=''
     if(fDate&&tDate){
         sqlComCon=`AND card_input_date BETWEEN '${fDate} 00:00:00' AND '${tDate} 23:59:59' `
     }
-    console.log("SQL Con: "+sqlComCon);
+    if(userId){
+        sqlComCon+=` AND inputter ='${userId}'`
+    }
+    console.log("SQL Con: "+sqlComCon+fDate+tDate+userId);
     const sqlCom=`SELECT c.*,u.user_name FROM card c LEFT JOIN user_account u ON u.user_id = c.inputter WHERE c.product_id='${proId}' ${sqlComCon} ORDER BY c.card_input_date DESC`
     
     await Db.query(sqlCom, (er, re) => {
