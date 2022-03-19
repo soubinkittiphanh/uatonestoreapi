@@ -34,7 +34,7 @@ const fetchCard = async (req, res) => {
     if(userId){
         sqlComCon+=` AND inputter ='${userId}'`
     }
-    console.log("SQL Con: "+sqlComCon+fDate+tDate+userId);
+    console.log("SQL Con: "+sqlComCon);
     const sqlCom=`SELECT c.*,u.user_name FROM card c LEFT JOIN user_account u ON u.user_id = c.inputter WHERE c.product_id='${proId}' ${sqlComCon} ORDER BY c.card_input_date DESC`
     
     await Db.query(sqlCom, (er, re) => {
