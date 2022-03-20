@@ -4,11 +4,8 @@ const createOrder = async (req, res) => {
     const body = req.body;
     console.log("************* CREATE ORDER *****************");
     console.log(`*************Payload: ${body} *****************`);
-    // console.log(`*************Payload : ${body} *****************`);
     const user_id = body.user_id;
     const cart_data = body.cart_data;
-    console.log("data: " + req.body.cart_data);
-    console.log("data usr_id: " + req.body.user_id);
 
     let i = 0;
     let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total, product_discount) VALUES `;
@@ -16,14 +13,9 @@ const createOrder = async (req, res) => {
     //Get last order_id
     await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
         if (er) return res.send("Error: " + er)
-        console.log("pass error:");
-        console.log("pass error:" + re[0]);
         let genOrderId = re[0]['order_id'];
-        console.log("order_id: " + genOrderId);
         if (genOrderId == 0) genOrderId = 10000;
         else genOrderId = parseInt(genOrderId) + 1;
-        console.log("len: " + cart_data.length);
-
         for (let i = 0; i < cart_data.length; i++) {
             const el = cart_data[i];
             const count_stock = await OrderHelper.checkStockAvailability(el.product_id, el.product_amount);
@@ -31,24 +23,18 @@ const createOrder = async (req, res) => {
                 console.log("STOCK STATUS CODE: " + count_stock);
                 return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າ |" + el.product_id + "| ບໍ່ພຽງພໍ" : "Connection Error");
             }
-            console.log("count_stock first: " + count_stock);
-            console.log("start i " + i);
             if (i == cart_data.length - 1) {
                 //Last row
-                console.log("Discount: " + el.product_discount||0);
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount||0});`;
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount || 0});`;
             } else {
-                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount||0}),`;
+                sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount || 0}),`;
             }
             const QRCode = generateQR()
-            console.log("QRCode: " + QRCode);
-            sqlComCardSale = sqlComCardSale + `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount||0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+            sqlComCardSale =`INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
         }
         //update order table
         Db.query(sqlCom, (er, re) => {
             if (er) {
-                console.log("SQL: " + sqlCom);
-                console.log("Error: " + er);
                 return res.send("Error: " + er);
             }
             // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
@@ -75,18 +61,12 @@ const createOrder = async (req, res) => {
 const generateQR = () => {
     console.log("*************** GENERATE QR  ***************");
 
-    let QRCode = [];
+    let QRCodeStr = '';
     for (let i = 0; i < 16; i++) {
         const subQR = getRandomInt(10)
-        QRCode.push(subQR);
-
+        QRCodeStr += subQR.toString();
     }
-    let QRCodeStr = '';
-    for (let i = 0; i < QRCode.length; i++) {
-        const element = QRCode[i];
-        QRCodeStr += element
 
-    }
     return QRCodeStr;
 }
 const getRandomInt = (max) => {
@@ -122,8 +102,8 @@ const fetchOrderByDate = async (req, res) => {
     console.log(`*************Payload: ${toDate} *****************`);
     console.log(`*************Payload: ${userId} *****************`);
     let extraCondition;
-    if (userId.includes(null)||userId=='') {
-        extraCondition=''
+    if (userId.includes(null) || userId == '') {
+        extraCondition = ''
     } else {
         extraCondition = ` AND o.user_id=${userId}`
     }
