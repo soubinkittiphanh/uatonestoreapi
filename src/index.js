@@ -9,7 +9,8 @@ const startApp=async()=>{
 
         console.log("app is runing: "+env.port || 4000);
         console.log("app is runing");
-    })
+    }).setTimeout(0)
+   
 
 
 }
