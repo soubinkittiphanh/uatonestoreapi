@@ -4,6 +4,8 @@ const createOrder = async (req, res) => {
     const body = req.body;
     console.log("************* CREATE ORDER *****************");
     console.log(`*************Payload: ${body} *****************`);
+    console.log(`************* CREATING ORDER **************`);
+    console.log(`************* ${new Date().getTime().toLocaleString()} *************`);
     const user_id = body.user_id;
     const cart_data = body.cart_data;
 
@@ -11,13 +13,19 @@ const createOrder = async (req, res) => {
     let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total, product_discount) VALUES `;
     let sqlComCardSale = ``;
     //Get last order_id
-    await Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
+    console.log(`************* GETING ORDER ID **************`);
+    console.log(`************* ${new Date().getTime().toLocaleString()} *************`);
+    Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
         if (er) return res.send("Error: " + er)
         let genOrderId = re[0]['order_id'];
         if (genOrderId == 0) genOrderId = 10000;
         else genOrderId = parseInt(genOrderId) + 1;
+        console.log(`************* LOOPING THROUGH ALL TXN **************`);
+        console.log(`************* ${new Date().getTime().toLocaleString()} *************`);
         for (let i = 0; i < cart_data.length; i++) {
             const el = cart_data[i];
+            console.log(`************* CHECKING STOCK AVAILABILITY **************`);
+            console.log(`************* ${new Date().getTime().toLocaleString()} *************`);
             const count_stock = await OrderHelper.checkStockAvailability(el.product_id, el.product_amount);
             if (count_stock != 200) {
                 console.log("STOCK STATUS CODE: " + count_stock);
@@ -33,13 +41,15 @@ const createOrder = async (req, res) => {
             sqlComCardSale =`INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
         }
         //update order table
+        console.log(`************* PUTTING TXN INTO USER ORDER TABLE **************`);
+        console.log(`************* ${new Date().getTime().toLocaleString()} *************`);
         Db.query(sqlCom, (er, re) => {
             if (er) {
                 return res.send("Error: " + er);
             }
             // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
-            console.log("Ready to insert to card_sale");
-
+            console.log(`************* PUTTIN TXN INTO CARD SALE TABLE **************`);
+            console.log(`************* ${new Date().getTime().toLocaleString()} *************`);
             Db.query(sqlComCardSale, (er, re) => {
                 console.log("********Insert in to card_sale**********");
                 console.log("SQL IN " + sqlComCardSale);
@@ -49,8 +59,12 @@ const createOrder = async (req, res) => {
                     return res.send("Error: " + er)
                 }
                 //update stock value
+                console.log(`************* UPDATE STOCK VALUE **************`);
+                console.log(`************* ${new Date().getTime().toLocaleString()} *************`);
                 Db.query("UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)", (er, re) => {
                     if (er) return res.send("Error: Cannot update stock " + er)
+                    console.log(`************* PROCESS ORDER IS DONE **************`);
+                    console.log(`************* ${new Date().getTime().toLocaleString()} *************`);
                     res.send("Transaction completed");
                 })
             })
