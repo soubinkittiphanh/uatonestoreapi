@@ -1,4 +1,3 @@
-const Db = require('../../config/dbcon');
 const dbAsync = require('../../config/dbconAsync')
 
 const checkStockAvailability = async (product_id, order_qty) => {

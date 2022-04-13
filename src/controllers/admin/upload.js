@@ -2,8 +2,6 @@ const Helper = require('../../helper/');
 const fs = require('fs');
 const Db = require('../../config/dbcon')
 const env = require('../../config');
-const { db } = require('../../config');
-const { log } = require('console');
 const axios = require('axios').create({ baseURL: `http://localhost:${env.port || 4000}` });
 
 const singleMasterUpdate = async (req, res) => {

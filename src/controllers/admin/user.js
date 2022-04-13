@@ -1,6 +1,4 @@
 const Db = require('../../config/dbcon');
-const jwt = require('jsonwebtoken');
-const db = require('../../config/dbcon');
 const createUser = async (req, res) => {
     console.log("*************** CREATE USER  ***************");
     console.log(`*************Payload: ${req.body} *****************`);
