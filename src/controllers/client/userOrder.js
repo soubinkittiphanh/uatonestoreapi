@@ -101,12 +101,21 @@ const fetchOrder = async (req, res) => {
     const tDate = req.query.t_date;
 
     console.log("mem_id: " + memId);
-    await Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.txn_date BETWEEN '${fDate} 00:00:00' AND '${tDate} 23:59:59' ORDER BY o.order_id DESC`, (er, re) => {
+     Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.txn_date BETWEEN '${fDate} 00:00:00' AND '${tDate} 23:59:59' ORDER BY o.order_id DESC`, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re);
     })
+}
+const fetchMaxOrderByUserId = async (req, res) => {
+    console.log("*************** FETCH MAX ORDER ID'S TXN  ***************");
 
+    const memId = req.query.mem_id;
 
+    console.log("mem_id: " + memId);
+     Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.order_id=(SELECT MAX(order_id) FROM user_order WHERE user_id='${memId}') ORDER BY o.order_id DESC`, (er, re) => {
+        if (er) return res.send("Error: " + er)
+        res.send(re);
+    })
 }
 const fetchOrderByDate = async (req, res) => {
     const body = req.body;
@@ -127,7 +136,7 @@ const fetchOrderByDate = async (req, res) => {
     }
     const sqlCom = `SELECT o.*,p.pro_name,c.cus_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id LEFT JOIN customer c ON c.cus_id=o.user_id WHERE o.txn_date BETWEEN '${fromDate} 00:00:00' AND '${toDate} 23:59:59' ${extraCondition}  ORDER BY o.order_id DESC`
     console.log("sal com: " + sqlCom);
-    await Db.query(sqlCom, (er, re) => {
+    Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re);
     })
@@ -136,5 +145,6 @@ const fetchOrderByDate = async (req, res) => {
 module.exports = {
     createOrder,
     fetchOrder,
-    fetchOrderByDate
+    fetchOrderByDate,
+    fetchMaxOrderByUserId
 }
