@@ -25,7 +25,6 @@ const checkStockAvailability = async (product_id, order_qty) => {
         }
     } catch (error) {
         console.log(("Error: " + error));
-
     }
     console.log("Status: " + statusCode);
     return statusCode;
