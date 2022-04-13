@@ -101,6 +101,7 @@ const userorder=async (app)=>{
     app.post('/order_i',OrderUser.createOrder)
     app.get('/order_f',OrderUser.fetchOrder)
     app.get('/order_date_f',OrderUser.fetchOrderByDate)
+    app.get('/max_order_f',OrderUser.fetchMaxOrderByUserId)
 }
 const updateUserInfo=async (app)=>{
     app.post('/username_e',UserInfo.updateUserName)
