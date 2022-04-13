@@ -8,8 +8,8 @@ const config={
         host:'mariadb-34248-0.cloudclusters.net',
         user:'soubin',
         password:'SDAT@3480',
-        database:'online_store_pakse',
-        // database:'online_store_pakse_test',
+        // database:'online_store_pakse',
+        database:'online_store_pakse_dev',
         port: 34248,
 
 
