@@ -51,26 +51,30 @@ const createOrder = async (req, res) => {
             console.log(`************* PUTTIN TXN INTO CARD SALE TABLE **************`);
             console.log(`************* ${new Date()} *************`);
             Db.query(sqlComCardSale, (er, re) => {
-                console.log("********Insert in to card_sale**********");
                 console.log("SQL IN " + sqlComCardSale);
                 if (er) {
                     console.log("SQL: " + sqlComCardSale);
                     console.log("Error: " + er);
                     return res.send("Error: " + er)
                 }
+                console.log(`************* PROCESS ORDER IS DONE **************`);
+                res.send("Transaction completed");
                 //update stock value
                 console.log(`************* UPDATE STOCK VALUE **************`);
                 console.log(`************* ${new Date()} *************`);
-                Db.query("UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)", (er, re) => {
-                    if (er) return res.send("Error: Cannot update stock " + er)
-                    console.log(`************* PROCESS ORDER IS DONE **************`);
-                    console.log(`************* ${new Date()} *************`);
-                    res.send("Transaction completed");
-                })
+                updateStockCount();
             })
         })
 
     });
+}
+const updateStockCount=async()=>{
+    Db.query("UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)", (er, re) => {
+        if (er) {
+            return console.log("Cannot update stock card "+er);
+        }
+        console.log(`************* Update stock card is done *************`);
+    })
 }
 const generateQR = () => {
     console.log("*************** GENERATE QR  ***************");
