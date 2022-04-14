@@ -1,5 +1,5 @@
 const secret=require('../config/').actksecret
-
+const jwt=require('jsonwebtoken');
 const validateToken=async(req,res,done)=>{
     const {authorization} =req.headers;
     const token =authorization&&authorization.split(" ")[1];
