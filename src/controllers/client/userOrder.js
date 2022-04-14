@@ -62,7 +62,7 @@ const createOrder = async (req, res) => {
                 //update stock value
                 console.log(`************* UPDATE STOCK VALUE **************`);
                 console.log(`************* ${new Date()} *************`);
-                updateStockCount();
+                // updateStockCount();
             })
         })
 
@@ -108,9 +108,7 @@ const fetchOrder = async (req, res) => {
 }
 const fetchMaxOrderByUserId = async (req, res) => {
     console.log("*************** FETCH MAX ORDER ID'S TXN  ***************");
-
     const memId = req.query.mem_id;
-
     console.log("mem_id: " + memId);
      Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.order_id=(SELECT MAX(order_id) FROM user_order WHERE user_id='${memId}') ORDER BY o.order_id DESC`, (er, re) => {
         if (er) return res.send("Error: " + er)
