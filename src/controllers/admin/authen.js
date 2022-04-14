@@ -19,7 +19,9 @@ const Authmember = async (req, res) => {
 const Authcustomer = async (req, res) => {
     console.log("*************** CUSTOMER AUTH  ***************");
     const {version}=req.body;
-    if(!version)return res.send('Error: Please update new version')
+    console.log("Verion: "+version);
+    if(!version)return res.send('Error: ກະລຸນາອັບເດດເວີຊັ່ນໃຫມ່')
+    if(version!='1.1.0')return res.send('Error: ກະລຸນາອັບເດດເວີຊັ່ນໃຫມ່')
     const body = req.body;
     console.log(body);
     const u_id = body.cus_id;
