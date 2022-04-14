@@ -26,6 +26,7 @@ const Chat=require('../controllers/client/chats')
 const RegisterCustomer=require('../controllers/client/register')
 const Report=require("../controllers/admin/report")
 const multer = require('multer')
+const tokenHook=require('../middleware/auth').validateToken;
 
 const fileFilter = (req, file, cb) => {
     const allowedTypes = ['image/img', 'image/png', 'image/jpeg', 'image/gif','image/jpg']
@@ -98,7 +99,7 @@ const login = async (app) => {
     app.get('/login', Login.login)
 }
 const userorder=async (app)=>{
-    app.post('/order_i',OrderUser.createOrder)
+    app.post('/order_i',tokenHook,OrderUser.createOrder)
     app.get('/order_f',OrderUser.fetchOrder)
     app.get('/order_date_f',OrderUser.fetchOrderByDate)
     app.get('/max_order_f',OrderUser.fetchMaxOrderByUserId)
