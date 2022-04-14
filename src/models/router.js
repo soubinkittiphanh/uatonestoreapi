@@ -87,8 +87,8 @@ const txn = async (app) => {
     app.get('/txn_f', Txn.fetchTxn)
 }
 const txnHis = async (app) => {
-    app.post('/txn_his_i', TxnHis.createTxnHis)
-    app.put('/txn_his_e', TxnHis.updateTxnHis)
+    app.post('/txn_his_i',tokenHook, TxnHis.createTxnHis)
+    app.put('/txn_his_e',tokenHook, TxnHis.updateTxnHis)
     app.get('/txn_his_f', TxnHis.fetchTxnHis)
 }
 const authenticate = async (app) => {
