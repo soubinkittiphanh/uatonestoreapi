@@ -18,7 +18,8 @@ const Authmember = async (req, res) => {
 }
 const Authcustomer = async (req, res) => {
     console.log("*************** CUSTOMER AUTH  ***************");
-    console.log(`*************Payload: ${req.body} *****************`);
+    const {version}=req.body;
+    if(!version)return res.send('Error: Please update new version')
     const body = req.body;
     console.log(body);
     const u_id = body.cus_id;
