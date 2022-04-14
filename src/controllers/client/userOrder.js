@@ -1,4 +1,5 @@
 const Db = require('../../config/dbcon')
+const dbAsync=require('../../config/dbconAsync');
 const OrderHelper = require('../../helper/mobile/orderHelper')
 const createOrder = async (req, res) => {
     const body = req.body;
@@ -62,19 +63,27 @@ const createOrder = async (req, res) => {
                 //update stock value
                 console.log(`************* UPDATE STOCK VALUE **************`);
                 console.log(`************* ${new Date()} *************`);
-                // updateStockCount();
+                updateStockCount();
+
             })
         })
 
     });
 }
 const updateStockCount=async()=>{
-    Db.query("UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)", (er, re) => {
-        if (er) {
-            return console.log("Cannot update stock card "+er);
-        }
-        console.log(`************* Update stock card is done *************`);
-    })
+    try {
+        
+        const response =await dbAsync.query('UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)')
+        console.log("Transaction completed update stock count done");
+    } catch (error) {
+        console.log("Update stock counter error: "+error);
+    }
+    // Db.query("UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)", (er, re) => {
+    //     if (er) {
+    //         return console.log("Cannot update stock card "+er);
+    //     }
+    //     console.log(`************* Update stock card is done *************`);
+    // })
 }
 const generateQR = () => {
     console.log("*************** GENERATE QR  ***************");
