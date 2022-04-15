@@ -99,7 +99,8 @@ const login = async (app) => {
     app.get('/login', Login.login)
 }
 const userorder=async (app)=>{
-    app.post('/order_i',tokenHook,OrderUser.createOrder)
+    // app.post('/order_i',tokenHook,OrderUser.createOrder)
+    app.post('/order_i',OrderUser.createOrder)
     app.get('/order_f',OrderUser.fetchOrder)
     app.get('/order_date_f',OrderUser.fetchOrderByDate)
     app.get('/max_order_f',OrderUser.fetchMaxOrderByUserId)
