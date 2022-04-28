@@ -103,11 +103,23 @@ const fetchProd = async (req, res) => {
         res.send(re)
     })
 }
+const fetchProdMobile = async (req, res) => {
+    console.log("*************** FETCH PRODUCT ***************");
+    console.log(`*************Payload: *****************ss`);
+    const sqlCom=`SELECT p.*,c.categ_name,IFNULL(i.img_name,'No image') AS img_name,i.img_path,p.stock_count AS card_count ,IFNULL(s.cnt,0) AS sale_count FROM product p 
+    LEFT JOIN product_category c ON c.categ_id=p.pro_category 
+    LEFT JOIN image_path i ON i.pro_id=p.pro_id
+    LEFT JOIN  (SELECT IFNULL(COUNT(pro_id),0) AS cnt,pro_id FROM card_sale GROUP BY pro_id ) s ON s.pro_id=p.pro_id ORDER BY p.pro_price;`;
+    Db.query(sqlCom, (er, re) => {
+        if (er) return res.send('SQL ' + er)
+        res.send(re)
+    })
+}
 const fetchProdId = async (req, res) => {
     console.log("*************** FETCH PRODUCT BY ID  ***************");
     console.log(`*************Payload: *****************`);
     const pro_id = req.body.proid;
-    await Db.query(`SELECT p.*,i.img_name,i.img_path FROM product p LEFT JOIN image_path i ON i.pro_id=p.pro_id WHERE p.pro_id=${pro_id}`, (er, re) => {
+    Db.query(`SELECT p.*,i.img_name,i.img_path FROM product p LEFT JOIN image_path i ON i.pro_id=p.pro_id WHERE p.pro_id=${pro_id}`, (er, re) => {
         if (er) return res.send('SQL ' + er)
         res.send(re)
     })
@@ -118,5 +130,6 @@ module.exports = {
     createProd,
     updateProd,
     fetchProd,
-    fetchProdId
+    fetchProdId,
+    fetchProdMobile,
 }

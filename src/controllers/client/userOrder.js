@@ -1,5 +1,5 @@
 const Db = require('../../config/dbcon')
-const dbAsync=require('../../config/dbconAsync');
+const dbAsync = require('../../config/dbconAsync');
 const OrderHelper = require('../../helper/mobile/orderHelper')
 const createOrder = async (req, res) => {
     const body = req.body;
@@ -9,7 +9,9 @@ const createOrder = async (req, res) => {
     console.log(`************* ${new Date()} *************`);
     const user_id = body.user_id;
     const cart_data = body.cart_data;
-
+    //*******NOTE THE PRODUCT TO UPDATE PRDUCT SALE COUNT (STATISTIC)*******//
+    let listOfProduct = [];
+    //*******END NOTE THE PRODUCT TO UPDATE PRDUCT SALE COUNT (STATISTIC)*******//
     let i = 0;
     let sqlCom = `INSERT INTO user_order(order_id, user_id, product_id, product_amount, product_price, order_price_total, product_discount) VALUES `;
     let sqlComCardSale = ``;
@@ -39,7 +41,7 @@ const createOrder = async (req, res) => {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount || 0}),`;
             }
             const QRCode = generateQR()
-            sqlComCardSale =`INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+            sqlComCardSale = `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
         }
         //update order table
         console.log(`************* PUTTING TXN INTO USER ORDER TABLE **************`);
@@ -49,7 +51,7 @@ const createOrder = async (req, res) => {
                 return res.send("Error: " + er);
             }
             // If no error insert to order then we should insert to card_sale for mapping card_sale -> user_order -> card
-            console.log(`************* PUTTIN TXN INTO CARD SALE TABLE **************`);
+            console.log(`************* PUTTING TXN INTO CARD SALE TABLE **************`);
             console.log(`************* ${new Date()} *************`);
             Db.query(sqlComCardSale, (er, re) => {
                 console.log("SQL IN " + sqlComCardSale);
@@ -70,20 +72,27 @@ const createOrder = async (req, res) => {
 
     });
 }
-const updateStockCount=async()=>{
+const updateStockCount = async () => {
     try {
-        
-        const response =await dbAsync.query('UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)')
+        const response = await dbAsync.query('UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)')
         console.log("Transaction completed update stock count done");
+        await updateProductStockCountDirect();
     } catch (error) {
-        console.log("Update stock counter error: "+error);
+        console.log("Update stock counter error: " + error);
     }
-    // Db.query("UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)", (er, re) => {
-    //     if (er) {
-    //         return console.log("Cannot update stock card "+er);
-    //     }
-    //     console.log(`************* Update stock card is done *************`);
-    // })
+
+}
+const updateProductStockCountDirect =async () => {
+
+   const sqlCom=' UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.card_isused!=2  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;'
+    try {
+        const response =await dbAsync.query(sqlCom);
+        console.log("Update stock count direct done");
+    } catch (error) {
+        console.log("Cannot get product sale count");
+        
+    }
+
 }
 const generateQR = () => {
     console.log("*************** GENERATE QR  ***************");
@@ -110,7 +119,7 @@ const fetchOrder = async (req, res) => {
     const tDate = req.query.t_date;
 
     console.log("mem_id: " + memId);
-     Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.txn_date BETWEEN '${fDate} 00:00:00' AND '${tDate} 23:59:59' ORDER BY o.order_id DESC`, (er, re) => {
+    Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.txn_date BETWEEN '${fDate} 00:00:00' AND '${tDate} 23:59:59' ORDER BY o.order_id DESC`, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re);
     })
@@ -119,7 +128,7 @@ const fetchMaxOrderByUserId = async (req, res) => {
     console.log("*************** FETCH MAX ORDER ID'S TXN  ***************");
     const memId = req.query.mem_id;
     console.log("mem_id: " + memId);
-     Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.order_id=(SELECT MAX(order_id) FROM user_order WHERE user_id='${memId}') ORDER BY o.order_id DESC`, (er, re) => {
+    Db.query(`SELECT o.*,p.pro_name FROM user_order o LEFT JOIN product p on o.product_id=p.pro_id WHERE o.user_id ='${memId}' AND o.order_id=(SELECT MAX(order_id) FROM user_order WHERE user_id='${memId}') ORDER BY o.order_id DESC`, (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re);
     })
