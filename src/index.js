@@ -8,7 +8,7 @@ const startApp=async()=>{
     app.listen(env.port || 4000,()=>{
 
         console.log("app is runing: "+env.port || 4000);
-        console.log("app is runing "+env.db.database);
+        console.log("env: "+env.db.database);
 
     }).setTimeout(0)
    
