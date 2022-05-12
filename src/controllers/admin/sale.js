@@ -43,7 +43,7 @@ const updateSale=async(req,res)=>{
     const sale_desc=body.sale_desc;
     const sqlCom=`UPDATE sale SET prod_id='${pro_id}', sale_amount='${sale_amt}', 
     sale_price='${sale_price}', user_id='${user_id}', inputter='${inputter}', sale_status='${sale_status}', sale_desc='${sale_desc}' WHERE  sale_id='${sale_id}'`
-    await Db.query(sqlCom,(er,re)=>{
+    Db.query(sqlCom,(er,re)=>{
         if(er){
             res.send('Error: '+er).status();
         }else if(re){
