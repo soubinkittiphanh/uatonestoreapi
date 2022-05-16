@@ -44,7 +44,7 @@ const fetchCard = async (req, res) => {
 }
 
 const fetchDeletedCard = async (req, res) => {
-    const { fdate, tdate ,userId} = req.body;
+    const { fdate, tdate ,userId} = req.query;
 
     console.log("SELECT DEL CARD: "+fdate+" tdate: "+tdate);
     const sqlCom = `select c.*,p.pro_name,p.pro_price,u.user_name from card c LEFT JOIN product p ON p.pro_id=c.product_id LEFT JOIN user_account u ON u.user_id=c.update_user WHERE c.card_isused=2 AND c.update_time BETWEEN '${fdate} 00:00:00' AND '${tdate} 23:59:59'`
