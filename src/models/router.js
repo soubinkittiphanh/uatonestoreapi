@@ -137,6 +137,7 @@ const card=async (app)=>{
     app.post('/card_x',Card.deleteCard)
     app.get('/card_f',Card.fetchCard)
     app.get('/card_his_f',Card.fetchDeletedCard)
+    app.get('/card_his_today_f',Card.fetchDeletedCardToday)
 
 }
 const advertise=async (app)=>{
