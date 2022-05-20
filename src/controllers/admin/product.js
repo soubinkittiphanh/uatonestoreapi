@@ -16,7 +16,7 @@ const createProd = async (req, res) => {
     console.log("************* CREATE PRODUCT *****************");
     console.log(`*************Payload: ${image_path} *****************`);/// test upload
     //*****************  QUERY LAST PRODUCT ID SQL  *****************//
-    await Db.query('SELECT MAX(pro_id) AS ID FROM product HAVING MAX(pro_id) IS NOT NULL', (er, re) => {
+     Db.query('SELECT MAX(pro_id) AS ID FROM product HAVING MAX(pro_id) IS NOT NULL', (er, re) => {
         console.log("=====> Processing product db");
         if (er) return res.send("Error: " + er)
         if (re.length < 1) pro_id = 1000;
@@ -65,7 +65,7 @@ const updateProd = async (req, res) => {
     const sqlCom = `UPDATE product SET pro_category='${pro_cat}', pro_name='${pro_name}', pro_price='${pro_price}', pro_desc='${pro_desc}', pro_status='${pro_status}',retail_cost_percent='${retail_percent}' WHERE pro_id='${pro_id}'`
     console.log("************* UPDATE PRODUCT *****************");
     console.log(`*************Payload: ${req.body.imagesObj} *****************`);
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) return res.send('Error: ' + er)
 
         if (image_path.length < 1) return res.send('Transaction completed');
@@ -98,7 +98,7 @@ const fetchProd = async (req, res) => {
                 WHERE d.card_isused!=2
                GROUP BY d.product_id) d 
     ON d.card_pro_id=p.pro_id ORDER BY p.pro_price;`;
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) return res.send('SQL ' + er)
         res.send(re)
     })

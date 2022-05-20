@@ -9,7 +9,7 @@ const Authmember = async (req, res) => {
     console.log("mem_id: "+u_id);
     console.log("mem_password: "+u_pw);
     console.log("login credential: "+body);
-    await Db.query(`SELECT * FROM user_account where user_id='${u_id}' AND user_pass='${u_pw}'`, (er, re) => {
+     Db.query(`SELECT * FROM user_account where user_id='${u_id}' AND user_pass='${u_pw}'`, (er, re) => {
         if (er) return res.send("Error: " + er)
         re.length > 0 ? res.send(Login.login(re[0]['user_name'],re[0]['user_id'],re[0]['user_tel'],"_",0,0))
         : res.send({"accessToken":"","error":"ລະຫັດຜ່ານ ຫລື ໄອດີບໍ່ຖືກຕ້ອງ"})

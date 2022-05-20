@@ -12,7 +12,7 @@ const createUser = async (req, res) => {
     const user_wallet = body.user_wallet;
     const user_desc = body.user_desc
 
-    await Db.query("SELECT MAX(user_id) AS ID FROM user_account HAVING MAX(user_id) IS NOT null ", (er, re) => {
+     Db.query("SELECT MAX(user_id) AS ID FROM user_account HAVING MAX(user_id) IS NOT null ", (er, re) => {
 
         if (er) {
             return res.send("Error: " + er)
@@ -63,7 +63,7 @@ const updateUser = async (req, res) => {
 const fetchUser = async (req, res) => {
     console.log("*************** FETCH USER  ***************");
     console.log(`*************Payload: ${req.body} *****************`);
-    await Db.query("SELECT * FROM user_account", (er, re) => {
+     Db.query("SELECT * FROM user_account", (er, re) => {
         if (er) return res.send("Error: " + er)
         res.send(re)
     })

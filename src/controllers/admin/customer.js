@@ -11,7 +11,7 @@ const createCustomer = async (req, res) => {
     const cus_tel = body.cus_tel;
     const cus_email = body.cus_email;
     const cus_active = body.cus_active==true?1:0;
-    await Db.query("SELECT MAX(cus_id) AS ID FROM customer HAVING MAX(cus_id) IS NOT NULL", (er, re) => {
+     Db.query("SELECT MAX(cus_id) AS ID FROM customer HAVING MAX(cus_id) IS NOT NULL", (er, re) => {
         if (er) return res.send("Error: " + er)
         if (re.length < 1) cus_id = 1000
         else cus_id = parseInt(re[0]['ID']) + 1
@@ -36,7 +36,7 @@ const updateCustomer = async (req, res) => {
 
     const sqlCom = `UPDATE customer SET cus_pass='${cus_pass}', cus_name='${cus_name}',
     cus_tel='${cus_tel}',cus_email='${cus_email}',cus_active='${cus_active}' WHERE cus_id='${cus_id}'`
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) return res.send('Error: ' + er)
         res.send('Transaction completed')
     })
@@ -45,7 +45,7 @@ const fetchCustomer = async (req, res) => {
     console.log("*************** FETCH CUSTOMER  ***************");
     console.log(`*************Payload: ${req.body} *****************`);
     const sqlCom=`SELECT c.*,SUM(IFNULL(o.order_price_total,0))AS ORDER_DEBIT,IFNULL(tt.CREDIT,0) AS CREDIT,IFNULL(tt.DEBIT,0) AS DEBIT FROM customer c LEFT JOIN user_order o ON o.user_id=c.cus_id LEFT JOIN (SELECT h.txn_id,h.user_id,SUM(IF(d.txn_sign='DR',h.txn_his_amount,0)) AS DEBIT,SUM(IF(d.txn_sign='CR',h.txn_his_amount,0))AS CREDIT FROM transaction_history h LEFT JOIN transaction t ON t.txn_id=h.txn_id LEFT JOIN transaction_code d ON d.txn_code_id=t.txn_code GROUP BY h.user_id) tt ON tt.user_id=c.cus_id GROUP BY c.cus_id `;
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) res.send("Error: " + er)
         res.send(re)
     })

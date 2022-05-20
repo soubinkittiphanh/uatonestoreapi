@@ -18,7 +18,7 @@ const createCustomer=async(req,res)=>{
     console.log("...Register customer...");
     console.log("Info data: "+body);
     const sqlCom =`INSERT INTO customer(cus_id, cus_pass, cus_name, cus_tel, cus_email, cus_active,login_id,village,district,province,remark) VALUES ((SELECT IFNULL(MAX(c.cus_id),1000)+1 FROM customer c),'${cus_pass}','${cus_name}','${cus_phone}','${cus_email}',1,'${login_id}','${village}','${district}','${province}','${remark}')`
-    await Db.query(`SELECT cus_id FROM customer WHERE login_id='${login_id}'`,(er,re)=>{
+     Db.query(`SELECT cus_id FROM customer WHERE login_id='${login_id}'`,(er,re)=>{
         if(er)return res.send("Error: "+ er);
         console.log("LEN: "+re.length);
         if(re.length>0){

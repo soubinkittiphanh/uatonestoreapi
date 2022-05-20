@@ -8,7 +8,6 @@ const db_config={
     database:env.db.database,
     port:env.db.port,
 }
-const db=mysql.createConnection(db_config);
 
 
 let connection = mysql.createPool(db_config);

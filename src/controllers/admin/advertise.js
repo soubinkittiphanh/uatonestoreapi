@@ -5,7 +5,7 @@ const fetchAd=async(req,res)=>{
     console.log(`*************Payload: NONE *****************`);
 
     const sqlCom=`SELECT * FROM image_path_ad WHERE id =(SELECT MAX(id) FROM image_path_ad)`
-    await Db.query(sqlCom,(er,re)=>{
+     Db.query(sqlCom,(er,re)=>{
         if(er)return res.send("Error: "+er)
         res.send(re);
     })
@@ -19,7 +19,7 @@ const updateAd=async(req,res)=>{
     const isactive=body.active;
     const sqlCom=`UPDATE image_path_ad SET isactive='${isactive}' WHERE id=${id}`
     console.log(sqlCom);
-    await Db.query(sqlCom,(er,re)=>{
+     Db.query(sqlCom,(er,re)=>{
         if(er)return res.send("Error: "+er)
         res.send("Transaction completed");
     })

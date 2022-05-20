@@ -31,7 +31,7 @@ const createStockTransaction=async(req,res)=>{
     });
     const sqlSurvey=`SELECT COUNT(c.card_number) as exist_count FROM card c WHERE c.card_number IN (${sqlSurveyElement})`
     console.log("Survey sql: "+sqlSurvey);
-    await Db.query(sqlSurvey,(er,re)=>{
+     Db.query(sqlSurvey,(er,re)=>{
         if(er)return res.send("Error: "+er);
         const exist_count=re[0]["exist_count"]
         if(exist_count>0) return res.send("ລາຍການຊ້ຳ ເລກບັດຊ້ຳ ຈຳນວນ: "+exist_count);

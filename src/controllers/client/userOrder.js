@@ -54,18 +54,30 @@ const createOrder = async (req, res) => {
             console.log(`************* PUTTING TXN INTO CARD SALE TABLE **************`);
             console.log(`************* ${new Date()} *************`);
             Db.query(sqlComCardSale, (er, re) => {
-                console.log("SQL IN " + sqlComCardSale);
+                console.log("SQL: " + sqlComCardSale);
                 if (er) {
-                    console.log("SQL: " + sqlComCardSale);
                     console.log("Error: " + er);
+                    console.log("Trying to insert to card_sale again: ");
+                    Db.query(sqlComCardSale, (er, re) => {
+                        if (er) return res.send("Error: " + er)
+                        else {
+                            console.log(`************* PROCESS ORDER IS DONE **************`);
+                            res.send("Transaction completed");
+                            //update stock value
+                            console.log(`************* UPDATE STOCK VALUE **************`);
+                            updateStockCount();
+                        }
+                    })
                     return res.send("Error: " + er)
+                } else {
+                    console.log(`************* PROCESS ORDER IS DONE **************`);
+                    res.send("Transaction completed");
+                    //update stock value
+                    console.log(`************* UPDATE STOCK VALUE **************`);
+                    console.log(`************* ${new Date()} *************`);
+                    updateStockCount();
                 }
-                console.log(`************* PROCESS ORDER IS DONE **************`);
-                res.send("Transaction completed");
-                //update stock value
-                console.log(`************* UPDATE STOCK VALUE **************`);
-                console.log(`************* ${new Date()} *************`);
-                updateStockCount();
+
 
             })
         })
@@ -82,15 +94,14 @@ const updateStockCount = async () => {
     }
 
 }
-const updateProductStockCountDirect =async () => {
+const updateProductStockCountDirect = async () => {
 
-   const sqlCom=' UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.card_isused!=2  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;'
+    const sqlCom = 'UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.card_isused!=2  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;'
     try {
-        const response =await dbAsync.query(sqlCom);
+        const response = await dbAsync.query(sqlCom);
         console.log("Update stock count direct done");
     } catch (error) {
         console.log("Cannot get product sale count");
-        
     }
 
 }

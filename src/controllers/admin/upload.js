@@ -16,7 +16,7 @@ const singleMasterUpdate = async (req, res) => {
 
 
     let sqlCom = `SELECT login_id from customer WHERE cus_id='${cusId}'`
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er)
         if (re.length < 1) return res.send("Error: user id not found")
         const logInId = re[0]["login_id"]

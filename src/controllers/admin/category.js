@@ -10,7 +10,7 @@ const createCate = async (req, res) => {
     let gen_cat_id = 1000;
     // console.log("GEN: " + gen_cat_id);
     // cat_id=gen_cat_id;
-    await Db.query("SELECT MAX(categ_id) AS ID FROM product_category HAVING MAX(categ_id) IS NOT null", (er, re) => {
+     Db.query("SELECT MAX(categ_id) AS ID FROM product_category HAVING MAX(categ_id) IS NOT null", (er, re) => {
         if (er) res.send("Error: " + er);
         if (re.length < 1)  gen_cat_id=1000 
         else gen_cat_id=parseInt((re[0]['ID'])) + 1
@@ -35,7 +35,7 @@ const updateCate = async (req, res) => {
     const cat_desc = req.body.cat_desc;
     console.log(req.body);
     const sqlCom = `UPDATE product_category SET categ_name='${cat_name}', categ_desc='${cat_desc}' WHERE categ_id=${cat_id}`;
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) {
             res.send("Error: " + er).status(503)
         } else if (re) {
@@ -47,7 +47,7 @@ const updateCate = async (req, res) => {
 const fetchCate=async(req,res)=>{
     console.log("*************** FETCH CATEG ***************");
     console.log(`*************Payload:*****************`);
-    await Db.query("SELECT categ_id, categ_name,categ_desc FROM product_category",(er,re)=>{
+     Db.query("SELECT categ_id, categ_name,categ_desc FROM product_category",(er,re)=>{
         if (er) return res.send("Error: "+er)
         res.send(re);
     })
@@ -56,7 +56,7 @@ const fetchCate=async(req,res)=>{
 const generateId = async () => {
     console.log("*************** GENERATE ID CATEG  ***************");
     console.log(`*************Payload: *****************`);
-    await Db.query("SELECT MAX(categ_id) AS ID FROM product_category HAVING MAX(categ_id) IS NOT null", (er, re) => {
+     Db.query("SELECT MAX(categ_id) AS ID FROM product_category HAVING MAX(categ_id) IS NOT null", (er, re) => {
         if (er) return console.log("Error: " + er);
         if (re.length < 1) { return 1000 }
         const id = parseInt((re[0]['ID'])) + 1

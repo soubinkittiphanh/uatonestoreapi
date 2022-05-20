@@ -13,7 +13,7 @@ const createTxnHis = async (req, res) => {
     const txn_his_inputter = body.txn_his_inputter;
     const txn_his_date = body.txn_his_date;
     let txn_date;
-    await Db.query("SELECT MAX(txn_his_id) AS ID FROM transaction_history HAVING MAX(txn_his_id) IS NOT NULL", (er, re) => {
+     Db.query("SELECT MAX(txn_his_id) AS ID FROM transaction_history HAVING MAX(txn_his_id) IS NOT NULL", (er, re) => {
         if (er) return res.send("Error: " + er)
         if (re.length < 1) txn_his_id = 1000
         else txn_his_id = parseInt(re[0]['ID']) + 1
@@ -40,7 +40,7 @@ const updateTxnHis = async (req, res) => {
     console.log("Date: " + new Date().toISOString().slice(0, 19).replace('T', ' '));
     const sqlCom = `UPDATE transaction_history SET txn_his_id='${txn_his_id}', txn_id='${txn_id}', txn_his_amount='${txn_his_amount}',
     txn_his_amount='${txn_his_amount}',user_id='${user_id}',txn_his_inputter='${txn_his_inputter}',txn_his_date='${txn_date}' WHERE txn_his_id='${txn_his_id}'`
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) return res.send('Error: ' + er)
         res.send('Transaction completed')
     })
@@ -48,7 +48,7 @@ const updateTxnHis = async (req, res) => {
 const fetchTxnHis = async (req, res) => {
     console.log("*************** FETCH TXN HIS  ***************");
     console.log(`*************Payload: ${req.body} *****************`);
-    await Db.query('SELECT * FROM transaction_history', (er, re) => {
+     Db.query('SELECT * FROM transaction_history', (er, re) => {
         if (er) res.send("Error: " + er)
         res.send(re)
     })

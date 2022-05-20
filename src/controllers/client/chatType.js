@@ -10,7 +10,7 @@ const createChatType=async(req,res)=>{
     const chat_type_remark=body.chat_type_remark;
     const custId=body.cust_id;
     const sqlCom=`INSERT INTO chat_type( code, name, remark) VALUES ('${chat_type_code}','${chat_type_name}','${chat_type_remark}')`
-    await Db.query(sqlCom,(er,re)=>{
+     Db.query(sqlCom,(er,re)=>{
         if(er) return res.send("Error: "+er)
         res.send("Transaction completed");
     })
@@ -26,7 +26,7 @@ const updateChatType=async(req,res)=>{
     
     const sqlCom=`UPDATE chat_type SET  name='${chat_type_name}', remark='${chat_type_remark}',code='${chat_type_code}' WHERE id='${chat_type_id}'`
     
-    await Db.query(sqlCom,(er,re)=>{
+     Db.query(sqlCom,(er,re)=>{
         if(er) return res.send("Error: "+er);
         res.send("Transaction completed");
     });
@@ -36,7 +36,7 @@ const fetchChatType=async(req,res)=>{
     console.log("************* FETCH CHAT TYPE *****************");
     console.log(`*************Payload: NONE *****************`);
     const sqlCom=`SELECT * FROM chat_type`
-    await Db.query(sqlCom,(er,re)=>{
+     Db.query(sqlCom,(er,re)=>{
         if(er) return res.send("Error: "+er);
         res.send(re);
     });

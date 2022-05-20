@@ -5,13 +5,13 @@ const createAd = async (req, res) => {
     const img_pth=body.img_pth;
     // const img_name=body.img_name;
     const sqlCom=`INSERT INTO image_path_ad(img_name,img_path)VALUES('${img_name}','${img_pth}')`
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er);
         return res.send("Transaction completed");
     })
 }
 const fetchAd = async (req, res) => {
-    await Db.query('', (er, re) => {
+     Db.query('', (er, re) => {
         if (er) return res.send("Error: " + er);
         return res.send(re);
     })
