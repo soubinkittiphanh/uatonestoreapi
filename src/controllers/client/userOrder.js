@@ -68,7 +68,6 @@ const createOrder = async (req, res) => {
                             updateStockCount();
                         }
                     })
-                    return res.send("Error: " + er)
                 } else {
                     console.log(`************* PROCESS ORDER IS DONE **************`);
                     res.send("Transaction completed");
