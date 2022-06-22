@@ -11,7 +11,7 @@ const deleteCard = async (req, res) => {
 
     const sqlCom = `UPDATE card SET card_isused =2,update_user='${user_id}',update_time='${value_date}' WHERE id='${card_id}'`;
     // const sqlCom = `INSERT INTO card_his( card_type_code, product_id, card_number, card_isused, inputter) SELECT card_type_code, product_id, card_number, card_isused, '${user_id}' FROM card WHERE card.id = '${card_id}'`
-    await Db.query(sqlCom, (er, re) => {
+     Db.query(sqlCom, (er, re) => {
         if (er) return res.send("Error: " + er)
         // Db.query(`DELETE FROM card WHERE id = '${card_id}'`, (er, re) => {
         //     if (er) res.send("Error: " + er);

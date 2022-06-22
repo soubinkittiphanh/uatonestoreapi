@@ -41,7 +41,8 @@ const createOrder = async (req, res) => {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount || 0}),`;
             }
             const QRCode = generateQR()
-            sqlComCardSale = `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`
+            sqlComCardSale = `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`;
+            // sqlComCardSale = `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount}; UPDATE card SET card_isused=1 WHERE card_number=(SELECT c.card_number FROM card WHERE card_isused =0 AND product_id='${el.product_id}' LIMIT ${el.product_amount};)`;
         }
         //update order table
         console.log(`************* PUTTING TXN INTO USER ORDER TABLE **************`);
@@ -59,7 +60,16 @@ const createOrder = async (req, res) => {
                     console.log("Error: " + er);
                     console.log("Trying to insert to card_sale again: ");
                     Db.query(sqlComCardSale, (er, re) => {
-                        if (er) return res.send("Error: " + er)
+                        if (er) {
+                            //IF STILL NOT ABLE TO PROCESS SALE THEN WE WILL REVERSE TRANSACTION
+                            const resverseSqlcom=`DELETE FROM user_order WHERE order_id=${genOrderId}`
+                            Db.query(resverseSqlcom,(er,re)=>{
+                                if(er) return res.send(`Error: ບໍ່ສາມາດສົ່ງບັດໄດ້ ກະລຸນາແຈ້ງ ແອັດມິນ ລົບອໍເດີ ເລກ: ${genOrderId}`)
+                                return res.send("Error: ກະລຸນາລອງໃຫມ່ອີກຄັ້ງ server timeout" + er)
+                            })
+
+                            
+                        }
                         else {
                             console.log(`************* PROCESS ORDER IS DONE **************`);
                             res.send("Transaction completed");
@@ -76,16 +86,15 @@ const createOrder = async (req, res) => {
                     console.log(`************* ${new Date()} *************`);
                     updateStockCount();
                 }
-
-
             })
         })
 
     });
 }
 const updateStockCount = async () => {
+    //Change card status for those card id is in card sale table //UPDATE card c SET c.card_isused=1 WHERE c.card_isused=0 AND c.card_number IN(SELECT s.card_code FROM card_sale s WHERE s.processing_date >='2022-06-21 00:00:00')
     try {
-        const response = await dbAsync.query('UPDATE card c SET c.card_isused=1 WHERE c.card_number IN(SELECT s.card_code FROM card_sale s)')
+        const response = await dbAsync.query('UPDATE card c SET c.card_isused=1 WHERE c.card_isused=0 AND c.card_number IN(SELECT s.card_code FROM card_sale s)')
         console.log("Transaction completed update stock count done");
         await updateProductStockCountDirect();
     } catch (error) {
@@ -94,7 +103,7 @@ const updateStockCount = async () => {
 
 }
 const updateProductStockCountDirect = async () => {
-
+    //update product table set product sale statistic [sale amount]
     const sqlCom = 'UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.card_isused!=2  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;'
     try {
         const response = await dbAsync.query(sqlCom);
@@ -103,6 +112,13 @@ const updateProductStockCountDirect = async () => {
         console.log("Cannot get product sale count");
     }
 
+}
+const reverseOrderByOrderId=async(orderId)=>{
+    const sqlCom=`DELETE FROM user_order WHERE order_id=${orderId}`
+    return Db.query(sqlCom,(er,re)=>{
+        if(er) return `05:${er}`
+        return '00:Transaction completed'
+    })
 }
 const generateQR = () => {
     console.log("*************** GENERATE QR  ***************");

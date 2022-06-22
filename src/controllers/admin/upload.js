@@ -115,7 +115,7 @@ const single = async (req, res) => {
     src.pipe(dest);
     src.on('end', async () => {
         const sqlCom = `INSERT INTO image_path_ad(img_name,img_path,remark)VALUES('${rndName + req.file.originalname}','${target_path}','')`
-        await Db.query(sqlCom, (er, re) => {
+         Db.query(sqlCom, (er, re) => {
             if (er) return res.send("Error: " + er);
             return res.send("Transaction completed");
         })

@@ -15,7 +15,7 @@ const createSale=async(req,res)=>{
     const sale_status=body.sale_status;
     const sale_desc=body.sale_desc;
     const sqlCom=`INSERT INTO sale(sale_id, prod_id, sale_amount, sale_price, user_id, inputter, sale_status, sale_desc) VALUES ('${sale_id}','${pro_id}','${sale_amt}','${sale_price}','${user_id}','${inputter}','${sale_status}','${sale_desc}')`
-     Db.query(sqlCom,(er,re)=>{
+    Db.query(sqlCom,(er,re)=>{
         if(er){
             res.send('Error: '+er).status();
         }else if(re){
