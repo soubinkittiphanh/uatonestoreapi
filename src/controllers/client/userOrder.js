@@ -188,5 +188,6 @@ module.exports = {
     createOrder,
     fetchOrder,
     fetchOrderByDate,
-    fetchMaxOrderByUserId
+    fetchMaxOrderByUserId,
+    updateStockCount
 }

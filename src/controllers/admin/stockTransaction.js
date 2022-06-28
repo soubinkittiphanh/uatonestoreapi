@@ -1,5 +1,5 @@
 const Db = require('../../config/dbcon');
-
+const userOrder=require("../client/userOrder");
 const createStockTransaction=async(req,res)=>{
     const body=req.body;
     console.log("*************** CREATE STOCK TXN  ***************");
@@ -40,7 +40,9 @@ const createStockTransaction=async(req,res)=>{
             if (er)return res.send("Error: "+er)
             res.send("Transaction completed");
         })
-    })
+    });
+    //Update stock amount in product table
+    userOrder.updateStockCount();
 
 }
 
