@@ -160,7 +160,7 @@ const bank=async (app)=>{
 
 }
 const ticket=async(app)=>{
-    app.get('/ticet_f',Ticket.getTicketHeaderInfo);
+    app.get('/ticket_f',Ticket.getTicketHeaderInfo);
 }
 const chatType=async(app)=>{
     app.get('/chattype_f',ChatType.fetchChatType)
