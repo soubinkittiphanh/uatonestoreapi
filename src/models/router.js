@@ -21,6 +21,7 @@ const Card=require('../controllers/admin/card')
 const Adv=require('../controllers/admin/advertise')
 const UserInbox=require('../controllers/client/userInbox')
 const Bank=require('../controllers/client/bank')
+const Ticket=require('../controllers/client/ticket')
 const ChatType=require('../controllers/client/chatType')
 const Chat=require('../controllers/client/chats')
 const RegisterCustomer=require('../controllers/client/register')
@@ -158,6 +159,9 @@ const bank=async (app)=>{
 
 
 }
+const ticket=async(app)=>{
+    app.get('/ticet_f',Ticket.getTicketHeaderInfo);
+}
 const chatType=async(app)=>{
     app.get('/chattype_f',ChatType.fetchChatType)
     app.post('/chattype_u',ChatType.updateChatType)
@@ -216,4 +220,5 @@ module.exports = {
     chat,
     walletTxn,
     report,
+    ticket,
 }
