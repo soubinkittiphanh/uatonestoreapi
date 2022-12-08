@@ -18,6 +18,8 @@ const createOrder = async (req, res) => {
     //Get last order_id
     console.log(`************* GETING ORDER ID **************`);
     console.log(`************* ${new Date()} *************`);
+    // Card table locking id
+    const lockingSessionId=Date.now()
     Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
         if (er) return res.send("Error: " + er)
         let genOrderId = re[0]['order_id'];
@@ -29,7 +31,7 @@ const createOrder = async (req, res) => {
             const el = cart_data[i];
             console.log(`************* CHECKING STOCK AVAILABILITY **************`);
             console.log(`************* ${new Date()} *************`);
-            const count_stock = await OrderHelper.checkStockAvailability(el.product_id, el.product_amount);
+            const count_stock = await OrderHelper.checkStockAvailability(el.product_id, el.product_amount,lockingSessionId);
             if (count_stock != 200) {
                 console.log("STOCK STATUS CODE: " + count_stock);
                 return res.send(count_stock == 503 ? "ເກີດຂໍ້ຜິດພາດ ສິນຄ້າ |" + el.product_id + "| ບໍ່ພຽງພໍ" : "Connection Error");
@@ -41,7 +43,9 @@ const createOrder = async (req, res) => {
                 sqlCom = sqlCom + `(${genOrderId},${user_id},${el.product_id},${el.product_amount},${el.product_price_retail},${el.product_price_retail * el.product_amount},${el.product_discount || 0}),`;
             }
             const QRCode = generateQR()
-            sqlComCardSale = `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`;
+            //20221209 sqlComCardSale = `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount};`;
+            sqlComCardSale = `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.locking_session_id ='${lockingSessionId}' LIMIT ${el.product_amount};`;
+            
             // sqlComCardSale = `INSERT INTO card_sale(card_code,card_order_id,price,qrcode,pro_id,pro_discount) SELECT c.card_number,'${genOrderId}','${el.product_price}','${QRCode}','${el.product_id}','${el.product_discount || 0}' FROM card c WHERE c.card_isused =0 AND c.product_id='${el.product_id}' LIMIT ${el.product_amount}; UPDATE card SET card_isused=1 WHERE card_number=(SELECT c.card_number FROM card WHERE card_isused =0 AND product_id='${el.product_id}' LIMIT ${el.product_amount};)`;
         }
         //update order table
@@ -94,7 +98,7 @@ const createOrder = async (req, res) => {
 const updateStockCount = async () => {
     //Change card status for those card id is in card sale table //UPDATE card c SET c.card_isused=1 WHERE c.card_isused=0 AND c.card_number IN(SELECT s.card_code FROM card_sale s WHERE s.processing_date >='2022-06-21 00:00:00')
     try {
-        const response = await dbAsync.query('UPDATE card c SET c.card_isused=1 WHERE c.card_isused=0 AND c.card_number IN(SELECT s.card_code FROM card_sale s)')
+        const response = await dbAsync.query('UPDATE card c SET c.card_isused=1 WHERE c.card_isused IN (0,3) AND c.card_number IN(SELECT s.card_code FROM card_sale s)')
         console.log("Transaction completed update stock count done");
         await updateProductStockCountDirect();
     } catch (error) {
