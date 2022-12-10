@@ -107,6 +107,7 @@ const updateStockCount = async (lockingSessionId) => {
         let rows=response[0]
         rows.forEach(item => {
             console.log('id', item.id)
+            console.log('id ITEM FULL', item)
            })
         response.forEach(el=>{
             console.log("reponse => "+ el);
