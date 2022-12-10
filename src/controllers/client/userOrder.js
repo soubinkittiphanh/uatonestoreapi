@@ -103,7 +103,10 @@ const updateStockCount = async (lockingSessionId) => {
         const [rows, fields] = await dbAsync.execute(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
         console.log(`************* UPDATE STOCK COUNT => DONE **************`);
         console.log(`*********** PROCESS RECORD0: ${ rows.affectedRows}`);
-        console.log(`*********** PROCESS RECORD1: ${ fields}`);
+        console.log(`*********** PROCESS RECORD1: ${ fields.forEach(el=>{
+            console.log("this is field loops: "+el.table);
+            console.log("this is field loops: "+el.length);
+        })}`);
     //    const  [rows, fields]=response;
     //    console.log("ROWS: "+rows);
     //    console.log("FIELD: "+fields);
