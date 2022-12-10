@@ -39,7 +39,7 @@ const checkStockAvailability = async (product_id, order_qty, lockingSessionId) =
 //******** Lock card record during processing order inorder to avoid dupplicate card number saling ******* */
 const lockCardRecord = async (lockingSessionId, order_qty,product_id) => {
     let lockCardRecordResponse = '00';
-    const sqlCom = `UPDATE card SET locking_session_id='${lockingSessionId}',card_isused=3 WHERE card_number IN (SELECT b.card_number FROM card b WHERE b.product_id='${product_id}' AND b.card_isused=0 LIMIT ${order_qty})`
+    const sqlCom = `UPDATE card SET locking_session_id='${lockingSessionId}',card_isused=3 WHERE product_id='${product_id}' AND card_isused=0 LIMIT ${order_qty})`
     try {
         const response = await dbAsync.query(sqlCom);
         console.log(`******* Locking card sale response( no error ): +${response}`);
