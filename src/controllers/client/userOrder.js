@@ -102,17 +102,7 @@ const updateStockCount = async (lockingSessionId) => {
         console.log(`************* ${new Date()} *************`);
         const [rows, fields] = await dbAsync.execute(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
         console.log(`************* UPDATE STOCK COUNT => DONE **************`);
-        console.log(`*********** PROCESS RECORD0: ${ rows.affectedRows}`);
-        console.log(`*********** PROCESS RECORD fieldCount: ${ rows.fieldCount}`);
-        console.log(`*********** PROCESS RECORD changeRows: ${ rows.changedRows}`);
-        console.log(`*********** PROCESS RECORD1: ${ fields.forEach(el=>{
-            console.log("this is field loops: "+el.table);
-            console.log("this is field loops: "+el.length);
-        })}`);
-    //    const  [rows, fields]=response;
-    //    console.log("ROWS: "+rows);
-    //    console.log("FIELD: "+fields);
-
+        console.log(`*********** PROCESSED RECORD: ${ rows.affectedRows}`);
         console.log(`************* ${new Date()} *************`);
         await updateProductStockCountDirect();
     } catch (error) {
@@ -126,9 +116,9 @@ const updateProductStockCountDirect = async () => {
     console.log(`************* ${new Date()} ************* =>`);
     const sqlCom = 'UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.card_isused!=2  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;'
     try {
-        const response = await dbAsync.query(sqlCom);
+        const [rows, fields]  = await dbAsync.execute(sqlCom);
         console.log(`************* updateProductStockCountDirect => DONE **************`);
-        console.log(`*********** PROCESS RECORD: ${response['rows']}`);
+        console.log(`*********** PROCESSED RECORD: ${rows.affectedRows}`);
         console.log(`************* ${new Date()} *************`);
     } catch (error) {
         console.log("Cannot get product sale count");
