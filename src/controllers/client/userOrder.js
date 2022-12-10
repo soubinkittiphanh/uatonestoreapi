@@ -79,7 +79,7 @@ const createOrder = async (req, res) => {
                             res.send("Transaction completed");
                             //update stock value
                             console.log(`************* UPDATE STOCK VALUE **************`);
-                            updateStockCount();
+                            updateStockCount(lockingSessionId);
                         }
                     })
                 } else {
@@ -88,20 +88,21 @@ const createOrder = async (req, res) => {
                     //update stock value
                     console.log(`************* UPDATE STOCK VALUE **************`);
                     console.log(`************* ${new Date()} *************`);
-                    updateStockCount();
+                    updateStockCount(lockingSessionId);
                 }
             })
         })
 
     });
 }
-const updateStockCount = async () => {
+const updateStockCount = async (lockingSessionId) => {
     //Change card status for those card id is in card sale table //UPDATE card c SET c.card_isused=1 WHERE c.card_isused=0 AND c.card_number IN(SELECT s.card_code FROM card_sale s WHERE s.processing_date >='2022-06-21 00:00:00')
     try {
         console.log(`************* UPDATE STOCK COUNT => **************`);
         console.log(`************* ${new Date()} *************`);
-        const response = await dbAsync.query('UPDATE card c SET c.card_isused=1 WHERE c.card_isused IN (0,3) AND c.card_number IN(SELECT s.card_code FROM card_sale s)')
+        const response = await dbAsync.query(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
         console.log(`************* UPDATE STOCK COUNT => DONE **************`);
+        console.log(`*********** PROCESS RECORD: ${response}`);
         console.log(`************* ${new Date()} *************`);
         await updateProductStockCountDirect();
     } catch (error) {
@@ -117,6 +118,7 @@ const updateProductStockCountDirect = async () => {
     try {
         const response = await dbAsync.query(sqlCom);
         console.log(`************* updateProductStockCountDirect => DONE **************`);
+        console.log(`*********** PROCESS RECORD: ${response}`);
         console.log(`************* ${new Date()} *************`);
     } catch (error) {
         console.log("Cannot get product sale count");
