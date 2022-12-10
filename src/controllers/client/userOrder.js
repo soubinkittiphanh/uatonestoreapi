@@ -103,6 +103,9 @@ const updateStockCount = async (lockingSessionId) => {
         const response = await dbAsync.query(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
         console.log(`************* UPDATE STOCK COUNT => DONE **************`);
         console.log(`*********** PROCESS RECORD: ${response['rows']}`);
+        response.forEach(el=>{
+            console.log("reponse => "+ el);
+        })
         console.log(`************* ${new Date()} *************`);
         await updateProductStockCountDirect();
     } catch (error) {
