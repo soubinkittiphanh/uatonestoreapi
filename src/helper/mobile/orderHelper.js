@@ -22,7 +22,7 @@ const checkStockAvailability = async (product_id, order_qty, lockingSessionId) =
         } else {
             statusCode = 200;
             console.log("Statuscode: " + statusCode);
-            let cardLockingResponse = await lockCardRecord(lockingSessionId, order_qty);
+            let cardLockingResponse = await lockCardRecord(lockingSessionId, order_qty,product_id);
             if (cardLockingResponse.includes('05')) {
                 statusCode = 503
             } else {
@@ -37,7 +37,7 @@ const checkStockAvailability = async (product_id, order_qty, lockingSessionId) =
 }
 
 //******** Lock card record during processing order inorder to avoid dupplicate card number saling ******* */
-const lockCardRecord = async (lockingSessionId, order_qty) => {
+const lockCardRecord = async (lockingSessionId, order_qty,product_id) => {
     let lockCardRecordResponse = '00';
     const sqlCom = `UPDATE card SET locking_session_id='${lockingSessionId}',card_isused=3 WHERE card_number IN (SELECT b.card_number FROM card b WHERE b.product_id='${product_id}' AND card_isused=0 LIMIT ${order_qty})`
     try {
