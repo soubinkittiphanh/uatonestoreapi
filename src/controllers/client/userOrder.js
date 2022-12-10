@@ -104,7 +104,9 @@ const updateStockCount = async (lockingSessionId) => {
         console.log(`************* UPDATE STOCK COUNT => DONE **************`);
         console.log(`*********** PROCESS RECORD0: ${ response[0]}`);
         console.log(`*********** PROCESS RECORD1: ${ response[1]}`);
-        let rows=response[0]
+       const  [rows, fields]=response;
+       console.log("ROWS: "+rows);
+       console.log("FIELD: "+fields);
         rows.forEach(item => {
             console.log('id', item.id)
             console.log('id ITEM FULL', item)
