@@ -102,7 +102,7 @@ const updateStockCount = async (lockingSessionId) => {
         console.log(`************* ${new Date()} *************`);
         const response = await dbAsync.query(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
         console.log(`************* UPDATE STOCK COUNT => DONE **************`);
-        console.log(`*********** PROCESS RECORD: ${response}`);
+        console.log(`*********** PROCESS RECORD: ${response['rows']}`);
         console.log(`************* ${new Date()} *************`);
         await updateProductStockCountDirect();
     } catch (error) {
@@ -118,7 +118,7 @@ const updateProductStockCountDirect = async () => {
     try {
         const response = await dbAsync.query(sqlCom);
         console.log(`************* updateProductStockCountDirect => DONE **************`);
-        console.log(`*********** PROCESS RECORD: ${response}`);
+        console.log(`*********** PROCESS RECORD: ${response['rows']}`);
         console.log(`************* ${new Date()} *************`);
     } catch (error) {
         console.log("Cannot get product sale count");
