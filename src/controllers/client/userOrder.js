@@ -100,20 +100,14 @@ const updateStockCount = async (lockingSessionId) => {
     try {
         console.log(`************* UPDATE STOCK COUNT => **************`);
         console.log(`************* ${new Date()} *************`);
-        const response = await dbAsync.query(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
+        const [result] = await dbAsync.query(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
         console.log(`************* UPDATE STOCK COUNT => DONE **************`);
-        console.log(`*********** PROCESS RECORD0: ${ response.affectedRows}`);
-        console.log(`*********** PROCESS RECORD1: ${ response[0]['resultSetHeader'].changedRows}`);
-       const  [rows, fields]=response;
-       console.log("ROWS: "+rows);
-       console.log("FIELD: "+fields);
-        rows.forEach(item => {
-            console.log('id', item.id)
-            console.log('id ITEM FULL', item)
-           })
-        response.forEach(el=>{
-            console.log("reponse => "+ el);
-        })
+        console.log(`*********** PROCESS RECORD0: ${ result.affectedRows}`);
+        // console.log(`*********** PROCESS RECORD1: ${ response[0]['resultSetHeader'].changedRows}`);
+    //    const  [rows, fields]=response;
+    //    console.log("ROWS: "+rows);
+    //    console.log("FIELD: "+fields);
+
         console.log(`************* ${new Date()} *************`);
         await updateProductStockCountDirect();
     } catch (error) {
