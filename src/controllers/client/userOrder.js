@@ -29,8 +29,8 @@ const createOrder = async (req, res) => {
         console.log(`************* LOOPING THROUGH ALL TXN **************`);
         console.log(`************* ${new Date()} *************`);
         for (let i = 0; i < cart_data.length; i++) {
-            productId=el.product_id ;
             const el = cart_data[i];
+            productId=el.product_id ;
             console.log(`************* CHECKING STOCK AVAILABILITY **************`);
             console.log(`************* ${new Date()} *************`);
             const count_stock = await OrderHelper.checkStockAvailability(el.product_id, el.product_amount,lockingSessionId);
