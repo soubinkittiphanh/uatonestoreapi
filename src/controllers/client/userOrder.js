@@ -129,11 +129,11 @@ const updateProductStockCountSingleProduct = async (productId) => {
     //Update product stock count after sale 
     //for single product in PRODUCT table
     //********************//********************
-    console.log(`************* ${new Date()}  updateProductStockCountDirect **************`);
+    console.log(`************* ${new Date()}  updateProductStockCountDirectSingle **************`);
     const sqlCom = `UPDATE product p SET p.stock_count=(SELECT COUNT(c.card_number) FROM card c WHERE product_id=${productId} AND c.card_isused=0) WHERE p.pro_id=${productId};`
     try {
         const [rows, fields]  = await dbAsync.execute(sqlCom);
-        console.log(`*********** ${new Date()} PROCESSED RECORD: ${rows.affectedRows}`);
+        console.log(`*********** ${new Date()} PROCESSED RECORD: => ${rows.affectedRows}`);
     } catch (error) {
         console.log("Cannot get product sale count");
     }
