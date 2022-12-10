@@ -20,6 +20,7 @@ const createOrder = async (req, res) => {
     console.log(`************* ${new Date()} *************`);
     // Card table locking id
     const lockingSessionId=Date.now()
+    let productId=''
     Db.query('SELECT IFNULL(MAX(order_id),0) AS order_id FROM user_order;', async (er, re) => {
         if (er) return res.send("Error: " + er)
         let genOrderId = re[0]['order_id'];
@@ -28,6 +29,7 @@ const createOrder = async (req, res) => {
         console.log(`************* LOOPING THROUGH ALL TXN **************`);
         console.log(`************* ${new Date()} *************`);
         for (let i = 0; i < cart_data.length; i++) {
+            productId=el.product_id ;
             const el = cart_data[i];
             console.log(`************* CHECKING STOCK AVAILABILITY **************`);
             console.log(`************* ${new Date()} *************`);
@@ -79,7 +81,7 @@ const createOrder = async (req, res) => {
                             res.send("Transaction completed");
                             //update stock value
                             console.log(`************* UPDATE STOCK VALUE **************`);
-                            updateStockCount(lockingSessionId);
+                            updateStockCount(productId,lockingSessionId);
                         }
                     })
                 } else {
@@ -88,31 +90,47 @@ const createOrder = async (req, res) => {
                     //update stock value
                     console.log(`************* UPDATE STOCK VALUE **************`);
                     console.log(`************* ${new Date()} *************`);
-                    updateStockCount(lockingSessionId);
+                    updateStockCount(productId,lockingSessionId);
                 }
             })
         })
 
     });
 }
-const updateStockCount = async (lockingSessionId) => {
+const updateStockCount = async (productId,lockingSessionId) => {
     //Change card status for those card id is in card sale table //UPDATE card c SET c.card_isused=1 WHERE c.card_isused=0 AND c.card_number IN(SELECT s.card_code FROM card_sale s WHERE s.processing_date >='2022-06-21 00:00:00')
     try {
         console.log(`************* ${new Date()}  UPDATE STOCK COUNT **************`);
         console.log(`************* ${new Date()} *************`);
         const [rows, fields] = await dbAsync.execute(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
         console.log(`*********** ${new Date()} PROCESSED RECORD: ${ rows.affectedRows}`);
-        await updateProductStockCountDirect(lockingSessionId);
+        await updateProductStockCountSingleProduct(productId);
     } catch (error) {
         console.log("Update stock counter error: " + error);
     }
 
 }
-const updateProductStockCountDirect = async (lockingSessionId) => {
+const updateProductStockCountDirect = async () => {
     //update product table set product sale statistic [sale amount]
     console.log(`************* ${new Date()}  updateProductStockCountDirect **************`);
-    //backup 20221210 const sqlCom = 'UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.card_isused!=2  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;'
-    const sqlCom = `UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.locking_session_id=${lockingSessionId}  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;`
+  const sqlCom = 'UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.card_isused!=2  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;'
+  
+    try {
+        const [rows, fields]  = await dbAsync.execute(sqlCom);
+        console.log(`*********** ${new Date()} PROCESSED RECORD: ${rows.affectedRows}`);
+    } catch (error) {
+        console.log("Cannot get product sale count");
+    }
+
+}
+
+const updateProductStockCountSingleProduct = async (productId) => {
+    //********************//********************
+    //Update product stock count after sale 
+    //for single product in PRODUCT table
+    //********************//********************
+    console.log(`************* ${new Date()}  updateProductStockCountDirect **************`);
+    const sqlCom = `UPDATE product p SET p.stock_count=(SELECT COUNT(c.card_number) FROM card c WHERE product_id=${productId} AND c.card_isused=0) WHERE p.pro_id=${productId};`
     try {
         const [rows, fields]  = await dbAsync.execute(sqlCom);
         console.log(`*********** ${new Date()} PROCESSED RECORD: ${rows.affectedRows}`);
