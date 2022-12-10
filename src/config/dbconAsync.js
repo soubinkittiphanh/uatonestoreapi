@@ -9,7 +9,6 @@ const db_config={
 }
 
 let connection = mysql.createPool(db_config);
-
 connection.getConnection(err=>{
     if(err){
         console.log("\n\t *** Cannot establish a connection with the database. ***");
