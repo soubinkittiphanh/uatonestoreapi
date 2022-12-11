@@ -98,10 +98,10 @@ const createOrder = async (req, res) => {
     });
 }
 const updateStockCount = async (productId,lockingSessionId) => {
-    //Change card status for those card id is in card sale table //UPDATE card c SET c.card_isused=1 WHERE c.card_isused=0 AND c.card_number IN(SELECT s.card_code FROM card_sale s WHERE s.processing_date >='2022-06-21 00:00:00')
+    //Change card status for those card id is in card sale table 
+    //UPDATE card c SET c.card_isused=1 WHERE c.card_isused=0 AND c.card_number IN(SELECT s.card_code FROM card_sale s WHERE s.processing_date >='2022-06-21 00:00:00')
     try {
         console.log(`************* ${new Date()}  UPDATE STOCK COUNT **************`);
-        console.log(`************* ${new Date()} *************`);
         const [rows, fields] = await dbAsync.execute(`UPDATE card c SET c.card_isused=1 WHERE locking_session_id='${lockingSessionId}'`)
         console.log(`*********** ${new Date()} PROCESSED RECORD: ${ rows.affectedRows}`);
         await updateProductStockCountSingleProduct(productId);
@@ -113,7 +113,11 @@ const updateStockCount = async (productId,lockingSessionId) => {
 const updateProductStockCountDirect = async () => {
     //update product table set product sale statistic [sale amount]
     console.log(`************* ${new Date()}  updateProductStockCountDirect **************`);
-  const sqlCom = 'UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number WHERE d.card_isused!=2  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id SET pro.stock_count=proc.card_count;'
+  const sqlCom = `UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count 
+  FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number 
+  WHERE d.card_isused!=2  
+  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id 
+  SET pro.stock_count=proc.card_count;`
   
     try {
         const [rows, fields]  = await dbAsync.execute(sqlCom);

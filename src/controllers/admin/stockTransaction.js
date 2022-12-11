@@ -42,7 +42,25 @@ const createStockTransaction=async(req,res)=>{
         })
     });
     //Update stock amount in product table
-    userOrder.updateStockCount();
+    updateProductStockCountDirect();
+
+}
+
+const updateProductStockCountDirect = async () => {
+    //update product table set product sale statistic [sale amount]
+  console.log(`************* ${new Date()}  updateProductStockCountDirect **************`);
+  const sqlCom = `UPDATE product pro  INNER JOIN  (SELECT d.product_id AS card_pro_id,COUNT(d.card_number)-COUNT(cs.card_code) AS card_count 
+  FROM card d LEFT JOIN card_sale cs ON cs.card_code=d.card_number 
+  WHERE d.card_isused!=2  
+  GROUP BY d.product_id) proc ON proc.card_pro_id=pro.pro_id 
+  SET pro.stock_count=proc.card_count;`
+  
+    try {
+        const [rows, fields]  = await dbAsync.execute(sqlCom);
+        console.log(`*********** ${new Date()} PROCESSED RECORD: ${rows.affectedRows}`);
+    } catch (error) {
+        console.log("Cannot get product sale count");
+    }
 
 }
 

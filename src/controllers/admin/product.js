@@ -127,7 +127,7 @@ const fetchProdId = async (req, res) => {
         if (er) return res.send('SQL ' + er)
         res.send(re)
     })
-    1635062891981300
+    //1635062891981300
 }
 
 module.exports = {
