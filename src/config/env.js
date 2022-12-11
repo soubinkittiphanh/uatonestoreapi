@@ -8,8 +8,8 @@ const config={
         host:'209.209.40.80',
         user:'soubin',
         password:'SDAT@3480',
-        // database:'online_store_pakse',
-        database:'online_store_pakse_dev',
+        database:'online_store_pakse',
+        // database:'online_store_pakse_dev',
         port: 34248,
 
 
